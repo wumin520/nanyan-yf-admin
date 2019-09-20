@@ -75,33 +75,33 @@ export default {
       list: [
         {
           key: "1",
-          title: "权限管理",
+          title: "用户管理",
+          url: '/dashboard/list'
+        },
+        {
+          key: "3",
+          title: "角色管理",
+          url: '/dashboard/list'
+        },
+        {
+          key: "4",
+          title: "菜单管理",
           url: '/dashboard/list'
         },
         {
           key: "2",
-          title: "理赔管理",
+          title: "保单管理",
           children: [
             {
               key: "2.1",
-              title: "理赔查询",
+              title: "新增保单",
               url: '/dashboard'
             },
             {
               key: "2.2",
-              title: "理赔报案",
+              title: "修改保单",
               url: '/dashboard'
             },
-            {
-              key: "2.3",
-              title: "理赔照会",
-              url: '/dashboard'
-            },
-            {
-              key: "2.4",
-              title: "保证金查询",
-              url: '/dashboard'
-            }
           ]
         }
       ],
