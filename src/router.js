@@ -58,6 +58,7 @@ export default new Router({
           path: "user",
           name: "user",
           component: User,
+          redirect: { name: "user_list" },
           meta: {
             breadcrumbName: "用户管理"
           },
@@ -110,6 +111,7 @@ export default new Router({
           path: "adminMenu",
           name: "admin_menu",
           component: AdminMenu,
+          redirect: { name: "admin_menu_list" },
           meta: {
             breadcrumbName: "菜单管理"
           },

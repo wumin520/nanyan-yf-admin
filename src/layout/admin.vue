@@ -50,7 +50,7 @@
           <span v-if="routes.indexOf(route) === routes.length - 1">
             {{ route.breadcrumbName }}
           </span>
-          <router-link v-else :to="paths.join('/')">
+          <router-link v-else :to="route.path">
             {{ route.breadcrumbName }}
           </router-link>
         </template>
@@ -133,7 +133,7 @@ export default {
 </script>
 <style lang="scss">
 #components-layout-demo-custom-trigger {
-  height: 100%;
+  min-height: 100%;
   .ant-layout-sider {
     background: #fff;
   }
