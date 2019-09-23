@@ -1,3 +1,3 @@
 <template>
-    <div>角色新增</div>
+  <div>角色新增</div>
 </template>

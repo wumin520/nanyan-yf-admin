@@ -43,12 +43,15 @@
         />
       </a-layout-header>
       <a-breadcrumb style="margin: 16px;" :routes="routes">
-        <template slot="itemRender" slot-scope="{route, params, routes, paths}">
+        <template
+          slot="itemRender"
+          slot-scope="{ route, params, routes, paths }"
+        >
           <span v-if="routes.indexOf(route) === routes.length - 1">
-            {{route.breadcrumbName}}
+            {{ route.breadcrumbName }}
           </span>
           <router-link v-else :to="paths.join('/')">
-            {{route.breadcrumbName}}
+            {{ route.breadcrumbName }}
           </router-link>
         </template>
       </a-breadcrumb>
@@ -76,17 +79,17 @@ export default {
         {
           key: "1",
           title: "用户管理",
-          url: '/user/list'
+          url: "/user/list"
         },
         {
           key: "3",
           title: "角色管理",
-          url: '/role/list'
+          url: "/role/list"
         },
         {
           key: "4",
           title: "菜单管理",
-          url: '/adminMenu/list'
+          url: "/adminMenu/list"
         },
         {
           key: "2",
@@ -95,36 +98,36 @@ export default {
             {
               key: "2.1",
               title: "新增保单",
-              url: '/bxOrder/add'
+              url: "/bxOrder/add"
             },
             {
               key: "2.2",
               title: "修改保单",
-              url: '/bxOrder/list'
-            },
+              url: "/bxOrder/list"
+            }
           ]
         }
       ],
-      routes: [],
+      routes: []
     };
   },
   watch: {
-    '$route': function () {
-      console.log('route change -> ', this.$route)
+    $route: function() {
+      console.log("route change -> ", this.$route);
       const arr = this.$route.matched.map((item, index) => {
         return {
           path: item.path,
-          breadcrumbName: item.meta.breadcrumbName || '首页'
-        }
-      })
-      this.routes = arr
+          breadcrumbName: item.meta.breadcrumbName || "首页"
+        };
+      });
+      this.routes = arr;
     }
   },
   components: {
     "sub-menu": SubMenu
   },
-  mounted () {
-    console.log(this.$router, this.$route, this)
+  mounted() {
+    console.log(this.$router, this.$route, this);
   }
 };
 </script>

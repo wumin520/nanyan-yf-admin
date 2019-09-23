@@ -20,8 +20,6 @@ import BxOrderList from "./views/bx_order/list";
 import BxOrderAdd from "./views/bx_order/add_or_update";
 import BxOrder from "./views/bx_order/index";
 
-
-
 Vue.use(Router);
 
 export default new Router({
@@ -63,21 +61,24 @@ export default new Router({
           meta: {
             breadcrumbName: "用户管理"
           },
-          children: [{
-            path: "add",
-            name: "user_add",
-            component: UserAdd,
-            meta: {
-              breadcrumbName: "新增"
+          children: [
+            {
+              path: "add",
+              name: "user_add",
+              component: UserAdd,
+              meta: {
+                breadcrumbName: "新增"
+              }
             },
-          },{
-            path: "list",
-            name: "user_list",
-            component: UserList,
-            meta: {
-              breadcrumbName: "列表"
-            },
-          },]
+            {
+              path: "list",
+              name: "user_list",
+              component: UserList,
+              meta: {
+                breadcrumbName: "列表"
+              }
+            }
+          ]
         },
         {
           path: "role",
@@ -86,21 +87,24 @@ export default new Router({
           meta: {
             breadcrumbName: "角色管理"
           },
-          children: [{
-            path: "add",
-            name: "role_add",
-            component: RoleAdd,
-            meta: {
-              breadcrumbName: "新增"
+          children: [
+            {
+              path: "add",
+              name: "role_add",
+              component: RoleAdd,
+              meta: {
+                breadcrumbName: "新增"
+              }
             },
-          },{
-            path: "list",
-            name: "role_list",
-            component: RoleList,
-            meta: {
-              breadcrumbName: "列表"
-            },
-          },]
+            {
+              path: "list",
+              name: "role_list",
+              component: RoleList,
+              meta: {
+                breadcrumbName: "列表"
+              }
+            }
+          ]
         },
         {
           path: "adminMenu",
@@ -109,21 +113,24 @@ export default new Router({
           meta: {
             breadcrumbName: "菜单管理"
           },
-          children: [{
-            path: "add",
-            name: "admin_menu_add",
-            component: AdminMenuAdd,
-            meta: {
-              breadcrumbName: "新增"
+          children: [
+            {
+              path: "add",
+              name: "admin_menu_add",
+              component: AdminMenuAdd,
+              meta: {
+                breadcrumbName: "新增"
+              }
             },
-          },{
-            path: "list",
-            name: "admin_menu_list",
-            component: AdminMenuList,
-            meta: {
-              breadcrumbName: "列表"
-            },
-          },]
+            {
+              path: "list",
+              name: "admin_menu_list",
+              component: AdminMenuList,
+              meta: {
+                breadcrumbName: "列表"
+              }
+            }
+          ]
         },
         {
           path: "bxOrder",
@@ -132,21 +139,24 @@ export default new Router({
           meta: {
             breadcrumbName: "保单管理"
           },
-          children: [{
-            path: "add",
-            name: "bx_order_add",
-            component: BxOrderAdd,
-            meta: {
-              breadcrumbName: "新增"
+          children: [
+            {
+              path: "add",
+              name: "bx_order_add",
+              component: BxOrderAdd,
+              meta: {
+                breadcrumbName: "新增"
+              }
             },
-          },{
-            path: "list",
-            name: "bx_order_list",
-            component: BxOrderList,
-            meta: {
-              breadcrumbName: "列表"
-            },
-          },]
+            {
+              path: "list",
+              name: "bx_order_list",
+              component: BxOrderList,
+              meta: {
+                breadcrumbName: "列表"
+              }
+            }
+          ]
         }
       ]
     },

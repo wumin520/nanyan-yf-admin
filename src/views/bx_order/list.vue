@@ -1,3 +1,3 @@
 <template>
-    <div>保单列表</div>
+  <div>保单列表</div>
 </template>
