@@ -76,17 +76,17 @@ export default {
         {
           key: "1",
           title: "用户管理",
-          url: '/dashboard/list'
+          url: '/user/list'
         },
         {
           key: "3",
           title: "角色管理",
-          url: '/dashboard/list'
+          url: '/role/list'
         },
         {
           key: "4",
           title: "菜单管理",
-          url: '/dashboard/list'
+          url: '/adminMenu/list'
         },
         {
           key: "2",
@@ -95,12 +95,12 @@ export default {
             {
               key: "2.1",
               title: "新增保单",
-              url: '/dashboard'
+              url: '/bxOrder/add'
             },
             {
               key: "2.2",
               title: "修改保单",
-              url: '/dashboard'
+              url: '/bxOrder/list'
             },
           ]
         }
