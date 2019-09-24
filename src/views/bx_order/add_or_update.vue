@@ -643,8 +643,12 @@
           <h2>被保人员清单</h2>
           <a-divider></a-divider>
         </a-col>
+        <a-col :span="24">
+          <a-button style="margin-bottom: 16px;" type="primary" ghost>新增被保人</a-button>
+          <a-table :pagination="false" :dataSource="insuredData" :columns="insuredColumns"></a-table>
+        </a-col>
       </a-row>
-      <a-row>
+      <a-row style="margin-top: 56px;">
         <a-col :push="4" :span="6">
           <a-button html-type="submit" type="primary"><a-icon type="save"></a-icon>保存</a-button>
           <a-button style="margin-left: 16px;" type="primary" ghost><a-icon type="cancel"></a-icon>取消</a-button>
@@ -720,9 +724,75 @@ const planData = [{
   planValue: '1万'
 }];
 
+const insuredColumns = [{
+  title: '姓名',
+  dataIndex: 'name',
+  key: 'name'
+}, {
+  title: '证件类型',
+  dataIndex: 'idType',
+  key: 'idType'
+}, {
+  title: '证件号码',
+  dataIndex: 'idno',
+  key: 'idno'
+}, {
+  title: '出生日期',
+  dataIndex: 'birthDate',
+  key: 'birthDate'
+}, {
+  title: '性别',
+  dataIndex: 'sex',
+  key: 'sex'
+}, {
+  title: '有无社保',
+  dataIndex: 'socialsecurity',
+  key: 'socialsecurity'
+}, {
+  title: '职业类别',
+  dataIndex: 'occType',
+  key: 'occType'
+}, {
+  title: '承保职业',
+  dataIndex: 'underwirde_occupational',
+  key: 'underwirde_occupational'
+}, {
+  title: '是否主被保人',
+  dataIndex: 'isMain',
+  key: 'isMain'
+}, {
+  title: '与主被保人关联',
+  dataIndex: 'relationship',
+  key: 'relationship'
+}, {
+  title: '主被保人姓名',
+  dataIndex: 'mainName',
+  key: 'mainName'
+}, {
+  title: '主被保人证件号码',
+  dataIndex: 'mainIdNo',
+  key: 'mainIdNo'
+}];
+const insuredData = [{
+		"name": "被保人姓名",
+		"idType": "证件类型",
+		"idNo": "证件号码",
+		"birthDate": "出生日期",
+		"sex": "性别",
+		"socialsecurity": "有无社保",
+		"occType": "职业类别",
+		"underwirde_occupational": "承保职业",
+		"isMain": "是否主被保人",
+		"relationship": "与主被保人关联",
+		"mainName": "主被保人姓名",
+		"mainIdNo": "主被保人证件号码"
+}];
+
 export default {
   data () {
     return {
+      insuredData,
+      insuredColumns,
       planAbout: {
         0: [{
           planName: '意外医疗',
