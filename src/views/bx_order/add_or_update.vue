@@ -204,9 +204,9 @@
           <a-divider></a-divider>
         </a-col>
         <a-col :span="12">
-          <a-form-item v-bind="formItemLayout" label="签名">
+          <a-form-item v-bind="formItemLayout" label="姓名">
             <a-input v-decorator="[
-              'legal_sign',
+              'name_legal',
               {
                 rules: [{
                   required: true,
@@ -221,7 +221,7 @@
         <a-col :span="12">
           <a-form-item v-bind="formItemLayout" label="证件类型">
             <a-select v-decorator="[
-              'legal_id_type',
+              'idType_legal',
               {
                 rules: [{
                   required: true,
@@ -235,8 +235,8 @@
         </a-col>
         <a-col :span="12">
           <a-form-item v-bind="formItemLayout" label="证件号码">
-            <a-select v-decorator="[
-              'legal_id',
+            <a-input v-decorator="[
+              'idNo_legal',
               {
                 rules: [{
                   required: true,
@@ -245,7 +245,7 @@
               }
             ]" placeholder="请选择证件号码">
               
-            </a-select>
+            </a-input>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -360,7 +360,7 @@
         </a-col>
         <a-col :span="12">
           <a-form-item v-bind="formItemLayout" label="证件号码">
-            <a-select v-decorator="[
+            <a-input v-decorator="[
               'idNo_linkman',
               {
                 rules: [{
@@ -370,7 +370,7 @@
               }
             ]" placeholder="请选择证件号码">
               
-            </a-select>
+            </a-input>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -440,7 +440,7 @@
         </a-col>
         <a-col :span="12">
           <a-form-item v-bind="formItemLayout" label="开户行所在省">
-            <a-input v-decorator="[
+            <a-select v-decorator="[
               'province_bankInfo',
               {
                 rules: [{
@@ -450,12 +450,12 @@
               }
             ]" placeholder="请选择开户行所在省">
 
-            </a-input>
+            </a-select>
           </a-form-item>
         </a-col>
         <a-col :span="12">
           <a-form-item v-bind="formItemLayout" label="开户行所在市">
-            <a-input v-decorator="[
+            <a-select v-decorator="[
               'city_bankInfo',
               {
                 rules: [{
@@ -465,7 +465,7 @@
               }
             ]" placeholder="请选择开户行所在市">
 
-            </a-input>
+            </a-select>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -485,7 +485,7 @@
         </a-col>
         <a-col :span="12">
           <a-form-item v-bind="formItemLayout" label="开户名">
-            <a-select v-decorator="[
+            <a-input v-decorator="[
               'accountName_bankInfo',
               {
                 rules: [{
@@ -495,12 +495,12 @@
               }
             ]" placeholder="请输入开户名">
               
-            </a-select>
+            </a-input>
           </a-form-item>
         </a-col>
         <a-col :span="12">
           <a-form-item v-bind="formItemLayout" label="银行账号">
-            <a-date-picker v-decorator="[
+            <a-input v-decorator="[
               'accountNo_bankInfo',
               {
                 rules: [{
@@ -510,7 +510,7 @@
               }
             ]" placeholder="请输入银行账号">
               
-            </a-date-picker>
+            </a-input>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -550,7 +550,7 @@
         </a-col>
         <a-col :span="12">
           <a-form-item v-bind="formItemLayout" label="证件类型">
-            <a-input v-decorator="[
+            <a-select v-decorator="[
               'idType_receiptor',
               {
                 rules: [{
@@ -560,12 +560,12 @@
               }
             ]" placeholder="请选择证件类型">
 
-            </a-input>
+            </a-select>
           </a-form-item>
         </a-col>
         <a-col :span="12">
           <a-form-item v-bind="formItemLayout" label="证件有效起期">
-            <a-input v-decorator="[
+            <a-date-picker v-decorator="[
               'idStartDate_receiptor',
               {
                 rules: [{
@@ -575,12 +575,12 @@
               }
             ]" placeholder="请选择证件有效起期">
 
-            </a-input>
+            </a-date-picker>
           </a-form-item>
         </a-col>
         <a-col :span="12">
           <a-form-item v-bind="formItemLayout" label="证件有效止期">
-            <a-select v-decorator="[
+            <a-date-picker v-decorator="[
               'idEndDate_receiptor',
               {
                 rules: [{
@@ -590,12 +590,12 @@
               }
             ]" placeholder="请选择证件有效止期">
               
-            </a-select>
+            </a-date-picker>
           </a-form-item>
         </a-col>
         <a-col :span="12">
           <a-form-item v-bind="formItemLayout" label="联系地址">
-            <a-select v-decorator="[
+            <a-input v-decorator="[
               'address_receiptor',
               {
                 rules: [{
@@ -605,7 +605,7 @@
               }
             ]" placeholder="请输入联系地址">
               
-            </a-select>
+            </a-input>
           </a-form-item>
         </a-col>
       </a-row>
@@ -613,6 +613,18 @@
         <a-col :span="24">
           <h2>请选择保障计划</h2>
           <a-divider></a-divider>
+        </a-col>
+        <a-col :span="12">
+          <a-form-item v-bind="formItemLayout" label="被保险人类型">
+            <a-radio-group v-decorator="['bxr_type']">
+              <a-radio value="0">
+                员工
+              </a-radio>
+              <a-radio value="1">
+                子女及家属
+              </a-radio>
+            </a-radio-group>
+          </a-form-item>
         </a-col>
         <a-col :span="12">
           <a-form-item v-bind="formItemLayout" label="意外伤害">
@@ -635,6 +647,9 @@
             <template slot="type" slot-scope="text">
               {{text == 0 ? '员工' : '子女及家属'}}
             </template>
+            <template slot="operation" slot-scope="record">
+              <a-button @click="deletePlan(record)" type="primary" ghost><a-icon type="delete"></a-icon>删除</a-button>
+            </template>
           </a-table>
         </a-col>
       </a-row>
@@ -643,9 +658,13 @@
           <h2>被保人员清单</h2>
           <a-divider></a-divider>
         </a-col>
-        <a-col :span="24">
-          <a-button style="margin-bottom: 16px;" type="primary" ghost>新增被保人</a-button>
-          <a-table :pagination="false" :dataSource="insuredData" :columns="insuredColumns"></a-table>
+        <a-col offset="4" :span="20">
+          <a-button @click="showBModal" style="margin-bottom: 16px;" type="primary" ghost>新增被保人</a-button>
+          <a-table :pagination="false" :dataSource="insuredData" :columns="insuredColumns">
+            <template slot="operation" slot-scope="record">
+              <a-button @click="deleteBbr(record)" type="primary" ghost><a-icon type="delete"></a-icon>删除</a-button>
+            </template>
+          </a-table>
         </a-col>
       </a-row>
       <a-row style="margin-top: 56px;">
@@ -657,38 +676,175 @@
     </a-form>
     <a-modal :footer="null" @cancel="handleCancel" :visible="planVisible" title="新建责任类型">
       <a-form :form="planForm" @submit="handlePlanSubmit">
-        <a-form-item label="被保险人类型">
-          <a-select @change="changeInsuredType" v-decorator="[
-            'insured_type'
-          ]" placeholder="请选择被保险人类型">
-            <a-select-option key="0" value="0">员工</a-select-option>
-            <a-select-option key="1" value="1">子女及家属</a-select-option>
-          </a-select>
-        </a-form-item>
         <a-form-item label="责任名称">
-          <a-select @change="changeDutyOption" v-decorator="[
+          <a-input v-decorator="[
             'planName',
             {
               rules: [{
                 required: true,
-                message: '请选择责任名称'
+                message: '请输入责任名称'
               }]
             }
-          ]" placeholder="请选择责任名称">
-            <a-select-option v-for="(item,index) in dutyOptions" :key="index" :value="index">{{item.planName}}</a-select-option>
-          </a-select>
+          ]" placeholder="请输入责任名称">
+            <!-- <a-select-option v-for="(item,index) in dutyOptions" :key="index" :value="index">{{item.planName}}</a-select-option> -->
+          </a-input>
         </a-form-item>
         <a-form-item label="保额(元)">
-          <a-select v-decorator="[
-            'planValue'
-          ]" placeholder="请选择">
-            <a-select-option v-for="(item,index) in planAmountOptions" :key="index" :value="index">{{item.value}}</a-select-option>
-          </a-select>
+          <a-input v-decorator="[
+            'planValue',
+            {
+              rules: [{
+                required: true,
+                message: '请输入保额(元)'
+              }]
+            }
+          ]" placeholder="请输入保额(元)">
+            <!-- <a-select-option v-for="(item,index) in planAmountOptions" :key="index" :value="index">{{item.value}}</a-select-option> -->
+          </a-input>
+        </a-form-item>
+        <a-form-item label="免赔额">
+          <a-input v-decorator="[
+            'planAmountValue',
+            {
+              rules: [{
+                required: true,
+                message: '请输入免赔额'
+              }]
+            }
+          ]" placeholder="请输入免赔额">
+          </a-input>
+        </a-form-item>
+        <a-form-item label="赔付比例">
+          <a-input v-decorator="[
+            'planValueRate',
+            {
+              rules: [{
+                required: true,
+                message: '请输入赔付比例'
+              }]
+            }
+          ]" placeholder="请输入赔付比例">
+          </a-input>
         </a-form-item>
         <a-row>
           <a-col :span="24">
             <a-button html-type="submit" type="primary">保存</a-button>
             <a-button @click="handleCancel" style="margin-left: 16px;" type="primary" ghost>取消</a-button>
+          </a-col>
+        </a-row>
+      </a-form>
+    </a-modal>
+    <a-modal :footer="null" @cancel="handleBModalCancel" :visible="bModalVisible" title="新建被保人">
+      <a-form :form="bForm" @submit="handleBSubmit">
+        <a-row :gutter="8">
+          <a-col :span="12">
+            <a-form-item label="姓名">
+              <a-input v-decorator="[
+                'name',
+                {
+                  rules: [{
+                    required: true,
+                    message: '请输入'
+                  }]
+                }
+              ]" placeholder="请输入">
+                <!-- <a-select-option v-for="(item,index) in dutyOptions" :key="index" :value="index">{{item.planName}}</a-select-option> -->
+              </a-input>
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="证件类型">
+              <a-select v-decorator="[
+                'idType',
+                {
+                  rules: [{
+                    required: true,
+                    message: '请选择'
+                  }]
+                }
+              ]" placeholder="请选择">
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="证件号码">
+              <a-input v-decorator="[
+                'idNo',
+                {
+                  rules: [{
+                    required: true,
+                    message: '请输入'
+                  }]
+                }
+              ]" placeholder="请输入">
+              </a-input>
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="出生日期">
+              <a-date-picker v-decorator="[
+                'birthDate',
+                selectRequired
+              ]" placeholder="请选择">
+              </a-date-picker>
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="性别">
+              <a-radio-group v-decorator="[
+                'sex',
+                selectRequired
+              ]" placeholder="请选择">
+                <a-radio value="1">男</a-radio>
+                <a-radio value="0">女</a-radio>
+              </a-radio-group>
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="有无社保">
+              <a-radio-group v-decorator="[
+                'socialsecurity',
+                selectRequired
+              ]" placeholder="请选择">
+                <a-radio value="1">有</a-radio>
+                <a-radio value="0">无</a-radio>
+              </a-radio-group>
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="职业类别">
+              <a-select v-decorator="[
+                'occType',
+                selectRequired
+              ]" placeholder="请输入">
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="承保职业">
+              <a-input v-decorator="[
+                'underwirde_occupational',
+                inputRequired
+              ]" placeholder="请输入">
+              </a-input>
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item label="是否主被保人">
+              <a-radio-group v-decorator="[
+                'isMain',
+                selectRequired
+              ]" placeholder="请选择">
+                <a-radio value="1">是</a-radio>
+                <a-radio value="0">否</a-radio>
+              </a-radio-group>
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-row>
+          <a-col :span="24">
+            <a-button html-type="submit" type="primary">保存</a-button>
+            <a-button @click="handleBModalCancel" style="margin-left: 16px;" type="primary" ghost>取消</a-button>
           </a-col>
         </a-row>
       </a-form>
@@ -705,11 +861,6 @@ h2 {
 </style>
 <script>
 const planColumns = [{
-  title: '被保险人类型',
-  dataIndex: 'insured_type',
-  key: 'insured_type',
-  scopedSlots: { customRender: 'type'}
-}, {
   title: '责任名称',
   dataIndex: 'planName',
   key: 'planName'
@@ -717,6 +868,18 @@ const planColumns = [{
   title: '保额(元)',
   dataIndex: 'planValue',
   key: 'planValue'
+}, {
+  title: '免赔额',
+  dataIndex: 'planValue1',
+  key: 'planValue1'
+}, {
+  title: '赔付比率',
+  dataIndex: 'planValue2',
+  key: 'planValue2'
+}, {
+  title: '操作',
+  key: 'do',
+  scopedSlots: { customRender: 'operation' }
 }];
 const planData = [{
   insured_type: 0,
@@ -761,17 +924,9 @@ const insuredColumns = [{
   dataIndex: 'isMain',
   key: 'isMain'
 }, {
-  title: '与主被保人关联',
-  dataIndex: 'relationship',
-  key: 'relationship'
-}, {
-  title: '主被保人姓名',
-  dataIndex: 'mainName',
-  key: 'mainName'
-}, {
-  title: '主被保人证件号码',
-  dataIndex: 'mainIdNo',
-  key: 'mainIdNo'
+  title: '操作',
+  key: 'do',
+  scopedSlots: { customRender: 'operation' }
 }];
 const insuredData = [{
 		"name": "被保人姓名",
@@ -782,15 +937,25 @@ const insuredData = [{
 		"socialsecurity": "有无社保",
 		"occType": "职业类别",
 		"underwirde_occupational": "承保职业",
-		"isMain": "是否主被保人",
-		"relationship": "与主被保人关联",
-		"mainName": "主被保人姓名",
-		"mainIdNo": "主被保人证件号码"
+		"isMain": "是否主被保人"
 }];
 
 export default {
   data () {
     return {
+      selectRequired: {
+        rules: [{
+          required: true,
+          message: '请选择'
+        }]
+      },
+      inputRequired: {
+        rules: [{
+          required: true,
+          message: '请输入'
+        }]
+      },
+      bModalVisible: false,
       insuredData,
       insuredColumns,
       planAbout: {
@@ -814,6 +979,7 @@ export default {
       planData,
       planForm: this.$form.createForm(this),
       form: this.$form.createForm(this),
+      bForm: this.$form.createForm(this),
       formItemLayout: {
         labelCol: { span: 8 },
         wrapperCol: { span: 16 }
@@ -825,10 +991,30 @@ export default {
       formItemLayout2: {
         labelCol: { span: 0 },
         wrapperCol: { span: 24 }
-      }
+      },
     }
   },
   methods: {
+    deleteBbr (record) {
+      console.log('deleteBbr -> ', record)
+    },
+    deletePlan (record) {
+      console.log('deletePlan -> ', record)
+    },
+    handleBSubmit (e) {
+      e.preventDefault();
+      this.bForm.validateFields((err, values) => {
+        if (!err) {
+          console.log('handleBSubmit -> ', values)
+        }
+      })
+    },
+    showBModal () {
+      this.bModalVisible = true
+    },
+    handleBModalCancel () {
+      this.bModalVisible = false
+    },
     changeDutyOption (value, option) {
       this.planAmountOptions = this.dutyOptions[value].options
     },
@@ -850,11 +1036,11 @@ export default {
       this.planForm.validateFields((err, values) => {
         if (!err) {
           console.log('handlePlanSubmit -> ', values)
-          const item = {
-            insured_type: values.insured_type,
-            planName: this.dutyOptions[values.planName].planName,
-            planValue: this.planAmountOptions[values.planValue].value
-          }
+          // const item = {
+          //   insured_type: values.insured_type,
+          //   planName: this.dutyOptions[values.planName].planName,
+          //   planValue: this.planAmountOptions[values.planValue].value
+          // }
           console.log('added item values -> ', item)
           this.planData.push(item)
         }

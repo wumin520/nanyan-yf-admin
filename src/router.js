@@ -19,6 +19,7 @@ import AdminMenu from "./views/admin_menu/index";
 import BxOrderList from "./views/bx_order/list";
 import BxOrderAdd from "./views/bx_order/add_or_update";
 import BxOrder from "./views/bx_order/index";
+import BxCompany from "./views/bx_order/companyList";
 
 Vue.use(Router);
 
@@ -146,6 +147,14 @@ export default new Router({
               path: "add",
               name: "bx_order_add",
               component: BxOrderAdd,
+              meta: {
+                breadcrumbName: "新增"
+              }
+            },
+            {
+              path: "companyList",
+              name: "bx_company_list",
+              component: BxCompany,
               meta: {
                 breadcrumbName: "新增"
               }

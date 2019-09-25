@@ -98,11 +98,11 @@ export default {
             {
               key: "2.1",
               title: "新增保单",
-              url: "/bxOrder/add"
+              url: "/bxOrder/companyList"
             },
             {
               key: "2.2",
-              title: "修改保单",
+              title: "我的保单",
               url: "/bxOrder/list"
             }
           ]
