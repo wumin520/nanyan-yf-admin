@@ -114,6 +114,16 @@ export default {
         }
       })
     }
+  },
+  mounted () {
+    console.log("acceptRecord ->",this.$route.params)
+    let record = this.$route.params
+    if (JSON.stringify(record) === "{}"){
+      consolr.log('from add')
+    } else {
+      console.log('from edit')
+      
+    }
   }
 }
 </script>

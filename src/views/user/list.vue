@@ -23,9 +23,9 @@
       </a-row>
     </a-form>
     <a-table style="margin-top: 50px;" :dataSource="data" :columns="columns">
-      <template slot="operation">
+      <template slot="operation" slot-scope="record">
         <a-button type="primary"><a-icon type="delete"></a-icon>删除</a-button>
-        <a-button class="marg_l8_" type="primary" ghost><a-icon type="edit"></a-icon>编辑</a-button>
+        <a-button class="marg_l8_" type="primary" ghost @click="edit(record)"><a-icon type="edit"></a-icon>编辑</a-button>
       </template>
     </a-table>
   </div>
@@ -46,6 +46,7 @@
 }
 </style>
 <script>
+import axios from 'axios'
 const columns = [{
   title: '用户名称',
   dataIndex: 'username',
@@ -93,7 +94,8 @@ for (var i = 0; i < 3; i++) {
     instruct: '百里',
     createDate: '2019-09-23',
     lastUpdate: '2019-10-01',
-    state: 1
+    state: 1,
+    key: i
   })
 }
 export default {
@@ -133,12 +135,26 @@ export default {
   },
   methods: {
     handleSubmit (e) {
+      // console.log("submit",e)
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log('form values -> ', values)
+          axios({
+            methods: 'post',
+            url: '',
+            data: values
+          }).then((res) => {
+            console.log(res)
+          }).catch((err) => {
+            console.log(err)
+          })
         }
       })
+    },
+    edit (record) {
+      console.log("record ->",record)
+      this.$router.push({name:'user_add',params:{record}})
     }
   }
 }
