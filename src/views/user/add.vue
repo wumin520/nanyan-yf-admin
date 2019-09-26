@@ -115,14 +115,18 @@ export default {
       })
     }
   },
-  mounted () {
-    console.log("acceptRecord ->",this.$route.params)
-    let record = this.$route.params
+  created () {
+    // console.log("acceptRecord ->",this.$route.params.record)
+    let record = this.$route.params.record
     if (JSON.stringify(record) === "{}"){
-      consolr.log('from add')
+      console.log('from add')
     } else {
       console.log('from edit')
-      
+      this.props.form.setFieldsValue((err, values) => {
+        console.log("form content ->",values)
+        values.account = record.account
+
+      })
     }
   }
 }
