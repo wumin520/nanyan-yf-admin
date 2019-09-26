@@ -8,7 +8,8 @@
       <!-- <router-link slot="extra" to="/bxOrder/add"></router-link> -->
       <!-- <a href="#" slot="extra">新建保单</a> -->
       <a-card :title="item.title">
-        公司简介
+        <div>公司简介</div>
+        <div>产品简介 <a target="_blank" href="#">点击跳转</a></div>
         <template class="ant-card-actions" slot="actions">
             <router-link to="/bxOrder/add">
                 <a-icon type="plus" />新建保单

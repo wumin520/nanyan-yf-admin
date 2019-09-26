@@ -1,7 +1,9 @@
 <template>
   <a-layout id="components-layout-demo-custom-trigger">
     <a-layout-sider :trigger="null" collapsible v-model="collapsed">
-      <div class="logo" />
+      <div class="logo">
+        <img src="../assets/logo@2x.png"/>
+      </div>
       <!-- <a-menu theme="light" mode="inline" :defaultSelectedKeys="['1']">
         <a-menu-item key="1">
           <a-icon type="user" />
@@ -17,7 +19,7 @@
         </a-menu-item>
       </a-menu> -->
       <a-menu
-        :defaultSelectedKeys="['1']"
+        :defaultSelectedKeys="['2.1']"
         :defaultOpenKeys="['2']"
         mode="inline"
         theme="light"
@@ -151,8 +153,14 @@ export default {
 }
 
 #components-layout-demo-custom-trigger .logo {
-  height: 32px;
-  background: #eee;
+  height: 35px;
+  // background: #eee;
   margin: 16px;
+  overflow: hidden;
+  img {
+    width: 128px;
+    height: auto;
+    display: block;
+  }
 }
 </style>

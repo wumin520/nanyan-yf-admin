@@ -7,7 +7,7 @@
             <a-select style="width: 150px;" v-if="item.input_type==='select'" v-decorator="[
               item.dataIndex
             ]">
-              <a-select-option :key="1" :value="1">可以</a-select-option>
+              <a-select-option v-for="option in item.options" :key="option.value" :value="option.value">{{option.name}}</a-select-option>
             </a-select>
             <a-input v-else v-decorator="[
               item.dataIndex
@@ -23,9 +23,8 @@
       </a-row>
     </a-form>
     <a-table style="margin-top: 50px;" :dataSource="data" :columns="columns">
-      <template slot="operation" slot-scope="record">
-        <a-button type="primary"><a-icon type="delete"></a-icon>删除</a-button>
-        <a-button class="marg_l8_" type="primary" ghost @click="edit(record)"><a-icon type="edit"></a-icon>编辑</a-button>
+      <template slot="operation">
+        <a-button type="primary" ghost><a-icon type="edit"></a-icon>编辑</a-button>
       </template>
     </a-table>
   </div>
@@ -63,10 +62,6 @@ const columns = [{
   title: '角色',
   dataIndex: 'role',
   key: 'role'
-}, {
-  title: '机构名称',
-  dataIndex: 'instruct',
-  key: 'instruct'
 }, {
   title: '创建日期',
   dataIndex: 'createDate',
@@ -116,20 +111,29 @@ export default {
         label: '用户来源',
         placeholder: '请选择用户来源',
         dataIndex: 'user_origin',
-        input_type: 'select'
-      }, {
-        label: '机构名称',
-        placeholder: '请输入机构名称',
-        dataIndex: 'instruct'
-      }, {
-        label: '机构代码',
-        placeholder: '请输入机构代码',
-        dataIndex: 'instruct_code'
+        input_type: 'select',
+        options: [{
+          name: '南燕',
+          value: '0'
+        }, {
+          name: '保司',
+          value: '1'
+        }, {
+          name: '客户',
+          value: '2'
+        }]
       }, {
         label: '状态',
         placeholder: '请选择状态',
         dataIndex: 'state',
-        input_type: 'select'
+        input_type: 'select',
+        options: [{
+          name: '有效',
+          value: '1'
+        }, {
+          name: '无效',
+          value: '0'
+        }]
       }]
     }
   },

@@ -139,6 +139,7 @@ export default new Router({
           path: "bxOrder",
           name: "bx_order",
           component: BxOrder,
+          redirect: { name: "bx_company_list" },
           meta: {
             breadcrumbName: "保单管理"
           },
