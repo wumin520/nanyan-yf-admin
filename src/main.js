@@ -5,6 +5,7 @@ import store from "./store";
 import "./registerServiceWorker";
 
 import Antd from "ant-design-vue";
+import { notification } from 'ant-design-vue';
 import "ant-design-vue/dist/antd.css";
 
 Vue.config.productionTip = false;
@@ -16,6 +17,8 @@ const auth = {
     return true;
   }
 };
+
+window.notification = notification;
 
 router.beforeEach((to, from, next) => {
   console.log("beforeEach -> ", to, from);
@@ -35,6 +38,8 @@ router.beforeEach((to, from, next) => {
     next(); // make sure to always call next()!
   }
 });
+
+window.router = router;
 
 new Vue({
   router,

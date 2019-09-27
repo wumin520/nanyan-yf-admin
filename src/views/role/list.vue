@@ -1,23 +1,35 @@
 <template>
   <div class="page_">
-    <a-form class="ant-advanced-search-form" :form="form" @submit="handleSubmit">
+    <a-form
+      class="ant-advanced-search-form"
+      :form="form"
+      @submit="handleSubmit"
+    >
       <a-row :gutter="8">
-        <a-col v-for="(item,index) in formInputs" :key="index" :span="8">
+        <a-col v-for="(item, index) in formInputs" :key="index" :span="8">
           <a-form-item :label="item.label">
-            <a-select style="width: 150px;" v-if="item.input_type==='select'" v-decorator="[
-              item.dataIndex
-            ]">
+            <a-select
+              style="width: 150px;"
+              v-if="item.input_type === 'select'"
+              v-decorator="[item.dataIndex]"
+            >
               <a-select-option :key="1" :value="1">可以</a-select-option>
             </a-select>
-            <a-input v-else v-decorator="[
-              item.dataIndex
-            ]" :placeholder="item.placeholder"></a-input>
+            <a-input
+              v-else
+              v-decorator="[item.dataIndex]"
+              :placeholder="item.placeholder"
+            ></a-input>
           </a-form-item>
         </a-col>
         <a-col :span="6">
-          <a-button html-type="submit" type="primary"><a-icon type="search"></a-icon>查询</a-button>
+          <a-button html-type="submit" type="primary"
+            ><a-icon type="search"></a-icon>查询</a-button
+          >
           <router-link to="/role/add">
-            <a-button class="marg_l8_" type="primary" ghost><a-icon type="plus"></a-icon>新建</a-button>
+            <a-button class="marg_l8_" type="primary" ghost
+              ><a-icon type="plus"></a-icon>新建</a-button
+            >
           </router-link>
         </a-col>
       </a-row>
@@ -25,7 +37,9 @@
     <a-table style="margin-top: 50px;" :dataSource="data" :columns="columns">
       <template slot="operation">
         <a-button type="primary"><a-icon type="delete"></a-icon>删除</a-button>
-        <a-button class="marg_l8_" type="primary" ghost><a-icon type="edit"></a-icon>编辑</a-button>
+        <a-button class="marg_l8_" type="primary" ghost
+          ><a-icon type="edit"></a-icon>编辑</a-button
+        >
       </template>
     </a-table>
   </div>
@@ -36,7 +50,7 @@
     margin-left: 16px;
   }
   .ant-advanced-search-form {
-    .ant-form-item  {
+    .ant-form-item {
       display: flex;
     }
     .ant-form-item-control-wrapper {
@@ -46,57 +60,65 @@
 }
 </style>
 <script>
-const columns = [{
-  title: '角色名称',
-  dataIndex: 'name',
-  key: 'name'
-}, {
-  title: '角色代码',
-  dataIndex: 'code',
-  key: 'code'
-}, {
-  title: '最近操作人',
-  dataIndex: 'update',
-  key: 'update'
-}, {
-  title: '操作',
-  key: 'do',
-  scopedSlots: { customRender: 'operation'}
-}];
-const data = []
+const columns = [
+  {
+    title: "角色名称",
+    dataIndex: "name",
+    key: "name"
+  },
+  {
+    title: "角色代码",
+    dataIndex: "code",
+    key: "code"
+  },
+  {
+    title: "最近操作人",
+    dataIndex: "update",
+    key: "update"
+  },
+  {
+    title: "操作",
+    key: "do",
+    scopedSlots: { customRender: "operation" }
+  }
+];
+const data = [];
 for (var i = 0; i < 3; i++) {
   data.push({
-    name: '小站',
-    code: '101',
-    update: 'ssh',
-  })
+    name: "小站",
+    code: "101",
+    update: "ssh"
+  });
 }
 export default {
-  data () {
+  data() {
     return {
       data,
       columns,
       form: this.$form.createForm(this),
-      formInputs: [{
-        label: '角色名称',
-        placeholder: '请输入角色名称',
-        dataIndex: 'name'
-      }, {
-        label: '角色编码',
-        placeholder: '请输入角色编码',
-        dataIndex: 'code'
-      },]
-    }
+      formInputs: [
+        {
+          label: "角色名称",
+          placeholder: "请输入角色名称",
+          dataIndex: "name"
+        },
+        {
+          label: "角色编码",
+          placeholder: "请输入角色编码",
+          dataIndex: "code"
+        }
+      ]
+    };
   },
   methods: {
-    handleSubmit (e) {
+    handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log('form values -> ', values)
+          console.log("form values -> ", values);
         }
-      })
+      });
     }
   }
-}
+};
 </script>

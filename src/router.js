@@ -20,6 +20,7 @@ import BxOrderList from "./views/bx_order/list";
 import BxOrderAdd from "./views/bx_order/add_or_update";
 import BxOrder from "./views/bx_order/index";
 import BxCompany from "./views/bx_order/companyList";
+import BxOrderDetail from "./views/bx_order/detail";
 
 Vue.use(Router);
 
@@ -153,6 +154,22 @@ export default new Router({
               }
             },
             {
+              path: "edit/:id",
+              name: "bx_order_edit",
+              component: BxOrderAdd,
+              meta: {
+                breadcrumbName: "编辑"
+              }
+            },
+            {
+              path: "detail/:id",
+              name: "bx_order_detail",
+              component: BxOrderAdd,
+              meta: {
+                breadcrumbName: "保单详情"
+              }
+            },
+            {
               path: "companyList",
               name: "bx_company_list",
               component: BxCompany,
@@ -166,6 +183,14 @@ export default new Router({
               component: BxOrderList,
               meta: {
                 breadcrumbName: "列表"
+              }
+            },
+            {
+              path: "detail",
+              name: "bx_order_detail",
+              component: BxOrderDetail,
+              meta: {
+                breadcrumbName: "保单详情"
               }
             }
           ]

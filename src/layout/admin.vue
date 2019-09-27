@@ -2,7 +2,7 @@
   <a-layout id="components-layout-demo-custom-trigger">
     <a-layout-sider :trigger="null" collapsible v-model="collapsed">
       <div class="logo">
-        <img src="../assets/logo@2x.png"/>
+        <img src="../assets/logo@2x.png" />
       </div>
       <!-- <a-menu theme="light" mode="inline" :defaultSelectedKeys="['1']">
         <a-menu-item key="1">

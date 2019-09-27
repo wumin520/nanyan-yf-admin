@@ -1,14 +1,14 @@
 module.exports = {
   devServer: {
     proxy: {
-      '^/api': {
-        target: 'http://locahost:8001/',
+      "^/api": {
+        target: "http://locahost:8001/",
         ws: true,
         changeOrigin: true
       },
-      '^/foo': {
-        target: '<other_url>'
+      "^/foo": {
+        target: "<other_url>"
       }
     }
   }
-}
+};
