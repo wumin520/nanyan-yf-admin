@@ -50,9 +50,9 @@
               <a-button type="primary"
                 ><a-icon type="save"></a-icon>保存</a-button
               >
-              <router-link style="margin-left: 16px;" to="/role">
+              <router-link style="margin-left: 16px;" to="/role/list">
                 <a-button type="primary" ghost
-                  ><a-icon type="save"></a-icon>保存</a-button
+                  ><a-icon type="cancel" />取消</a-button
                 >
               </router-link>
             </a-col>

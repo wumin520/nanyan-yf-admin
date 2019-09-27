@@ -41,8 +41,8 @@
       </a-row>
     </a-form>
     <a-table style="margin-top: 50px;" :dataSource="data" :columns="columns">
-      <template slot="operation">
-        <router-link to="/bxOrder/detail/1">查看详情</router-link>
+      <template slot="operation" slot-scope="text, record">
+        <router-link :to="'/bxOrder/detail/' + record.id">查看详情</router-link>
       </template>
     </a-table>
   </div>

@@ -87,6 +87,7 @@ export default new Router({
           path: "role",
           name: "role",
           component: Role,
+          redirect: { name: 'role_list' },
           meta: {
             breadcrumbName: "角色管理"
           },
@@ -97,6 +98,14 @@ export default new Router({
               component: RoleAdd,
               meta: {
                 breadcrumbName: "新增"
+              }
+            },
+            {
+              path: "edit/:id",
+              name: "role_edit",
+              component: RoleAdd,
+              meta: {
+                breadcrumbName: "编辑"
               }
             },
             {

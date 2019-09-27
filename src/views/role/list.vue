@@ -35,9 +35,9 @@
       </a-row>
     </a-form>
     <a-table style="margin-top: 50px;" :dataSource="data" :columns="columns">
-      <template slot="operation">
-        <a-button type="primary"><a-icon type="delete"></a-icon>删除</a-button>
-        <a-button class="marg_l8_" type="primary" ghost
+      <template slot="operation" slot-scope="text, record, index">
+        <a-button @click="deleteRecord(record, index)" type="primary"><a-icon type="delete"></a-icon>删除</a-button>
+        <a-button @click="editRecord(record)" class="marg_l8_" type="primary" ghost
           ><a-icon type="edit"></a-icon>编辑</a-button
         >
       </template>
@@ -63,18 +63,18 @@
 const columns = [
   {
     title: "角色名称",
-    dataIndex: "name",
-    key: "name"
+    dataIndex: "roleName",
+    key: "roleName"
   },
   {
     title: "角色代码",
-    dataIndex: "code",
-    key: "code"
+    dataIndex: "roleCode",
+    key: "roleCode"
   },
   {
     title: "最近操作人",
-    dataIndex: "update",
-    key: "update"
+    dataIndex: "modifier",
+    key: "modifier"
   },
   {
     title: "操作",
@@ -85,9 +85,9 @@ const columns = [
 const data = [];
 for (var i = 0; i < 3; i++) {
   data.push({
-    name: "小站",
-    code: "101",
-    update: "ssh"
+    roleName: "小站",
+    roleCode: "101",
+    modifier: "ssh"
   });
 }
 export default {
@@ -111,6 +111,13 @@ export default {
     };
   },
   methods: {
+    editRecord (record) {
+      console.log(record, '1')
+      this.$router.push('/role/edit/' + record.id)
+    },
+    deleteRecord (record, index) {
+      data.splice(index, 1)
+    },
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {

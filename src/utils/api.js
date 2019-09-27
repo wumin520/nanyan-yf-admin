@@ -103,11 +103,11 @@ let api = {};
 api.cdkLogin = function(data) {
   return instance.post("/sh/login", data);
 };
-api.cdkRegister = function(data) {
-  return instance.post("/sh/register", data);
+api.getRole = function(data) {
+  return instance.post("/backstage/user/getRole", data);
 };
-api.cdkSendSms = function(data) {
-  return instance.post("/sh/sendSms", data);
+api.cdkSendSms = function() {
+  return instance.get("/common/getAllProvince");
 };
 api.cdkPostBaseData = function(data) {
   return instance.post("/sh/base/data", data);
