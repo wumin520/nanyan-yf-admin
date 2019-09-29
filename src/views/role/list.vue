@@ -34,7 +34,7 @@
         </a-col>
       </a-row>
     </a-form>
-    <a-table style="margin-top: 50px;" :dataSource="data" :columns="columns">
+    <a-table style="margin-top: 50px;" :dataSource="data" :columns="columns" :pagination="pagination">
       <template slot="operation" slot-scope="text, record, index">
         <a-button @click="deleteRecord(record, index)" type="primary"><a-icon type="delete"></a-icon>删除</a-button>
         <a-button @click="editRecord(record)" class="marg_l8_" type="primary" ghost
@@ -60,6 +60,8 @@
 }
 </style>
 <script>
+import api from '@/utils/api';
+
 const columns = [
   {
     title: "角色名称",
@@ -93,6 +95,16 @@ for (var i = 0; i < 3; i++) {
 export default {
   data() {
     return {
+      pagination: {
+        pageNo: 1,
+        pageSize: 20, // 默认每页显示数量
+        showSizeChanger: true, // 显示可改变每页数量
+        pageSizeOptions: ['1', '20', '50', '100'], // 每页数量选项
+        showTotal: total => `总共 ${total} 条`, // 显示总数
+        onShowSizeChange: (current, pageSize) => this.pageSize = pageSize, // 改变每页数量时更新显示
+        onChange:(page,pageSize)=>self.changePage(page,pageSize),//点击页码事件
+        total:0 //总条数
+       },
       data,
       columns,
       form: this.$form.createForm(this),
@@ -100,17 +112,23 @@ export default {
         {
           label: "角色名称",
           placeholder: "请输入角色名称",
-          dataIndex: "name"
+          dataIndex: "roleName"
         },
         {
           label: "角色编码",
           placeholder: "请输入角色编码",
-          dataIndex: "code"
+          dataIndex: "roleCode"
         }
       ]
     };
   },
   methods: {
+    changePage(page,pageSize) {
+       this.pagination.pageNo = page
+       this.pagination.pageSize = pageSize
+      //  console.log("page ->>",this.pagination.pageNo,this.pagination.pageSize)
+       this.getRoleList()
+    },
     editRecord (record) {
       console.log(record, '1')
       this.$router.push('/role/edit/' + record.id)
@@ -120,9 +138,35 @@ export default {
     },
     handleSubmit(e) {
       e.preventDefault();
+      this.getRoleList()
+    },
+    getRoleList() {
       this.form.validateFields((err, values) => {
+        let data ={
+          roleCode:	values.name, //	用户名称
+          roleName:	values.userName, //	用户账号
+          pageNum:	this.pagination.pageNo, //	当前页码
+          pageSize:	this.pagination.pageSize //	当前页面显示的数据条目
+        }
         if (!err) {
-          console.log("form values -> ", values);
+         
+          api.getRoleList(data).then((res) => {
+            if(res.data.returnCode !== "0000"){
+              this.$message.info(res.data.returnMsg);
+            } else{
+              this.data = []  //重置data
+              res.data.content.list.forEach(item => {
+                this.data.push({
+                  roleName: item.roleName,
+                  roleCode: item.roleCode,
+                  modifier: item.modifier,
+                  id: item.id
+                })
+              });
+            }
+          }).catch((err) => {
+            console.log(err)
+          })
         }
       });
     }
