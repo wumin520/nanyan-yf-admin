@@ -87,7 +87,7 @@
         </a-col>
         <a-col :span="12">
           <a-form-item v-bind="formItemLayout" label="单位证件类型">
-            <a-input
+            <a-select
               v-if="editable"
               v-decorator="[
                 'idType_applicant',
@@ -96,7 +96,9 @@
                   initialValue: allFormData.applicant.idType
                 }
               ]"
-            ></a-input>
+            >
+              <a-select-option v-for="(item, index) in idTypeCompanyOptions" :key="index" :value="item.value">{{item.name}}</a-select-option>
+            </a-select>
             <div v-else>{{allFormData.applicant.idType}}</div>
           </a-form-item>
         </a-col>
@@ -953,6 +955,9 @@
             :dataSource="insuredData"
             :columns="insuredColumns"
           >
+            <template slot="idType" slot-scope="text" >
+              {{text | filterIdType(idTypeOptions)}}
+            </template>
             <template v-if="editable" slot="operation" slot-scope="text, record, index">
               <a-button @click="editBbr(record, index)" type="primary"
                 >编辑</a-button
@@ -1143,7 +1148,7 @@
                 <a-select-option
                   v-for="(item, index) in idTypeOptions"
                   :key="index"
-                  :value="item.name"
+                  :value="item.value"
                   >{{ item.name }}</a-select-option
                 >
               </a-select>
@@ -1421,7 +1426,8 @@ const insuredColumns = [
   {
     title: "证件类型",
     dataIndex: "idType",
-    key: "idType"
+    key: "idType",
+    scopedSlots: { customRender: 'idType' }
   },
   {
     title: "证件号码",
@@ -1467,7 +1473,7 @@ const insuredColumns = [
 const insuredData = [
   {
     name: "张三",
-    idType: "身份证",
+    idType: "0",
     idNo: "234234234",
     birthDate: "2019-02-12",
     sex: "男",
@@ -1544,6 +1550,7 @@ export default {
       ],
       industryOptions: dictOptions.industryOptions,
       idTypeOptions: dictOptions.idTypeOptions,
+      idTypeCompanyOptions: dictOptions.idTypeCompanyOptions,
       previewVisible: false, // 图像上传
       previewImage: "",
       fileList: [
@@ -1625,6 +1632,19 @@ export default {
       }
     };
   },
+  filters: {
+    filterIdType: (val, idTypeOptions) => {
+      // let item = idTypeOptions.filter((val) =>{ 
+      //   console.log(val, '121212')
+      //   return val.value == val
+      // })
+      // console.log('filterIdType -> idTypeOptions -> ', item, val)
+      return idTypeOptions[val].name
+    },
+    filterIdTypeCompany: (val, idTypeOptions) => {
+      return idTypeCompanyOptions[val].name
+    },
+  },
   beforeCreate (e) {
     console.log(e, this)
   },
@@ -1634,14 +1654,31 @@ export default {
     if (name === 'bx_order_detail') {
       this.editable = false
     }
-    api.cdkLogin({
-      id: 1
-    })
+    this.fetchProvince()
   },
   methods: {
     moment,
+    fetchProvince () {
+      return api.getAllProvince().then(res => res.data).then(data => {
+        const {content} = data
+        this.provinceOptions = content
+      })
+    },
+    getCityByProvinceId (provinceCode) {
+      return api.getCityByProvinceId({
+        provinceCode
+      }).then(res => res.data)
+    },
+    getAreaByCityCode (cityCode) {
+      return api.getAreaByCityCode({
+        cityCode
+      }).then(res => res.data)
+    },
     handleBAProvinceChange (code) {
       console.log('银行市级选择')
+      this.getCityByProvinceId(code).then(data => {
+        this.cityBAOptions = data.content
+      })
     },
     changeYiWai(e) {
       console.log(e, "changeYiWai -> ");
@@ -1662,11 +1699,17 @@ export default {
     insurceTypeChange(e) {
       console.log("insurceTypeChange -> ", e);
     },
-    handleProvinceChange(item) {
-      console.log("handleProvinceChange -> ", item);
+    handleProvinceChange(code) {
+      console.log("handleProvinceChange -> ", code);
+      this.getCityByProvinceId(code).then(data => {
+        this.cityOptions = data.content
+      })
     },
-    handleCityChange(item) {
-      console.log("handleCityChange -> ", item);
+    handleCityChange(code) {
+      console.log("handleCityChange -> ", code);
+      this.getAreaByCityCode(code).then(data => {
+        this.areaOptions = data.content
+      })
     },
     handleImagePreviewCancel() {
       this.previewVisible = false;
@@ -1822,6 +1865,9 @@ export default {
         }
       }
       console.log("postData -> ", params);
+      api.addPolicy(params).then(res => res.data).then(data => {
+
+      })
     }
   }
 };

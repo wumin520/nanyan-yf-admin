@@ -11,7 +11,7 @@ instance.interceptors.request.use(
   function(config) {
     // Do something before request is sent
     console.log(config, "sfdsdf");
-    if (config.method.toLowerCase() === "post") {
+    if (config.method.toLowerCase() === "post" && config.data && config.data.formEncode) {
       config.data = qs.stringify(config.data);
     }
     return config;
@@ -82,6 +82,12 @@ const errorHandler = error => {
 instance.interceptors.response.use(
   function(response) {
     // Do something with response data
+    console.log('response -> ', response)
+    const { returnCode, returnMsg } = response.data;
+    if (returnCode !== '0000') {
+      window.message.error(returnMsg);
+      return Promise.reject(response);
+    }
     return response;
   },
   function(error) {
@@ -100,19 +106,46 @@ instance.interceptors.response.use(
 );
 
 let api = {};
-api.cdkLogin = function(data) {
-  return instance.post("/sh/login", data);
+api.userLogin = function(data) {
+  return instance.post("backstage/user/login", data);
 };
 api.getRole = function(data) {
   return instance.post("/backstage/user/getRole", data);
 };
-api.cdkSendSms = function() {
+api.getAllProvince = function() {
   return instance.get("/common/getAllProvince");
 };
-api.cdkPostBaseData = function(data) {
-  return instance.post("/sh/base/data", data);
+api.getCityByProvinceId = function (data) {
+  return instance.get(`/common/getCityByProvinceCode?${qs.stringify(data)}`)
 };
-
+// 查询区
+api.getAreaByCityCode = function(data) {
+  return instance.get(`/common/getAreaByCityCode?${qs.stringify(data)}`);
+};
+api.getUserList = function(data) {
+  return instance.post("/backstage/user/getUserList", data);
+};
+// 新增保单
+api.addPolicy = function(data) {
+  return instance.post("/backstage/policy/addPolicy", data);
+};
+// 保单列表
+api.allPolicyList = function(data) {
+  return instance.post("/backstage/policy/allPolicy?pageNum=1&pageSize=5", data);
+};
+// 保单详情
+api.policyDetailById = function(data) {
+  return instance.post("/backstage/policy/policyDetailById", data);
+};
+// 保险公司列表
+api.companyList = function(data) {
+  return instance.post("/backstage/policy/companyList", data);
+};
+// 退出登录
+api.exitLogin = function(data) {
+  return instance.post("/backstage/user/exit", data);
+};
+// 获取验证码 /backstage/user/getVerificationCode
 api.cdkPostExtraData = function(data) {
   return instance.post("/sh/sign_up", data);
 };

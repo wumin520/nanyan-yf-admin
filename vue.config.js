@@ -2,7 +2,7 @@ module.exports = {
   devServer: {
     proxy: {
       "^/api": {
-        target: "http://locahost:8001/",
+        target: "http://back.run4wd.com/",
         ws: true,
         changeOrigin: true
       },

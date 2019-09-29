@@ -60,6 +60,8 @@
 }
 </style>
 <script>
+import api from '@/utils/api';
+
 const columns = [
   {
     title: "角色名称",
@@ -110,7 +112,15 @@ export default {
       ]
     };
   },
+  mounted () {
+    this.fetchRole()
+  },
   methods: {
+    fetchRole () {
+      api.getRole().then(res => res.data).then(data => {
+        this.data = data.content
+      })
+    },
     editRecord (record) {
       console.log(record, '1')
       this.$router.push('/role/edit/' + record.id)

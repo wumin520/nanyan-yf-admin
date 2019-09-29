@@ -63,6 +63,8 @@
 }
 </style>
 <script>
+import api from '@/utils/api';
+
 const columns = [
   {
     title: "保单号",
@@ -151,6 +153,8 @@ export default {
         }
       ]
     };
+  },
+  mounted () {
   },
   methods: {
     handleSubmit(e) {

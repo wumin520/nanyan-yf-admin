@@ -12,7 +12,33 @@ export default {
   idTypeOptions: [
     {
       name: "身份证",
-      value: ""
+      value: '0',
+    },
+    {
+      name: "护照",
+      value: '1',
+    },
+    {
+      name: "其他",
+      value: '2',
+    }
+  ],
+  idTypeCompanyOptions: [
+    {
+      name: "工商营业执照",
+      value: '0',
+    },
+    {
+      name: "税务登记证",
+      value: '1',
+    },
+    {
+      name: "组织机构代码证",
+      value: '2',
+    },
+    {
+      name: '其他',
+      value: '3'
     }
   ]
 };
