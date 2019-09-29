@@ -48,6 +48,7 @@
                 { ...selectRequired, initialValue: checkedList }
               ]"
               style="width: 100%;"
+              :defaultValue="checkedList"
             >
               <a-row>
                 <a-col :span="24">
@@ -106,9 +107,7 @@
             ><a-icon type="save"></a-icon>保存</a-button
           >
           <router-link to="/user">
-            <a-button class="marg_l8_" type="primary" ghost
-              ><a-icon type="cancel"></a-icon>取消</a-button
-            >
+            <a-button class="marg_l8_" type="primary" ghost><a-icon type="cancel"></a-icon>取消</a-button>
           </router-link>
         </a-col>
       </a-row>
