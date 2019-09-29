@@ -19,7 +19,7 @@
         </a-menu-item>
       </a-menu> -->
       <a-menu
-        :defaultSelectedKeys="['2.1']"
+        :selectedKeys="selectedKeys"
         :defaultOpenKeys="['2']"
         mode="inline"
         theme="light"
@@ -110,7 +110,8 @@ export default {
           ]
         }
       ],
-      routes: []
+      routes: [],
+      selectedKeys: ['2.1']
     };
   },
   watch: {
@@ -123,6 +124,26 @@ export default {
         };
       });
       this.routes = arr;
+
+      let path = this.$route.path
+      let hashArr = []
+      let flatList = (arr) => {
+        for (var i = 0; i < arr.length; i++) {
+          let item = arr[i]
+          hashArr.push(item)
+          if (item.children) {
+            flatList(item.children)
+          }
+        }
+      }
+      flatList(this.list)
+      let findItem = hashArr.filter((value) => {
+        return path == value.url
+      })
+      if (findItem.length > 0) {
+        this.selectedKeys = [findItem[0].key]
+      }
+      console.log('findItem ->   ', findItem, hashArr)
     }
   },
   components: {

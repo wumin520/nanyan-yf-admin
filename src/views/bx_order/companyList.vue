@@ -8,8 +8,9 @@
         <!-- <router-link slot="extra" to="/bxOrder/add"></router-link> -->
         <!-- <a href="#" slot="extra">新建保单</a> -->
         <a-card :title="item.companyName">
-          <div>公司简介</div>
-          <div>产品简介 <a target="_blank" href="#">点击跳转</a></div>
+          <div>公司联系电话：{{item.companyPhone}}</div>
+          <div>公司邮箱：{{item.companyEmail}}</div>
+          <div style="white-space:pre-wrap;margin-top: 16px;" v-html="item.companyPresentation"></div>
           <template class="ant-card-actions" slot="actions">
             <router-link to="/bxOrder/add">
               <a-icon type="plus" />新建保单
@@ -25,6 +26,8 @@
 </template>
 <style lang="scss" scoped></style>
 <script>
+import api from '@/utils/api';
+
 const data = [
   {
     companyName: "保险公司A",
@@ -39,21 +42,22 @@ const data = [
 	"modifier": 1001,
 	"modifyDate": "2019-09-25T06:59:51.000+0000"
   },
-  {
-    companyName: "保险公司B"
-  },
-  {
-    companyName: "保险公司C"
-  },
-  {
-    companyName: "保险公司D"
-  }
 ];
 export default {
   data() {
     return {
       data
     };
+  },
+  mounted () {
+    this.fetchCompanyList()
+  },
+  methods: {
+    fetchCompanyList () {
+      api.companyList().then(res => res.data).then(data => {
+        this.data = data.content
+      })
+    }
   }
 };
 </script>

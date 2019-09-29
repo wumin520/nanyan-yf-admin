@@ -6,7 +6,7 @@
     <div class="login_container_">
       <div class="login_title_">
         登录
-        <a-divider class="line_" orientation="center"></a-divider>
+        <a-divider class="line_"></a-divider>
       </div>
       <a-form
         id="components-form-demo-normal-login"
@@ -31,7 +31,7 @@
         <a-form-item>
           <a-input
             v-decorator="[
-              'password',
+              'passWord',
               {
                 rules: [{ required: true, message: '请输入密码' }]
               }
@@ -46,7 +46,7 @@
         <a-form-item>
           <a-input
             v-decorator="[
-              'veri_code',
+              'verificationCode',
               {
                 rules: [{ required: true, message: '请输入验证码' }]
               }
@@ -60,7 +60,7 @@
           <img class="veri_code_" src="" />
         </a-form-item>
         <a-form-item>
-          <a-checkbox
+          <!-- <a-checkbox
             v-decorator="[
               'remember',
               {
@@ -73,8 +73,8 @@
           </a-checkbox>
           <a class="login-form-forgot" href="">
             记住密码
-          </a>
-          <a-divider orientation="center"></a-divider>
+          </a> -->
+          <!-- <a-divider></a-divider> -->
           <a-button
             size="large"
             type="primary"
@@ -83,10 +83,10 @@
           >
             立即登录
           </a-button>
-          或者
+          <!-- 或者
           <a href="">
             立即注册!
-          </a>
+          </a> -->
         </a-form-item>
       </a-form>
     </div>
@@ -94,17 +94,33 @@
 </template>
 
 <script>
+import api from '@/utils/api';
+import {setLogined} from '@/utils/authorized'
+
 export default {
   beforeCreate() {
     this.form = this.$form.createForm(this);
   },
   methods: {
+    login (params) {
+      api.userLogin({
+        ...params,
+        formEncode: true
+      }).then(res => res.data).then(data => {
+        setLogined(1)
+        let path = "/bxOrder"
+        if (this.$route.query.redirect) {
+          path = this.$route.query.redirect
+        }
+        this.$router.push(path);
+      })
+    },
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log("Received values of form: ", values);
-          this.$router.push("/bxOrder");
+          this.login(values)
         }
       });
     }

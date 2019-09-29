@@ -122,12 +122,20 @@ export default {
       ]
     };
   },
+  mounted () {
+    this.fetchRole()
+  },
   methods: {
     changePage(page,pageSize) {
        this.pagination.pageNo = page
        this.pagination.pageSize = pageSize
       //  console.log("page ->>",this.pagination.pageNo,this.pagination.pageSize)
        this.getRoleList()
+    },
+    fetchRole () {
+      api.getRole().then(res => res.data).then(data => {
+        this.data = data.content
+      })
     },
     editRecord (record) {
       console.log(record, '1')

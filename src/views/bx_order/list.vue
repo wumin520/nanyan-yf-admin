@@ -9,11 +9,12 @@
         <a-col v-for="(item, index) in formInputs" :key="index" :span="12">
           <a-form-item :label="item.label">
             <a-select
+              :placeholder="item.placeholder"
               style="width: 150px;"
               v-if="item.input_type === 'select'"
               v-decorator="[item.dataIndex]"
             >
-              <a-select-option :key="1" :value="1">可以</a-select-option>
+              <a-select-option v-for="(option, index) in item.options" :key="index" :value="option.value">{{option.name}}</a-select-option>
             </a-select>
             <a-range-picker
               v-else-if="item.input_type === 'range_picker'"
@@ -32,7 +33,7 @@
           <a-button html-type="submit" type="primary"
             ><a-icon type="search"></a-icon>查询</a-button
           >
-          <router-link to="/bxOrder/add">
+          <router-link to="/bxOrder/companyList">
             <a-button class="marg_l8_" type="primary" ghost
               ><a-icon type="plus"></a-icon>新建</a-button
             >
@@ -40,9 +41,10 @@
         </a-col>
       </a-row>
     </a-form>
-    <a-table style="margin-top: 50px;" :dataSource="data" :columns="columns">
+    <a-table :pagination="pagination" @change="handleTableChange" style="margin-top: 50px;" :dataSource="data" :columns="columns">
       <template slot="operation" slot-scope="text, record">
         <router-link :to="'/bxOrder/detail/' + record.id">查看详情</router-link>
+        <router-link style="margin-left: 16px;" :to="'/bxOrder/edit/' + record.id">编辑</router-link>
       </template>
     </a-table>
   </div>
@@ -63,11 +65,14 @@
 }
 </style>
 <script>
+import api from '@/utils/api';
+import moment from 'moment';
+
 const columns = [
   {
     title: "保单号",
-    dataIndex: "id",
-    key: "id"
+    dataIndex: "policyNo",
+    key: "policyNo"
   },
   {
     title: "产品名称",
@@ -121,27 +126,30 @@ export default {
         {
           label: "保单号",
           placeholder: "请输入保单号",
-          dataIndex: "username"
+          dataIndex: "policyNo"
         },
         {
           label: "投保人名称",
           placeholder: "请输入投保人名称",
-          dataIndex: "account"
+          dataIndex: "applicantName"
         },
         {
-          label: "被保人名称",
-          placeholder: "请输入被保人名称",
-          dataIndex: "user_origin"
+          label: "保险公司名称",
+          placeholder: "请输入保险公司名称",
+          dataIndex: "companyName"
         },
         {
-          label: "保单备注",
-          placeholder: "请输入保单备注",
-          dataIndex: "instruct"
-        },
-        {
-          label: "关联保单",
-          placeholder: "请输入关联保单",
-          dataIndex: "instruct_code"
+          label: "承保状态",
+          placeholder: "请选择",
+          dataIndex: "underwrideStatus",
+          input_type: 'select',
+          options: [{
+            name: '有效',
+            value: 'Y'
+          }, {
+            name: '无效',
+            value: 'N'
+          }]
         },
         {
           label: "投保日期",
@@ -149,16 +157,46 @@ export default {
           dataIndex: "rangeDate",
           input_type: "range_picker"
         }
-      ]
+      ],
+      pagination: {
+        pageNum: 1,
+        pageSize: 20,
+        total: 0
+      }
     };
   },
+  mounted () {
+    this.fetchPolicyList(1)
+  },
   methods: {
+    handleTableChange (pagination) {
+      console.log(pagination)
+    },
+    fetchPolicyList (pageNum = 1, formOptions = {}) {
+      let params = {
+        pageNum,
+        pageSize: this.pagination.pageSize
+      }
+      for (let key in formOptions) {
+        const val = formOptions[key]
+        if (val && typeof val !== 'object') {
+          params[key] = val
+        } else if (val instanceof Array) {
+          params.startDate = val[0].format('YYYY-MM-DD');
+          params.endDate = val[1].format('YYYY-MM-DD');
+        }
+      }
+      api.allPolicyList(params).then(res => res.data).then(data => {
+        const {list, total} = data.content
+        this.data = list;
+        this.pagination.total = total;
+      })
+    },
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log("form values -> ", values);
-        }
+        console.log("form values -> ", values);
+        this.fetchPolicyList(1, values)
       });
     }
   }
