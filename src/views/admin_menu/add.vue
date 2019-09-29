@@ -134,6 +134,11 @@ export default {
       form: this.$form.createForm(this)
     };
   },
+  mounted () {
+    this.form.setFieldsValue({
+      url: 'http://'
+    })
+  },
   methods: {
     handleSubmit(e) {
       e.preventDefault();

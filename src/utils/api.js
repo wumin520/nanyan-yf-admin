@@ -129,17 +129,20 @@ api.getUserList = function(data) {
 api.addPolicy = function(data) {
   return instance.post("/backstage/policy/addPolicy", data);
 };
+api.updatePolicy = function (data) {
+  return instance.post('/backstage/policy/updatePolicy', data)
+};
 // 保单列表
 api.allPolicyList = function(data) {
-  return instance.post("/backstage/policy/allPolicy?pageNum=1&pageSize=5", data);
+  return instance.post(`/backstage/policy/allPolicy?${qs.stringify(data)}`);
 };
 // 保单详情
 api.policyDetailById = function(data) {
   return instance.post("/backstage/policy/policyDetailById", data);
 };
 // 保险公司列表
-api.companyList = function(data) {
-  return instance.post("/backstage/policy/companyList", data);
+api.companyList = function() {
+  return instance.get("/backstage/policy/companyList");
 };
 // 退出登录
 api.exitLogin = function(data) {
