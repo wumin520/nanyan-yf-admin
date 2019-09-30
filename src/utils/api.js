@@ -185,4 +185,29 @@ api.singleGoodsurl = function(params) {
   );
 };
 
+//新增用户
+api.addUser = function(data) {
+  return instance.post("backstage/user/saveUser", data);
+};
+
+//编辑用户
+api.updateUser = function(data) {
+  return instance.post("backstage/user/updateUser", data);
+};
+
+//查询用户列表
+api.queryUser = function(data) {
+  return instance.post("/backstage/user/getUserList", data);
+};
+
+//查询用户
+api.getUser = function(data) {
+  return instance.post("backstage/user/getUserById", data)
+}
+
+//查询角色列表
+api.getRoleList = function(data) {
+  return instance.post("backstage/roles/getRolesList", data)
+}
+
 export default api;
