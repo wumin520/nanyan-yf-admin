@@ -143,6 +143,14 @@ export default new Router({
               }
             },
             {
+              path: "edit/:id",
+              name: "admin_menu_edit",
+              component: AdminMenuAdd,
+              meta: {
+                breadcrumbName: "编辑"
+              }
+            },
+            {
               path: "list",
               name: "admin_menu_list",
               component: AdminMenuList,

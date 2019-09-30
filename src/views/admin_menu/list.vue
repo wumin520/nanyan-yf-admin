@@ -35,11 +35,16 @@
       </a-row>
     </a-form>
     <a-table style="margin-top: 50px;" :dataSource="data" :columns="columns">
-      <template slot="operation">
+      <template slot="type">
+        {{type == 1 ? '菜单' : '按钮'}}
+      </template>
+      <template slot="operation" slot-scope="text, record">
         <a-button type="primary"><a-icon type="delete"></a-icon>删除</a-button>
-        <a-button class="marg_l8_" type="primary" ghost
-          ><a-icon type="edit"></a-icon>编辑</a-button
-        >
+        <router-link :to="'/adminMenu/edit/' + record.id">
+          <a-button class="marg_l8_" type="primary" ghost
+            ><a-icon type="edit"></a-icon>编辑</a-button
+          >
+        </router-link>
       </template>
     </a-table>
   </div>
@@ -67,9 +72,15 @@ const columns = [
     key: "id"
   },
   {
-    title: "菜单名称",
+    title: "资源名称",
     dataIndex: "name",
     key: "name"
+  },
+  {
+    title: "资源类型",
+    dataIndex: "type",
+    key: "type",
+    scopedSlots: { customRender: 'type' }
   },
   {
     title: "菜单路径",
@@ -104,7 +115,7 @@ export default {
       form: this.$form.createForm(this),
       formInputs: [
         {
-          label: "菜单名称",
+          label: "资源名称",
           placeholder: "请输入菜单名称",
           dataIndex: "name"
         },

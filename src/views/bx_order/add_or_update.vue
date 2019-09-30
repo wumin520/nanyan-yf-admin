@@ -1603,9 +1603,10 @@ export default {
     let { name, params} = this.$route
     if (name === 'bx_order_detail') {
       this.editable = false
-    }
-    if (name === 'bx_order_edit') {
+    } else if (name === 'bx_order_edit') {
       this.update_order = true
+    } else {
+      this.add_order = true
     }
     if (params.id) {
       this.fetchPolicyDetailById(params.id)
