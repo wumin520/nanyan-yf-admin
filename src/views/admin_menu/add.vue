@@ -3,43 +3,21 @@
     <a-form :form="form" @submit="handleSubmit">
       <a-form-item label="关联父菜单" v-bind="formItemLayout">
         <a-tree-select
-          showSearch
           style="width: 300px"
-          :value="value"
           :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
-          placeholder="请选择要关联的父菜单(可选)"
-          allowClear
+          :treeData="treeData"
+          placeholder="请选择"
           treeDefaultExpandAll
-          @change="onChange"
+          v-model="formInfo.id"
         >
-          <a-tree-select-node value="parent 1" title="parent 1" key="0-1">
-            <a-tree-select-node
-              value="parent 1-0"
-              title="parent 1-0"
-              key="0-1-1"
-            >
-              <a-tree-select-node
-                :selectable="false"
-                value="leaf1"
-                title="my leaf"
-                key="random"
-              />
-              <a-tree-select-node
-                value="leaf2"
-                title="your leaf"
-                key="random1"
-              />
-            </a-tree-select-node>
-            <a-tree-select-node
-              value="parent 1-1"
-              title="parent 1-1"
-              key="random2"
-            >
-              <a-tree-select-node value="sss" key="random3">
-                <b style="color: #08c" slot="title">sss</b>
-              </a-tree-select-node>
-            </a-tree-select-node>
-          </a-tree-select-node>
+          <span
+            style="color: #08c"
+            slot="title"
+            slot-scope="{ key, value }"
+            v-if="(key = '0-0-1')"
+          >
+            Child Node1 {{ value }}
+          </span>
         </a-tree-select>
       </a-form-item>
       <a-form-item label="菜单名称" v-bind="formItemLayout">
@@ -47,6 +25,7 @@
           v-decorator="[
             'name',
             {
+              initialValue: formInfo.name,
               rules: [
                 {
                   required: true,
@@ -62,6 +41,7 @@
           v-decorator="[
             'url',
             {
+              initialValue: formInfo.url,
               rules: [
                 {
                   required: true,
@@ -77,6 +57,7 @@
           v-decorator="[
             'menuType',
             {
+              initialValue: formInfo.type,
               rules: [
                 {
                   required: true,
@@ -86,15 +67,16 @@
             }
           ]"
         >
-            <a-select-option key="0" value="菜单">菜单</a-select-option>
-            <a-select-option key="1" value="按钮">按钮</a-select-option>
+          <a-select-option key="0" value="0">菜单</a-select-option>
+          <a-select-option key="1" value="1">按钮</a-select-option>
         </a-select>
       </a-form-item>
       <a-form-item label="同级排序权重" v-bind="formItemLayout">
         <a-input
           v-decorator="[
-            'sort',
+            'priority',
             {
+              initialValue: formInfo.priority,
               rules: [
                 {
                   required: true,
@@ -108,7 +90,7 @@
       </a-form-item>
       <a-row>
         <a-col :push="3" :span="24">
-          <a-button type="primary">确定</a-button>
+          <a-button html-type="submit" type="primary">确定</a-button>
           <router-link style="margin-left: 16px;" to="/adminMenu">
             <a-button type="primary" ghost>取消</a-button>
           </router-link>
@@ -122,6 +104,43 @@
 }
 </style>
 <script>
+import api from "@/utils/api";
+import { transformMenuData } from "@/utils/authorized";
+
+const treeData = [
+  {
+    title: "Node1",
+    value: "0-0",
+    key: "0-0",
+    children: [
+      {
+        value: "0-0-1",
+        key: "0-0-1",
+        children: [
+          {
+            value: "0-0-0-1",
+            key: "0-0-0-1",
+            title: "编辑"
+          }
+        ],
+        scopedSlots: {
+          // custom title
+          title: "title"
+        }
+      },
+      {
+        title: "Child Node2",
+        value: "0-0-2",
+        key: "0-0-2"
+      }
+    ]
+  },
+  {
+    title: "Node2",
+    value: "0-1",
+    key: "0-1"
+  }
+];
 export default {
   data() {
     return {
@@ -130,21 +149,141 @@ export default {
         wrapperCol: { span: 8 }
       },
       treeExpandedKeys: [],
+      form: this.$form.createForm(this),
+      treeList: [
+        {
+          id: 1,
+          name: "用户管理",
+          children: [
+            {
+              id: "1.1",
+              name: "增加"
+            }
+          ]
+        }
+      ],
+      treeData,
       value: undefined,
-      form: this.$form.createForm(this)
+      formInfo: {
+        id: "0-0",
+        name: "用户管理",
+        url: "http://",
+        priority: 0,
+        type: "1"
+      }
     };
   },
-  mounted () {
-    this.form.setFieldsValue({
-      url: 'http://'
-    })
+  watch: {
+    value(value) {
+      console.log(value);
+    }
+  },
+  mounted() {
+    // this.form.setFieldsValue({
+    //   url: 'http://'
+    // })
+    const { name, params } = this.$route;
+    if (name === "menu_edit") {
+    }
+    const id = params.id;
+    if (id) {
+      this.edit_id = id;
+      this.fetchDetail(id);
+    }
+    this.fetchResourceList();
+    let testData = [
+      {
+        id: 1,
+        name: "首页",
+        url: "#",
+        parentId: 0,
+        type: "1",
+        priority: 1,
+        remark: null,
+        status: 1,
+        creator: 1,
+        createDate: "2019-09-27T02:16:27.000+0000",
+        modifier: 1,
+        modifyDate: "2019-09-29T09:13:43.000+0000",
+        modifierName: null,
+        childEbResourceVos: [
+          {
+            id: 1,
+            name: "用户管理",
+            url: "#",
+            parentId: 0,
+            type: "1",
+            priority: 1,
+            remark: null,
+            status: 1,
+            creator: 1,
+            createDate: "2019-09-27T02:16:27.000+0000",
+            modifier: 1,
+            modifyDate: "2019-09-29T09:13:43.000+0000",
+            modifierName: null
+          }
+        ]
+      }
+    ];
+    let arr = transformMenuData(testData);
+    console.log("arr -> ", arr);
   },
   methods: {
+    postData(params) {
+      api
+        .saveResource({
+          ...params
+        })
+        .then(res => res.data)
+        .then(data => {
+          this.promptMsg("添加成功！正在跳转...");
+        });
+    },
+    promptMsg(msg) {
+      window.message.success(msg);
+      let st = setTimeout(() => {
+        this.$router.push("/adminMenu/list");
+        clearTimeout(st);
+      }, 2000);
+    },
+    fetchDetail(id) {
+      api
+        .getResourceById({
+          id
+        })
+        .then(res => res.data)
+        .then(data => {
+          this.formInfo = data.content;
+        });
+    },
+    updateResource(params) {
+      params.id = this.edit_id;
+      api
+        .updateResource(params)
+        .then(res => res.data)
+        .then(data => {
+          this.promptMsg("修改成功！正在跳转...");
+        });
+    },
+    fetchResourceList() {
+      api
+        .getAllResource()
+        .then(res => res.data)
+        .then(data => {
+          console.log(data);
+          const { list } = data.content;
+        });
+    },
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log("form values -> ", values);
+          if (this.$route.name == "admin_menu_edit") {
+            this.updateResource(values);
+            return;
+          }
+          this.postData(values);
         }
       });
     },

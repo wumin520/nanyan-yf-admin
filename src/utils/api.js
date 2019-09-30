@@ -11,7 +11,11 @@ instance.interceptors.request.use(
   function(config) {
     // Do something before request is sent
     console.log(config, "sfdsdf");
-    if (config.method.toLowerCase() === "post" && config.data && config.data.formEncode) {
+    if (
+      config.method.toLowerCase() === "post" &&
+      config.data &&
+      config.data.formEncode
+    ) {
       config.data = qs.stringify(config.data);
     }
     return config;
@@ -22,21 +26,21 @@ instance.interceptors.request.use(
   }
 );
 const codeMessage = {
-  200: '服务器成功返回请求的数据。',
-  201: '新建或修改数据成功。',
-  202: '一个请求已经进入后台排队（异步任务）。',
-  204: '删除数据成功。',
-  400: '发出的请求有错误，服务器没有进行新建或修改数据的操作。',
-  401: '用户没有权限（令牌、用户名、密码错误）。',
-  403: '用户得到授权，但是访问是被禁止的。',
-  404: '发出的请求针对的是不存在的记录，服务器没有进行操作。',
-  406: '请求的格式不可得。',
-  410: '请求的资源被永久删除，且不会再得到的。',
-  422: '当创建一个对象时，发生一个验证错误。',
-  500: '服务器发生错误，请检查服务器。',
-  502: '网关错误。',
-  503: '服务不可用，服务器暂时过载或维护。',
-  504: '网关超时。',
+  200: "服务器成功返回请求的数据。",
+  201: "新建或修改数据成功。",
+  202: "一个请求已经进入后台排队（异步任务）。",
+  204: "删除数据成功。",
+  400: "发出的请求有错误，服务器没有进行新建或修改数据的操作。",
+  401: "用户没有权限（令牌、用户名、密码错误）。",
+  403: "用户得到授权，但是访问是被禁止的。",
+  404: "发出的请求针对的是不存在的记录，服务器没有进行操作。",
+  406: "请求的格式不可得。",
+  410: "请求的资源被永久删除，且不会再得到的。",
+  422: "当创建一个对象时，发生一个验证错误。",
+  500: "服务器发生错误，请检查服务器。",
+  502: "网关错误。",
+  503: "服务不可用，服务器暂时过载或维护。",
+  504: "网关超时。"
 };
 const errorHandler = error => {
   const { response = {} } = error;
@@ -44,7 +48,7 @@ const errorHandler = error => {
   const { status, url } = response;
   if (status === 401) {
     window.notification.error({
-      message: '未登录或登录已过期，请重新登录。',
+      message: "未登录或登录已过期，请重新登录。"
     });
     return;
   }
@@ -63,7 +67,7 @@ const errorHandler = error => {
   }
   window.notification.error({
     message: `请求错误 ${status}: ${error.config.url}`,
-    description: errortext,
+    description: errortext
   });
   // environment should not be used
   if (status === 403) {
@@ -82,9 +86,9 @@ const errorHandler = error => {
 instance.interceptors.response.use(
   function(response) {
     // Do something with response data
-    console.log('response -> ', response)
+    console.log("response -> ", response);
     const { returnCode, returnMsg } = response.data;
-    if (returnCode !== '0000') {
+    if (returnCode !== "0000") {
       window.message.error(returnMsg);
       return Promise.reject(response);
     }
@@ -97,7 +101,7 @@ instance.interceptors.response.use(
       errorHandler(error);
     } else {
       // Something happened in setting up the request that triggered an Error
-      console.log('Error', error.message);
+      console.log("Error", error.message);
     }
     console.log(error.config);
     // window.router.push('/login');
@@ -115,8 +119,8 @@ api.getRole = function(data) {
 api.getAllProvince = function() {
   return instance.get("/common/getAllProvince");
 };
-api.getCityByProvinceId = function (data) {
-  return instance.get(`/common/getCityByProvinceCode?${qs.stringify(data)}`)
+api.getCityByProvinceId = function(data) {
+  return instance.get(`/common/getCityByProvinceCode?${qs.stringify(data)}`);
 };
 // 查询区
 api.getAreaByCityCode = function(data) {
@@ -129,8 +133,8 @@ api.getUserList = function(data) {
 api.addPolicy = function(data) {
   return instance.post("/backstage/policy/addPolicy", data);
 };
-api.updatePolicy = function (data) {
-  return instance.post('/backstage/policy/updatePolicy', data)
+api.updatePolicy = function(data) {
+  return instance.post("/backstage/policy/updatePolicy", data);
 };
 // 保单列表
 api.allPolicyList = function(data) {
@@ -149,14 +153,31 @@ api.exitLogin = function(data) {
   return instance.post("/backstage/user/exit", data);
 };
 // 获取验证码 /backstage/user/getVerificationCode
-api.cdkPostExtraData = function(data) {
-  return instance.post("/sh/sign_up", data);
-};
 
-api.cdkCategoryList = function() {
-  return instance.get("/sh/category");
+// 查询系统资源列表
+api.getResourceList = function(data) {
+  return instance.post("/backstage/resource/getResourceList", data);
 };
-
+// 查询资源详情
+api.getResourceById = function(data) {
+  return instance.post("/backstage/resource/getResourceById", data);
+};
+// 修改、删除资源详情
+api.updateResource = function(data) {
+  return instance.post("/backstage/resource/updateResource", data);
+};
+// 新增资源详情
+api.saveResource = function(data) {
+  return instance.post("/backstage/resource/saveResource", data);
+};
+// 查询用户资源菜单
+api.getResourceByUserId = function(data) {
+  return instance.post("/backstage/resource/getResourceByUserId", data);
+};
+// 查询层级结构菜单
+api.getAllResource = function(data) {
+  return instance.post("/backstage/roles/getResource", data);
+};
 api.cdkMonthProfit = function() {
   return instance.get("/sh/month/profit");
 };
@@ -202,12 +223,12 @@ api.queryUser = function(data) {
 
 //查询用户
 api.getUser = function(data) {
-  return instance.post("backstage/user/getUserById", data)
-}
+  return instance.post("backstage/user/getUserById", data);
+};
 
 //查询角色列表
 api.getRoleList = function(data) {
-  return instance.post("backstage/roles/getRolesList", data)
-}
+  return instance.post("backstage/roles/getRolesList", data);
+};
 
 export default api;

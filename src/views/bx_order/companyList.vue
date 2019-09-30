@@ -8,9 +8,12 @@
         <!-- <router-link slot="extra" to="/bxOrder/add"></router-link> -->
         <!-- <a href="#" slot="extra">新建保单</a> -->
         <a-card :title="item.companyName">
-          <div>公司联系电话：{{item.companyPhone}}</div>
-          <div>公司邮箱：{{item.companyEmail}}</div>
-          <div style="white-space:pre-wrap;margin-top: 16px;" v-html="item.companyPresentation"></div>
+          <div>公司联系电话：{{ item.companyPhone }}</div>
+          <div>公司邮箱：{{ item.companyEmail }}</div>
+          <div
+            style="white-space:pre-wrap;margin-top: 16px;"
+            v-html="item.companyPresentation"
+          ></div>
           <template class="ant-card-actions" slot="actions">
             <router-link to="/bxOrder/add">
               <a-icon type="plus" />新建保单
@@ -26,22 +29,22 @@
 </template>
 <style lang="scss" scoped></style>
 <script>
-import api from '@/utils/api';
+import api from "@/utils/api";
 
 const data = [
   {
     companyName: "保险公司A",
-    "companyPresentation": "这是一个很好的公司",
-	"presentationType": "2",
-	"companyCode": "T10001",
-	"companyPhone": "13888888888",
-	"companyEmail": "fasfdsafa@qq.com",
-	"status": "1",
-	"creator": 1001,
-	"createDate": "2019-09-25T06:59:51.000+0000",
-	"modifier": 1001,
-	"modifyDate": "2019-09-25T06:59:51.000+0000"
-  },
+    companyPresentation: "这是一个很好的公司",
+    presentationType: "2",
+    companyCode: "T10001",
+    companyPhone: "13888888888",
+    companyEmail: "fasfdsafa@qq.com",
+    status: "1",
+    creator: 1001,
+    createDate: "2019-09-25T06:59:51.000+0000",
+    modifier: 1001,
+    modifyDate: "2019-09-25T06:59:51.000+0000"
+  }
 ];
 export default {
   data() {
@@ -49,14 +52,17 @@ export default {
       data
     };
   },
-  mounted () {
-    this.fetchCompanyList()
+  mounted() {
+    this.fetchCompanyList();
   },
   methods: {
-    fetchCompanyList () {
-      api.companyList().then(res => res.data).then(data => {
-        this.data = data.content
-      })
+    fetchCompanyList() {
+      api
+        .companyList()
+        .then(res => res.data)
+        .then(data => {
+          this.data = data.content;
+        });
     }
   }
 };

@@ -94,33 +94,36 @@
 </template>
 
 <script>
-import api from '@/utils/api';
-import {setLogined} from '@/utils/authorized'
+import api from "@/utils/api";
+import { setLogined } from "@/utils/authorized";
 
 export default {
   beforeCreate() {
     this.form = this.$form.createForm(this);
   },
   methods: {
-    login (params) {
-      api.userLogin({
-        ...params,
-        formEncode: true
-      }).then(res => res.data).then(data => {
-        setLogined(1)
-        let path = "/bxOrder"
-        if (this.$route.query.redirect) {
-          path = this.$route.query.redirect
-        }
-        this.$router.push(path);
-      })
+    login(params) {
+      api
+        .userLogin({
+          ...params,
+          formEncode: true
+        })
+        .then(res => res.data)
+        .then(data => {
+          setLogined(1);
+          let path = "/bxOrder";
+          if (this.$route.query.redirect) {
+            path = this.$route.query.redirect;
+          }
+          this.$router.push(path);
+        });
     },
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log("Received values of form: ", values);
-          this.login(values)
+          this.login(values);
         }
       });
     }

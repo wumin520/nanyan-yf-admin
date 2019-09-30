@@ -14,7 +14,12 @@
               v-if="item.input_type === 'select'"
               v-decorator="[item.dataIndex]"
             >
-              <a-select-option v-for="(option, index) in item.options" :key="index" :value="option.value">{{option.name}}</a-select-option>
+              <a-select-option
+                v-for="(option, index) in item.options"
+                :key="index"
+                :value="option.value"
+                >{{ option.name }}</a-select-option
+              >
             </a-select>
             <a-range-picker
               v-else-if="item.input_type === 'range_picker'"
@@ -41,10 +46,20 @@
         </a-col>
       </a-row>
     </a-form>
-    <a-table :pagination="pagination" @change="handleTableChange" style="margin-top: 50px;" :dataSource="data" :columns="columns">
+    <a-table
+      :pagination="pagination"
+      @change="handleTableChange"
+      style="margin-top: 50px;"
+      :dataSource="data"
+      :columns="columns"
+    >
       <template slot="operation" slot-scope="text, record">
         <router-link :to="'/bxOrder/detail/' + record.id">查看详情</router-link>
-        <router-link style="margin-left: 16px;" :to="'/bxOrder/edit/' + record.id">编辑</router-link>
+        <router-link
+          style="margin-left: 16px;"
+          :to="'/bxOrder/edit/' + record.id"
+          >编辑</router-link
+        >
       </template>
     </a-table>
   </div>
@@ -65,8 +80,8 @@
 }
 </style>
 <script>
-import api from '@/utils/api';
-import moment from 'moment';
+import api from "@/utils/api";
+import moment from "moment";
 
 const columns = [
   {
@@ -142,14 +157,17 @@ export default {
           label: "承保状态",
           placeholder: "请选择",
           dataIndex: "underwrideStatus",
-          input_type: 'select',
-          options: [{
-            name: '有效',
-            value: 'Y'
-          }, {
-            name: '无效',
-            value: 'N'
-          }]
+          input_type: "select",
+          options: [
+            {
+              name: "有效",
+              value: "Y"
+            },
+            {
+              name: "无效",
+              value: "N"
+            }
+          ]
         },
         {
           label: "投保日期",
@@ -165,38 +183,41 @@ export default {
       }
     };
   },
-  mounted () {
-    this.fetchPolicyList(1)
+  mounted() {
+    this.fetchPolicyList(1);
   },
   methods: {
-    handleTableChange (pagination) {
-      console.log(pagination)
+    handleTableChange(pagination) {
+      console.log(pagination);
     },
-    fetchPolicyList (pageNum = 1, formOptions = {}) {
+    fetchPolicyList(pageNum = 1, formOptions = {}) {
       let params = {
         pageNum,
         pageSize: this.pagination.pageSize
-      }
+      };
       for (let key in formOptions) {
-        const val = formOptions[key]
-        if (val && typeof val !== 'object') {
-          params[key] = val
+        const val = formOptions[key];
+        if (val && typeof val !== "object") {
+          params[key] = val;
         } else if (val instanceof Array) {
-          params.startDate = val[0].format('YYYY-MM-DD');
-          params.endDate = val[1].format('YYYY-MM-DD');
+          params.startDate = val[0].format("YYYY-MM-DD");
+          params.endDate = val[1].format("YYYY-MM-DD");
         }
       }
-      api.allPolicyList(params).then(res => res.data).then(data => {
-        const {list, total} = data.content
-        this.data = list;
-        this.pagination.total = total;
-      })
+      api
+        .allPolicyList(params)
+        .then(res => res.data)
+        .then(data => {
+          const { list, total } = data.content;
+          this.data = list;
+          this.pagination.total = total;
+        });
     },
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         console.log("form values -> ", values);
-        this.fetchPolicyList(1, values)
+        this.fetchPolicyList(1, values);
       });
     }
   }

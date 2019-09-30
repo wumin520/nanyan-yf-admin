@@ -8,12 +8,12 @@
         </a-col>
         <a-col :span="12">
           <a-form-item v-bind="formItemLayout" label="保险起止日期">
-            <div>{{allFormData.startDate}} - {{allFormData.endDate}}</div>
+            <div>{{ allFormData.startDate }} - {{ allFormData.endDate }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
           <a-form-item v-bind="formItemLayout" label="保单号">
-            <div>{{allFormData.policyNo}}</div>
+            <div>{{ allFormData.policyNo }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -1496,8 +1496,8 @@ export default {
   mounted() {},
   methods: {
     moment,
-    handleBAProvinceChange (code) {
-      console.log('银行市级选择')
+    handleBAProvinceChange(code) {
+      console.log("银行市级选择");
     },
     changeYiWai(e) {
       console.log(e, "changeYiWai -> ");

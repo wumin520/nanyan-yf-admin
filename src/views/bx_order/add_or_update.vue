@@ -10,14 +10,18 @@
           <a-form-item v-bind="formItemLayout" label="保险起止日期">
             <a-range-picker
               v-if="editable"
-              v-decorator="['rangeDate', {
+              v-decorator="[
+                'rangeDate',
+                {
                   ...selectRequired,
                   initialValue: allFormData.rangeDate
                 }
               ]"
               :placeholder="['请选择开始时间', '请选择结束时间']"
             ></a-range-picker>
-            <div v-else>{{allFormData.startDate}} - {{allFormData.endDate}}</div>
+            <div v-else>
+              {{ allFormData.startDate }} - {{ allFormData.endDate }}
+            </div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -33,7 +37,7 @@
               ]"
               placeholder="请输入"
             ></a-input>
-            <div v-else>{{allFormData.policyNo}}</div>
+            <div v-else>{{ allFormData.policyNo }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -49,7 +53,7 @@
               ]"
               placeholder="请输入"
             ></a-input>
-            <div v-else>{{allFormData.premium}}</div>
+            <div v-else>{{ allFormData.premium }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -65,7 +69,7 @@
               ]"
               placeholder="请输入"
             ></a-input>
-            <div v-else>{{allFormData.productName}}</div>
+            <div v-else>{{ allFormData.productName }}</div>
           </a-form-item>
         </a-col>
       </a-row>
@@ -86,7 +90,7 @@
                 }
               ]"
             ></a-input>
-            <div v-else>{{allFormData.application.name}}</div>
+            <div v-else>{{ allFormData.application.name }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -101,9 +105,14 @@
                 }
               ]"
             >
-              <a-select-option v-for="(item, index) in idTypeCompanyOptions" :key="index" :value="item.value">{{item.name}}</a-select-option>
+              <a-select-option
+                v-for="(item, index) in idTypeCompanyOptions"
+                :key="index"
+                :value="item.value"
+                >{{ item.name }}</a-select-option
+              >
             </a-select>
-            <div v-else>{{allFormData.application.idType}}</div>
+            <div v-else>{{ allFormData.application.idType }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -118,7 +127,7 @@
                 }
               ]"
             ></a-input>
-            <div v-else>{{allFormData.application.idno}}</div>
+            <div v-else>{{ allFormData.application.idno }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -134,7 +143,7 @@
                 }
               ]"
             ></a-date-picker>
-            <div v-else>{{allFormData.application.endDate}}</div>
+            <div v-else>{{ allFormData.application.endDate }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -149,7 +158,7 @@
                 }
               ]"
             ></a-input>
-            <div v-else>{{allFormData.application.empNum}}</div>
+            <div v-else>{{ allFormData.application.empNum }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -164,7 +173,7 @@
                 }
               ]"
             ></a-input>
-            <div v-else>{{allFormData.application.bussionessScope}}</div>
+            <div v-else>{{ allFormData.application.bussionessScope }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -180,7 +189,7 @@
               ]"
               placeholder="请选择"
             ></a-date-picker>
-            <div v-else>{{allFormData.application.establishmentDate}}</div>
+            <div v-else>{{ allFormData.application.establishmentDate }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -195,7 +204,7 @@
                 }
               ]"
             ></a-input>
-            <div v-else>{{allFormData.application.unitNatrue}}</div>
+            <div v-else>{{ allFormData.application.unitNatrue }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -220,7 +229,7 @@
                     >{{ item.name }}</a-select-option
                   >
                 </a-select>
-                <div v-else>{{allFormData.application.bigType}}</div>
+                <div v-else>{{ allFormData.application.bigType }}</div>
               </a-form-item>
             </a-col>
           </a-row>
@@ -237,7 +246,7 @@
                 }
               ]"
             ></a-input>
-            <div v-else>{{allFormData.application.socialInsuranceNo}}</div>
+            <div v-else>{{ allFormData.application.socialInsuranceNo }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -252,7 +261,7 @@
                 }
               ]"
             ></a-input>
-            <div v-else>{{allFormData.application.unitPhone}}</div>
+            <div v-else>{{ allFormData.application.unitPhone }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -268,11 +277,14 @@
               ]"
               placeholder="请选择纳税人类别"
             >
-              <a-select-option v-for="(item, index) in taxpayerTypeOptions" :key="index" :value="item.value"
-                >{{item.name}}</a-select-option
+              <a-select-option
+                v-for="(item, index) in taxpayerTypeOptions"
+                :key="index"
+                :value="item.value"
+                >{{ item.name }}</a-select-option
               >
             </a-select>
-            <div v-else>{{allFormData.application.ratepayerType}}</div>
+            <div v-else>{{ allFormData.application.ratepayerType }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -296,7 +308,7 @@
                 >{{ item.provinceName }}</a-select-option
               >
             </a-select>
-            <div v-else>{{allFormData.application.province}}</div>
+            <div v-else>{{ allFormData.application.province }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -320,7 +332,7 @@
                 >{{ item.cityName }}</a-select-option
               >
             </a-select>
-            <div v-else>{{allFormData.application.city}}</div>
+            <div v-else>{{ allFormData.application.city }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -343,7 +355,7 @@
                 >{{ item.districtName }}</a-select-option
               >
             </a-select>
-            <div v-else>{{allFormData.application.area}}</div>
+            <div v-else>{{ allFormData.application.area }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -360,7 +372,7 @@
               placeholder="请输入详细地址"
             >
             </a-input>
-            <div v-else>{{allFormData.application.detailAddress}}</div>
+            <div v-else>{{ allFormData.application.detailAddress }}</div>
           </a-form-item>
         </a-col>
       </a-row>
@@ -382,7 +394,7 @@
               placeholder="请输入签名"
             >
             </a-input>
-            <div v-else>{{allFormData.legal.name}}</div>
+            <div v-else>{{ allFormData.legal.name }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -404,7 +416,7 @@
                 >{{ item.name }}</a-select-option
               >
             </a-select>
-            <div v-else>{{allFormData.legal.idType}}</div>
+            <div v-else>{{ allFormData.legal.idType }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -420,7 +432,7 @@
               placeholder="请选择证件号码"
             >
             </a-input>
-            <div v-else>{{allFormData.legal.idNo}}</div>
+            <div v-else>{{ allFormData.legal.idNo }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -436,7 +448,7 @@
               placeholder="请选择证件有效起期"
             >
             </a-date-picker>
-            <div v-else>{{allFormData.legal.idStartDate}}</div>
+            <div v-else>{{ allFormData.legal.idStartDate }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -452,7 +464,7 @@
               placeholder="请选择证件有效止期"
             >
             </a-date-picker>
-            <div v-else>{{allFormData.legal.idEndDate}}</div>
+            <div v-else>{{ allFormData.legal.idEndDate }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -468,7 +480,7 @@
               placeholder="请选择联系地址"
             >
             </a-input>
-            <div v-else>{{allFormData.legal.address}}</div>
+            <div v-else>{{ allFormData.legal.address }}</div>
           </a-form-item>
         </a-col>
       </a-row>
@@ -490,7 +502,7 @@
               placeholder="请输入姓名"
             >
             </a-input>
-            <div v-else>{{allFormData.likeman.name}}</div>
+            <div v-else>{{ allFormData.likeman.name }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -506,7 +518,7 @@
               placeholder="请输入电话"
             >
             </a-input>
-            <div v-else>{{allFormData.likeman.phone}}</div>
+            <div v-else>{{ allFormData.likeman.phone }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -522,7 +534,7 @@
               placeholder="请输入E-MAIL"
             >
             </a-input>
-            <div v-else>{{allFormData.likeman.email}}</div>
+            <div v-else>{{ allFormData.likeman.email }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -544,7 +556,7 @@
                 >{{ item.name }}</a-select-option
               >
             </a-select>
-            <div v-else>{{allFormData.likeman.idType}}</div>
+            <div v-else>{{ allFormData.likeman.idType }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -560,7 +572,7 @@
               placeholder="请选择证件号码"
             >
             </a-input>
-            <div v-else>{{allFormData.likeman.idNo}}</div>
+            <div v-else>{{ allFormData.likeman.idNo }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -576,7 +588,7 @@
               placeholder="请选择证件有效起期"
             >
             </a-date-picker>
-            <div v-else>{{allFormData.likeman.idStartDate}}</div>
+            <div v-else>{{ allFormData.likeman.idStartDate }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -592,7 +604,7 @@
               placeholder="请选择证件有效止期"
             >
             </a-date-picker>
-            <div v-else>{{allFormData.likeman.idEndDate}}</div>
+            <div v-else>{{ allFormData.likeman.idEndDate }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -608,7 +620,7 @@
               placeholder="请选择联系地址"
             >
             </a-input>
-            <div v-else>{{allFormData.likeman.address}}</div>
+            <div v-else>{{ allFormData.likeman.address }}</div>
           </a-form-item>
         </a-col>
       </a-row>
@@ -631,7 +643,7 @@
               placeholder="请输入开户银行"
             >
             </a-input>
-            <div v-else>{{allFormData.bankInfo.bankName}}</div>
+            <div v-else>{{ allFormData.bankInfo.bankName }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -660,7 +672,7 @@
                 >{{ item.provinceName }}</a-select-option
               >
             </a-select>
-            <div v-else>{{allFormData.bankInfo.province}}</div>
+            <div v-else>{{ allFormData.bankInfo.province }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -688,7 +700,7 @@
                 >{{ item.cityName }}</a-select-option
               >
             </a-select>
-            <div v-else>{{allFormData.bankInfo.city}}</div>
+            <div v-else>{{ allFormData.bankInfo.city }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -710,7 +722,7 @@
               placeholder="请输入开户名"
             >
             </a-input>
-            <div v-else>{{allFormData.bankInfo.accountName}}</div>
+            <div v-else>{{ allFormData.bankInfo.accountName }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -732,7 +744,7 @@
               placeholder="请输入银行账号"
             >
             </a-input>
-            <div v-else>{{allFormData.bankInfo.accountNo}}</div>
+            <div v-else>{{ allFormData.bankInfo.accountNo }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -753,11 +765,14 @@
               ]"
               placeholder="请选择付款方式"
             >
-              <a-select-option v-for="(item, index) in payTypeOptions" :key="index" :value="item.value"
-                >{{item.name}}</a-select-option
+              <a-select-option
+                v-for="(item, index) in payTypeOptions"
+                :key="index"
+                :value="item.value"
+                >{{ item.name }}</a-select-option
               >
             </a-select>
-            <div v-else>{{allFormData.bankInfo.payMent}}</div>
+            <div v-else>{{ allFormData.bankInfo.payMent }}</div>
           </a-form-item>
         </a-col>
       </a-row>
@@ -768,17 +783,18 @@
         </a-col>
         <a-col :span="12">
           <a-form-item v-bind="formItemLayout" label="姓名">
-            <a-input 
-              v-if="editable" 
+            <a-input
+              v-if="editable"
               v-decorator="[
                 'name_receiptor',
                 {
                   initialValue: allFormData.receiptor.name
                 }
               ]"
-              placeholder="请输入姓名">
+              placeholder="请输入姓名"
+            >
             </a-input>
-            <div v-else>{{allFormData.receiptor.name}}</div>
+            <div v-else>{{ allFormData.receiptor.name }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -800,7 +816,7 @@
                 >{{ item.name }}</a-select-option
               >
             </a-select>
-            <div v-else>{{allFormData.receiptor.idType}}</div>
+            <div v-else>{{ allFormData.receiptor.idType }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -816,7 +832,7 @@
               placeholder="请选择证件有效起期"
             >
             </a-date-picker>
-            <div v-else>{{allFormData.receiptor.idStartDate}}</div>
+            <div v-else>{{ allFormData.receiptor.idStartDate }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -832,7 +848,7 @@
               placeholder="请选择证件有效止期"
             >
             </a-date-picker>
-            <div v-else>{{allFormData.receiptor.idEndDate}}</div>
+            <div v-else>{{ allFormData.receiptor.idEndDate }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -848,7 +864,7 @@
               placeholder="请输入联系地址"
             >
             </a-input>
-            <div v-else>{{allFormData.receiptor.address}}</div>
+            <div v-else>{{ allFormData.receiptor.address }}</div>
           </a-form-item>
         </a-col>
       </a-row>
@@ -920,7 +936,11 @@
             <template slot="type" slot-scope="text">
               {{ text == 1 ? "员工" : "子女及家属" }}
             </template>
-            <template v-if="editable" slot="operation" slot-scope="text, record, index">
+            <template
+              v-if="editable"
+              slot="operation"
+              slot-scope="text, record, index"
+            >
               <a-button @click="editPlan(record, index)" type="primary" ghost
                 ><a-icon type="edit"></a-icon>编辑</a-button
               >
@@ -954,16 +974,24 @@
             :dataSource="insuredData"
             :columns="insuredColumns"
           >
-            <template slot="idType" slot-scope="text" >
-              {{text | filterIdType(idTypeOptions)}}
+            <template slot="idType" slot-scope="text">
+              {{ text | filterIdType(idTypeOptions) }}
             </template>
             <template slot="sex" slot-scope="text">
-              {{text | filterSex}}
+              {{ text | filterSex }}
             </template>
-            <template v-for="col in ['socialsecurity', 'isMain']" :slot="col" slot-scope="text">
-              {{text | filterState}}
+            <template
+              v-for="col in ['socialsecurity', 'isMain']"
+              :slot="col"
+              slot-scope="text"
+            >
+              {{ text | filterState }}
             </template>
-            <template v-if="editable" slot="operation" slot-scope="text, record, index">
+            <template
+              v-if="editable"
+              slot="operation"
+              slot-scope="text, record, index"
+            >
               <a-button @click="editBbr(record, index)" type="primary"
                 >编辑</a-button
               >
@@ -1003,7 +1031,11 @@
           <a-button html-type="submit" type="primary"
             ><a-icon type="save"></a-icon>保存</a-button
           >
-          <a-button @click="forwardToList" style="margin-left: 16px;" type="primary" ghost
+          <a-button
+            @click="forwardToList"
+            style="margin-left: 16px;"
+            type="primary"
+            ghost
             ><a-icon type="cancel"></a-icon>取消</a-button
           >
         </a-col>
@@ -1377,7 +1409,7 @@ h2 {
 <script>
 import moment from "moment";
 import dictOptions from "./dictOptions";
-import api from '@/utils/api';
+import api from "@/utils/api";
 
 const planColumns = [
   {
@@ -1424,7 +1456,7 @@ const insuredColumns = [
     title: "证件类型",
     dataIndex: "idType",
     key: "idType",
-    scopedSlots: { customRender: 'idType' }
+    scopedSlots: { customRender: "idType" }
   },
   {
     title: "证件号码",
@@ -1440,19 +1472,19 @@ const insuredColumns = [
     title: "性别",
     dataIndex: "sex",
     key: "sex",
-    scopedSlots: { customRender: 'sex' }
+    scopedSlots: { customRender: "sex" }
   },
   {
     title: "有无社保",
     dataIndex: "socialsecurity",
     key: "socialsecurity",
-    scopedSlots: { customRender: 'socialsecurity' }
+    scopedSlots: { customRender: "socialsecurity" }
   },
   {
     title: "职业类别",
     dataIndex: "occType",
     key: "occType",
-    scopedSlots: { customRender: 'occType' }
+    scopedSlots: { customRender: "occType" }
   },
   {
     title: "承保职业",
@@ -1463,7 +1495,7 @@ const insuredColumns = [
     title: "是否主被保人",
     dataIndex: "isMain",
     key: "isMain",
-    scopedSlots: { customRender: 'isMain' }
+    scopedSlots: { customRender: "isMain" }
   },
   {
     title: "操作",
@@ -1500,10 +1532,11 @@ export default {
       previewImage: "",
       fileList: [
         {
-          uid: '1',
+          uid: "1",
           name: "xxx.png",
           // status: 'done',
-          url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+          url:
+            "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
         }
       ],
       planRecord: {
@@ -1577,108 +1610,124 @@ export default {
     };
   },
   filters: {
-    filterSex: (val) => {
-      return val === 'M' ? '男' : '女'
+    filterSex: val => {
+      return val === "M" ? "男" : "女";
     },
-    filterState: (val) => {
-      return val === 'Y' ? '是' : '否'
+    filterState: val => {
+      return val === "Y" ? "是" : "否";
     },
     filterIdType: (val, idTypeOptions) => {
-      // let item = idTypeOptions.filter((val) =>{ 
+      // let item = idTypeOptions.filter((val) =>{
       //   console.log(val, '121212')
       //   return val.value == val
       // })
       // console.log('filterIdType -> idTypeOptions -> ', item, val)
-      return idTypeOptions[val].name
+      return idTypeOptions[val].name;
     },
     filterIdTypeCompany: (val, idTypeOptions) => {
-      return idTypeCompanyOptions[val].name
-    },
+      return idTypeCompanyOptions[val].name;
+    }
   },
-  beforeCreate (e) {
-    console.log(e, this)
+  beforeCreate(e) {
+    console.log(e, this);
   },
   mounted() {
-    console.log(this.$route)
-    let { name, params} = this.$route
-    if (name === 'bx_order_detail') {
-      this.editable = false
-    } else if (name === 'bx_order_edit') {
-      this.update_order = true
+    console.log(this.$route);
+    let { name, params } = this.$route;
+    if (name === "bx_order_detail") {
+      this.editable = false;
+    } else if (name === "bx_order_edit") {
+      this.update_order = true;
     } else {
-      this.add_order = true
+      this.add_order = true;
     }
     if (params.id) {
-      this.fetchPolicyDetailById(params.id)
+      this.fetchPolicyDetailById(params.id);
     }
-    this.fetchProvince()
+    this.fetchProvince();
 
-    let item = this.idTypeOptions.filter((val) =>{ 
-      console.log(val, '121212')
-      return val.value == '0'
-    })
-    console.log('filterIdType -> idTypeOptions -> ', item)
+    let item = this.idTypeOptions.filter(val => {
+      console.log(val, "121212");
+      return val.value == "0";
+    });
+    console.log("filterIdType -> idTypeOptions -> ", item);
   },
   methods: {
     moment,
-    fetchPolicyDetailById (id) {
-      api.policyDetailById({
-        id: parseInt(id)
-      }).then(res => res.data).then(data => {
-        // application: {}, // 投保人信息
-        // bankInfo: {}, // 银行
-        // legal: {}, // 法人信息
-        // likeman: {}, // 联系人
-        // receiptor: {} // 收益人信息
-
-        const { content } = data
-        let arr = ['application', 'bankInfo', 'legal', 'likeman', 'receiptor']
-        for (let i = 0; i < arr.length; i++) {
-          let key = arr[i]
-          if (!content[key]) {
-            content[key] = {}
-          }
-        }
-        console.log('fetchPolicyDetailById -> ', data.content)
-        this.planData = content.planList
-        this.insuredData = content.insureList
-        this.fileList = content.fileList.map((item, index) => {
-          console.log(item, index, '1111')
-          return {
-            uid: index,
-            name: item.name,
-            url: item.url
-          }
+    fetchPolicyDetailById(id) {
+      api
+        .policyDetailById({
+          id: parseInt(id)
         })
-        this.allFormData = {
-          ...content,
-          rangeDate: [moment(content.startDate), moment(content.endDate)]
-        }
+        .then(res => res.data)
+        .then(data => {
+          // application: {}, // 投保人信息
+          // bankInfo: {}, // 银行
+          // legal: {}, // 法人信息
+          // likeman: {}, // 联系人
+          // receiptor: {} // 收益人信息
 
-        console.log(this.fileList, 'fileList -> 11111111')
-      })
+          const { content } = data;
+          let arr = [
+            "application",
+            "bankInfo",
+            "legal",
+            "likeman",
+            "receiptor"
+          ];
+          for (let i = 0; i < arr.length; i++) {
+            let key = arr[i];
+            if (!content[key]) {
+              content[key] = {};
+            }
+          }
+          console.log("fetchPolicyDetailById -> ", data.content);
+          this.planData = content.planList;
+          this.insuredData = content.insureList;
+          this.fileList = content.fileList.map((item, index) => {
+            console.log(item, index, "1111");
+            return {
+              uid: index,
+              name: item.name,
+              url: item.url
+            };
+          });
+          this.allFormData = {
+            ...content,
+            rangeDate: [moment(content.startDate), moment(content.endDate)]
+          };
+
+          console.log(this.fileList, "fileList -> 11111111");
+        });
     },
-    fetchProvince () {
-      return api.getAllProvince().then(res => res.data).then(data => {
-        const {content} = data
-        this.provinceOptions = content
-      })
+    fetchProvince() {
+      return api
+        .getAllProvince()
+        .then(res => res.data)
+        .then(data => {
+          const { content } = data;
+          this.provinceOptions = content;
+        });
     },
-    getCityByProvinceId (provinceCode) {
-      return api.getCityByProvinceId({
-        provinceCode
-      }).then(res => res.data)
+    getCityByProvinceId(provinceCode) {
+      return api
+        .getCityByProvinceId({
+          provinceCode
+        })
+        .then(res => res.data);
     },
-    getAreaByCityCode (cityCode) {
-      return api.getAreaByCityCode({
-        cityCode
-      }).then(res => res.data)
+    getAreaByCityCode(cityCode) {
+      return api
+        .getAreaByCityCode({
+          cityCode
+        })
+        .then(res => res.data);
     },
-    handleBAProvinceChange (code) {
-      console.log('银行市级选择')
+    handleBAProvinceChange(code) {
+      console.log("银行市级选择");
       this.getCityByProvinceId(code).then(data => {
-        this.cityBAOptions = data.content
-      })
+        this.cityBAOptions = data.content;
+      });
     },
     changeYiWai(e) {
       console.log(e, "changeYiWai -> ");
@@ -1702,14 +1751,14 @@ export default {
     handleProvinceChange(code) {
       console.log("handleProvinceChange -> ", code);
       this.getCityByProvinceId(code).then(data => {
-        this.cityOptions = data.content
-      })
+        this.cityOptions = data.content;
+      });
     },
     handleCityChange(code) {
       console.log("handleCityChange -> ", code);
       this.getAreaByCityCode(code).then(data => {
-        this.areaOptions = data.content
-      })
+        this.areaOptions = data.content;
+      });
     },
     handleImagePreviewCancel() {
       this.previewVisible = false;
@@ -1720,7 +1769,7 @@ export default {
     },
     handleImagePreviewChange({ fileList }) {
       this.fileList = fileList;
-      console.log('handle upload change -> fileList -> ', fileList)
+      console.log("handle upload change -> fileList -> ", fileList);
     },
     editBbr(record, index) {
       this.insuredRecord = {
@@ -1867,26 +1916,32 @@ export default {
       }
       console.log("postData -> ", params);
       if (this.update_order) {
-        params.id = this.$route.params.id
-        api.updatePolicy(params).then(res => res.data).then(data => {
-          window.message.success('修改成功！准备跳转...')
-          let st = setTimeout(() => {
-            clearTimeout(st)
-            this.forwardToList()
-          }, 2000);
-        })
-          return
+        params.id = this.$route.params.id;
+        api
+          .updatePolicy(params)
+          .then(res => res.data)
+          .then(data => {
+            window.message.success("修改成功！准备跳转...");
+            let st = setTimeout(() => {
+              clearTimeout(st);
+              this.forwardToList();
+            }, 2000);
+          });
+        return;
       }
-      api.addPolicy(params).then(res => res.data).then(data => {
-        window.message.success('保存成功！准备跳转...')
-        let st = setTimeout(() => {
-          clearTimeout(st)
-          this.forwardToList()
-        }, 2000);
-      })
+      api
+        .addPolicy(params)
+        .then(res => res.data)
+        .then(data => {
+          window.message.success("保存成功！准备跳转...");
+          let st = setTimeout(() => {
+            clearTimeout(st);
+            this.forwardToList();
+          }, 2000);
+        });
     },
-    forwardToList () {
-      this.$router.push('/bxOrder/list')
+    forwardToList() {
+      this.$router.push("/bxOrder/list");
     }
   }
 };

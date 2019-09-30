@@ -1,1 +1,1 @@
-export const LOGIN_STATE = 'login_state'
+export const LOGIN_STATE = "login_state";

@@ -36,10 +36,12 @@
     </a-form>
     <a-table style="margin-top: 50px;" :dataSource="data" :columns="columns">
       <template slot="type">
-        {{type == 1 ? '菜单' : '按钮'}}
+        {{ type == 1 ? "菜单" : "按钮" }}
       </template>
       <template slot="operation" slot-scope="text, record">
-        <a-button type="primary"><a-icon type="delete"></a-icon>删除</a-button>
+        <a-button @click="delRecord(record)" type="primary"
+          ><a-icon type="delete"></a-icon>删除</a-button
+        >
         <router-link :to="'/adminMenu/edit/' + record.id">
           <a-button class="marg_l8_" type="primary" ghost
             ><a-icon type="edit"></a-icon>编辑</a-button
@@ -65,6 +67,8 @@
 }
 </style>
 <script>
+import api from "@/utils/api";
+
 const columns = [
   {
     title: "菜单id",
@@ -80,7 +84,7 @@ const columns = [
     title: "资源类型",
     dataIndex: "type",
     key: "type",
-    scopedSlots: { customRender: 'type' }
+    scopedSlots: { customRender: "type" }
   },
   {
     title: "菜单路径",
@@ -124,16 +128,49 @@ export default {
           placeholder: "请输入菜单路径",
           dataIndex: "url"
         }
-      ]
+      ],
+      pagination: {
+        total: 1,
+        pageSize: 20
+      }
     };
   },
+  mounted() {
+    this.fetchList();
+  },
   methods: {
+    delRecord(record) {
+      api
+        .updateResource({
+          id: record.id
+        })
+        .then(res => {
+          this.fetchList();
+        });
+    },
+    fetchList(pageNum = 1, options) {
+      const params = {
+        pageNum,
+        pageSize: this.pagination.pageSize
+      };
+      for (let key in options) {
+        let val = options[key];
+        if (val) {
+          params[key] = val;
+        }
+      }
+      api
+        .getResourceList(params)
+        .then(res => res.data)
+        .then(data => {
+          const { list } = data.content;
+          this.data = list;
+        });
+    },
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log("form values -> ", values);
-        }
+        this.fetchList(1, values);
       });
     }
   }
