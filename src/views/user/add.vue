@@ -11,7 +11,7 @@
             <a-select
               style="width: 150px;"
               v-if="item.input_type === 'statusSelect'"
-              v-decorator="[item.dataIndex]"
+              v-decorator="[item.dataIndex,{initialValue:item.initialValue}]"
               :placeholder="item.placeholder"
             >
               <a-select-option
@@ -24,7 +24,7 @@
             <a-select
               style="width: 150px;"
               v-else-if="item.input_type === 'userTypeSelect'"
-              v-decorator="[item.dataIndex]"
+              v-decorator="[item.dataIndex,{initialValue:item.initialValue}]"
               :placeholder="item.placeholder"
               @change="handleSearchChange"
             >
@@ -37,11 +37,10 @@
             </a-select>
             <a-checkbox-group
               v-else-if="item.input_type === 'check_group'"
-              v-decorator="[item.dataIndex,{...selectRequired}]"
+              v-decorator="[item.dataIndex,{...selectRequired,initialValue:checkedList}]"
               style="width: 100%;"
-              :defaultValue="checkedList"
             >
-              <a-row>
+             <a-row>
                 <a-col :span="24">
                   <a-checkbox v-for="option in item.options" :key="option.value" :value="option.value">{{option.name}}</a-checkbox>
                 </a-col>
@@ -102,7 +101,7 @@ export default {
         labelCol: { span: 3 },
         wrapperCol: { span: 8 }
       },
-      checkedList:[],
+      checkedList:["1","2"],
       userId: '', //编辑使用,用户id
       form: this.$form.createForm(this),
       formInputs: [
