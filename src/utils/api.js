@@ -221,14 +221,41 @@ api.queryUser = function(data) {
   return instance.post("/backstage/user/getUserList", data);
 };
 
+
 //查询用户
 api.getUser = function(data) {
-  return instance.post("backstage/user/getUserById", data);
-};
+  return instance.post("backstage/user/getUserById", qs.stringify(data))
+}
 
 //查询角色列表
 api.getRoleList = function(data) {
-  return instance.post("backstage/roles/getRolesList", data);
-};
+  return instance.post("backstage/roles/getRolesList", qs.stringify(data))
+}
 
+
+//删除或更新角色
+api.updateRole = function(data) {
+  return instance.post("backstage/roles/updateRoles", qs.stringify(data))
+}
+
+//查询角色
+api.getRole = function(data) {
+  return instance.post("backstage/roles/getRolesById", qs.stringify(data))
+}
+
+//查询所有角色
+api.getAllRole = function(data) {
+  return instance.post("/backstage/user/getRole", qs.stringify(data))
+}
+
+
+//增加角色
+api.addRole = function(data) {
+  return instance.post("backstage/roles/saveRoles", qs.stringify(data))
+}
+
+//查询查询所有系统资源
+api.getResource = function(data) {
+  return instance.post("backstage/roles/getResource", qs.stringify(data))
+}
 export default api;

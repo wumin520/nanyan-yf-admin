@@ -96,13 +96,6 @@ const columns = [
   }
 ];
 const data = [];
-for (var i = 0; i < 3; i++) {
-  data.push({
-    roleName: "小站",
-    roleCode: "101",
-    modifier: "ssh"
-  });
-}
 export default {
   data() {
     return {
@@ -112,10 +105,10 @@ export default {
         showSizeChanger: true, // 显示可改变每页数量
         pageSizeOptions: ["1", "20", "50", "100"], // 每页数量选项
         showTotal: total => `总共 ${total} 条`, // 显示总数
-        onShowSizeChange: (current, pageSize) => (this.pageSize = pageSize), // 改变每页数量时更新显示
-        onChange: (page, pageSize) => self.changePage(page, pageSize), //点击页码事件
-        total: 0 //总条数
-      },
+        onShowSizeChange: (current, pageSize) => this.pageSize = pageSize, // 改变每页数量时更新显示
+        onChange:(page,pageSize)=>this.changePage(page,pageSize),//点击页码事件
+        total:0 //总条数
+       },
       data,
       columns,
       form: this.$form.createForm(this),
@@ -140,49 +133,65 @@ export default {
       //  console.log("page ->>",this.pagination.pageNo,this.pagination.pageSize)
       this.getRoleList();
     },
-    editRecord(record) {
-      console.log(record, "1");
-      this.$router.push("/role/edit/" + record.id);
+    editRecord (record) {
+      // console.log(record, '1')
+      this.$router.push('/role/edit/' + record.id)
     },
-    deleteRecord(record, index) {
-      data.splice(index, 1);
+    deleteRecord (record, index) { //删除角色
+      this.data.splice(index, 1)
+      console.log("-->deleteRecord",record,index)
+      let data ={
+          id:record.id,//	id
+          status: 2,  //	1,有效，2,无效
+        }
+      api.updateRole(data).then((res) => {
+              if(res.data.returnCode !== "0000"){
+              this.$message.info(res.data.returnMsg);
+            } else{
+              this.$message.info("保存成功");
+            }
+            }).catch((err) => {
+              this.$message.info("网络异常")
+            })
     },
     handleSubmit(e) {
       e.preventDefault();
-      this.getRoleList();
+      this.getRoleList()   //查询角色
     },
-    getRoleList() {
+    getRoleList() {     //获取角色列表
       this.form.validateFields((err, values) => {
-        let data = {
-          roleCode: values.name, //	用户名称
-          roleName: values.userName, //	用户账号
-          pageNum: this.pagination.pageNo, //	当前页码
-          pageSize: this.pagination.pageSize //	当前页面显示的数据条目
-        };
+        let data ={
+          roleCode:	values.roleCode, //	用户名称
+          roleName:	values.roleName, //	用户账号
+          pageNum:	this.pagination.pageNo, //	当前页码
+          pageSize:	this.pagination.pageSize //	当前页面显示的数据条目
+        }
         if (!err) {
-          api
-            .getRoleList(data)
-            .then(res => {
-              if (res.data.returnCode !== "0000") {
-                this.$message.info(res.data.returnMsg);
-              } else {
-                this.data = []; //重置data
-                res.data.content.list.forEach(item => {
-                  this.data.push({
-                    roleName: item.roleName,
-                    roleCode: item.roleCode,
-                    modifier: item.modifier,
-                    id: item.id
-                  });
-                });
-              }
-            })
-            .catch(err => {
-              console.log(err);
-            });
+         
+          api.getRoleList(data).then((res) => {
+            if(res.data.returnCode !== "0000"){
+              this.$message.info(res.data.returnMsg);
+            } else{
+              this.data = []  //重置data
+              res.data.content.list.forEach(item => {
+                this.data.push({
+                  roleName: item.roleName,
+                  roleCode: item.roleCode,
+                  modifier: item.modifier,
+                  status: item.status,
+                  id: item.id
+                })
+              });
+            }
+          }).catch((err) => {
+            this.$message.info("网络异常")
+          })
         }
       });
     }
+  },
+  mounted() {
+    this.getRoleList() 
   }
 };
 </script>

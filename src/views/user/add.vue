@@ -62,9 +62,8 @@
             </a-checkbox-group>
 
             <a-input
-              v-else-if="item.input_type === 'input'"
-              v-decorator="[
-                item.dataIndex,
+              v-else-if="item.input_type === 'input'  && item.dataIndex !== 'userEmail'"
+              v-decorator="[item.dataIndex,
                 {
                   ...inputRequired,
                   initialValue: item.initialValue
@@ -73,11 +72,19 @@
               :placeholder="item.placeholder"
             ></a-input>
             <a-input
-              v-else
-              v-decorator="[item.dataIndex]"
+              v-else-if="item.input_type === 'input'  && item.dataIndex !== 'userEmail'"
+              v-decorator="[item.dataIndex,
+                {
+                  ...emailRequired,initialValue: item.initialValue
+                }]"
               :placeholder="item.placeholder"
-              :disabled="item.isShow"
             ></a-input>
+              <a-input 
+                v-else
+                v-decorator="[item.dataIndex]"
+                :placeholder="item.placeholder"
+                :disabled="item.isShow"
+              ></a-input>
           </a-form-item>
         </a-col>
         <a-col :offset="3" :span="24">
@@ -109,9 +116,14 @@
     }
   }
 }
+
+.ant-checkbox-wrapper + .ant-checkbox-wrapper{
+  margin-left: 0;
+}
 </style>
 <script>
-import api from "@/utils/api";
+import api from '@/utils/api';
+import qs from 'qs'
 
 export default {
   data() {
@@ -120,8 +132,8 @@ export default {
         labelCol: { span: 3 },
         wrapperCol: { span: 8 }
       },
-      checkedList: ["1", "2"],
-      userId: "", //编辑使用,用户id
+      checkedList:[],
+      userId: '', //编辑使用,用户id
       form: this.$form.createForm(this),
       formInputs: [
         {
@@ -253,6 +265,18 @@ export default {
             message: "请输入"
           }
         ]
+      },
+      emailRequired: {
+        rules: [
+          {
+              type: 'email', 
+              message: '邮箱格式不合法!',
+          },
+          {
+            required: true,
+            message: "请输入"
+          }
+        ]
       }
     };
   },
@@ -294,19 +318,17 @@ export default {
         };
         if (!err) {
           // console.log("form values -> ", values);
-          api
-            .addUser(data)
-            .then(res => {
-              console.log(res);
-              if (res.data.returnCode !== "0000") {
-                this.$message.info(res.data.returnMsg);
-              } else {
-                this.$message.info("保存成功");
-              }
-            })
-            .catch(err => {
-              console.log(err);
-            });
+          api.addUser(qs.stringify(data)).then((res) => {
+            // console.log(res)
+             if(res.data.returnCode !== "0000"){
+              this.$message.info(res.data.returnMsg);
+            } else{
+              this.$message.info("保存成功");
+              this.$router.push({name:'user'})
+            }
+          }).catch((err) => {
+            this.$message.info("网络异常")
+          })
         }
       });
     },
@@ -328,43 +350,59 @@ export default {
           roleIdList: values.roleIdList.join() //用户角色id集合
         };
         if (!err) {
-          console.log("form values -> ", values);
-          api
-            .updateUser(data)
-            .then(res => {
-              // console.log(res)
-              if (res.data.returnCode !== "0000") {
-                this.$message.info(res.data.returnMsg);
-              } else {
-                this.$message.info("保存成功");
-              }
-            })
-            .catch(err => {
-              console.log(err);
-            });
+          // console.log("form values -> ", values);
+          api.updateUser(qs.stringify(data)).then((res) => {
+            // console.log(res)
+            if(res.data.returnCode !== "0000"){
+              this.$message.info(res.data.returnMsg);
+            } else{
+              this.$message.info("保存成功");
+              this.$router.push({name:'user'})
+            }
+          }).catch((err) => {
+            this.$message.info("网络异常")
+          })
         }
       });
     }
   },
   created() {
     // console.log("this.$route.query ->",this.$route.params)
-    this.userId = this.$route.params;
-    // console.log(this.userId)
-    api.getUser({ id: this.userId.id }).then(res => {
-      console.log(res.data.content);
-      this.formInputs[0].initialValue = res.data.content.userName;
-      this.formInputs[1].initialValue = res.data.content.userPassword;
-      this.formInputs[2].initialValue = res.data.content.userTel;
-      this.formInputs[3].initialValue = res.data.content.userEmail;
-      this.formInputs[4].initialValue = res.data.content.roleIdList;
-      this.formInputs[5].initialValue = res.data.content.userType;
-      this.formInputs[8].initialValue = res.data.content.name;
-      this.formInputs[9].initialValue = res.data.content.userAddr;
-      this.formInputs[10].initialValue = res.data.content.status;
-      this.checkedList = res.data.content.roleIdList.split(",");
-      console.log("角色", this.checkedList);
-      console.log("状态", res.data.content.status);
-    });
+    this.userId = this.$route.params
+    let promiseOne = new Promise((result, reject) => {
+        api.getAllRole().then((res) => {
+        this.formInputs[4].options = []
+        res.data.content.forEach((item) => {
+            this.formInputs[4].options.push({
+              name: item.roleName,
+              value: item.id.toString()
+            })
+        })
+         result()
+        }).catch((err) => {
+          console.log(err)
+          reject()
+        })
+    })
+
+    promiseOne.then(() => {
+        api.getUser({id:this.userId.id}).then((res) => {
+        this.formInputs[0].initialValue = res.data.content.userName
+        this.formInputs[1].initialValue = res.data.content.userPassword
+        this.formInputs[2].initialValue = res.data.content.userTel
+        this.formInputs[3].initialValue = res.data.content.userEmail
+        this.formInputs[5].initialValue = res.data.content.userType
+        this.formInputs[8].initialValue = res.data.content.name
+        this.formInputs[9].initialValue = res.data.content.userAddr
+        this.formInputs[10].initialValue = res.data.content.status
+        this.checkedList = res.data.content.roleIdList.split(",")
+        console.log(res.data.content.roleIdList,"角色",this.checkedList)
+        // console.log("状态",res.data.content.status)
+      })
+    })
+    
+
+    
   }
 };
 </script>
