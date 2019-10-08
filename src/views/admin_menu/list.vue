@@ -35,8 +35,8 @@
       </a-row>
     </a-form>
     <a-table style="margin-top: 50px;" :dataSource="data" :columns="columns">
-      <template slot="type">
-        {{ type == 1 ? "菜单" : "按钮" }}
+      <template slot="type" slot-scope="text">
+        {{ text == 1 ? "菜单" : "按钮" }}
       </template>
       <template slot="operation" slot-scope="text, record">
         <a-button @click="delRecord(record)" type="primary"
@@ -142,7 +142,8 @@ export default {
     delRecord(record) {
       api
         .updateResource({
-          id: record.id
+          id: record.id,
+          status: 2
         })
         .then(res => {
           this.fetchList();

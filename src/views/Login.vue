@@ -57,7 +57,7 @@
           >
             <!-- <a-icon slot="suffix" type="lock" style="color: rgba(0,0,0,.25)" /> -->
           </a-input>
-          <img class="veri_code_" src="" />
+          <img class="veri_code_" src="/api/backstage/user/getVerificationCode" />
         </a-form-item>
         <a-form-item>
           <!-- <a-checkbox

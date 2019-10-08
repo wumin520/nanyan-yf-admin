@@ -83,7 +83,7 @@
             <a-input
               v-if="editable"
               v-decorator="[
-                'name_applicant',
+                'name_application',
                 {
                   ...inputRequired,
                   initialValue: allFormData.application.name
@@ -98,7 +98,7 @@
             <a-select
               v-if="editable"
               v-decorator="[
-                'idType_applicant',
+                'idType_application',
                 {
                   ...inputRequired,
                   initialValue: allFormData.application.idType
@@ -120,7 +120,7 @@
             <a-input
               v-if="editable"
               v-decorator="[
-                'idno_applicant',
+                'idNo_application',
                 {
                   ...inputRequired,
                   initialValue: allFormData.application.idno
@@ -136,10 +136,10 @@
               placeholder="请选择"
               v-if="editable"
               v-decorator="[
-                'endDate_applicant',
+                'idEndDate_application',
                 {
                   ...selectRequired,
-                  initialValue: allFormData.application.endDate
+                  initialValue: moment(allFormData.application.endDate)
                 }
               ]"
             ></a-date-picker>
@@ -151,7 +151,7 @@
             <a-input
               v-if="editable"
               v-decorator="[
-                'empNum_applicant',
+                'empNum_application',
                 {
                   ...inputRequired,
                   initialValue: allFormData.application.empNum
@@ -166,7 +166,7 @@
             <a-input
               v-if="editable"
               v-decorator="[
-                'bussionessScope_applicant',
+                'bussionessScope_application',
                 {
                   ...inputRequired,
                   initialValue: allFormData.application.bussionessScope
@@ -181,10 +181,10 @@
             <a-date-picker
               v-if="editable"
               v-decorator="[
-                'establishmentDate_applicant',
+                'establishmentDate_application',
                 {
                   ...inputRequired,
-                  initialValue: allFormData.application.establishmentDate
+                  initialValue: moment(allFormData.application.establishmentDate)
                 }
               ]"
               placeholder="请选择"
@@ -197,7 +197,7 @@
             <a-input
               v-if="editable"
               v-decorator="[
-                'unitNatrue_applicant',
+                'unitNatrue_application',
                 {
                   ...inputRequired,
                   initialValue: allFormData.application.unitNatrue
@@ -214,7 +214,7 @@
                 <a-select
                   v-if="editable"
                   v-decorator="[
-                    'bigType_applicant',
+                    'bigType_application',
                     {
                       ...selectRequired,
                       initialValue: allFormData.application.bigType
@@ -239,7 +239,7 @@
             <a-input
               v-if="editable"
               v-decorator="[
-                'socialInsuranceNo_applicant',
+                'socialInsuranceNo_application',
                 {
                   ...inputRequired,
                   initialValue: allFormData.application.socialInsuranceNo
@@ -254,7 +254,7 @@
             <a-input
               v-if="editable"
               v-decorator="[
-                'unitPhone_applicant',
+                'unitPhone_application',
                 {
                   ...inputRequired,
                   initialValue: allFormData.application.unitPhone
@@ -269,7 +269,7 @@
             <a-select
               v-if="editable"
               v-decorator="[
-                'ratepayerType_applicant',
+                'ratepayerType_application',
                 {
                   ...selectRequired,
                   initialValue: allFormData.application.ratepayerType
@@ -293,7 +293,7 @@
               v-if="editable"
               @change="handleProvinceChange"
               v-decorator="[
-                'province_applicant',
+                'province_application',
                 {
                   ...selectRequired,
                   initialValue: allFormData.application.province
@@ -317,7 +317,7 @@
               v-if="editable"
               @change="handleCityChange"
               v-decorator="[
-                'city_applicant',
+                'city_application',
                 {
                   ...selectRequired,
                   initialValue: allFormData.application.city
@@ -340,7 +340,7 @@
             <a-select
               v-if="editable"
               v-decorator="[
-                'area_applicant',
+                'area_application',
                 {
                   ...selectRequired,
                   initialValue: allFormData.application.area
@@ -363,7 +363,7 @@
             <a-input
               v-if="editable"
               v-decorator="[
-                'detailAddress_applicant',
+                'detailAddress_application',
                 {
                   ...inputRequired,
                   initialValue: allFormData.application.detailAddress
@@ -893,7 +893,7 @@
             </a-radio-group>
           </a-form-item>
         </a-col>
-        <a-col v-if="editable" :span="12">
+        <a-col v-if="editable && !update_order" :span="12">
           <a-form-item
             v-if="insurceType == 1"
             v-bind="formItemLayout"
@@ -1073,7 +1073,7 @@
         <a-form-item label="保额(元)">
           <a-input
             v-decorator="[
-              'planValue',
+              'coverage',
               {
                 initialValue: planRecord.planValue,
                 rules: [
@@ -1092,7 +1092,7 @@
         <a-form-item label="免赔额">
           <a-input
             v-decorator="[
-              'planAmountValue',
+              'deductibleExcess',
               {
                 initialValue: planRecord.planAmountValue,
                 rules: [
@@ -1107,21 +1107,21 @@
           >
           </a-input>
         </a-form-item>
-        <a-form-item label="赔付比例">
+        <a-form-item label="赔付比率">
           <a-input
             v-decorator="[
-              'planRateValue',
+              'lossRation',
               {
                 initialValue: planRecord.planRateValue,
                 rules: [
                   {
                     required: true,
-                    message: '请输入赔付比例'
+                    message: '请输入赔付比率'
                   }
                 ]
               }
             ]"
-            placeholder="请输入赔付比例"
+            placeholder="请输入赔付比率"
           >
           </a-input>
         </a-form-item>
@@ -1425,18 +1425,18 @@ const planColumns = [
   },
   {
     title: "保额(元)",
-    dataIndex: "planValue",
-    key: "planValue"
+    dataIndex: "coverage",
+    key: "coverage"
   },
   {
     title: "免赔额",
-    dataIndex: "planValue1",
-    key: "planValue1"
+    dataIndex: "deductibleExcess",
+    key: "deductibleExcess"
   },
   {
     title: "赔付比率",
-    dataIndex: "planValue2",
-    key: "planValue2"
+    dataIndex: "lossRation",
+    key: "lossRation"
   },
   {
     title: "操作",
@@ -1509,6 +1509,7 @@ export default {
   data() {
     return {
       editable: true,
+      update_order: false, // 是否是修改
       allFormData: {
         application: {}, // 投保人信息
         bankInfo: {}, // 银行
@@ -1610,6 +1611,8 @@ export default {
     };
   },
   filters: {
+    filterProvince (val) {
+    },
     filterSex: val => {
       return val === "M" ? "男" : "女";
     },
@@ -1632,7 +1635,8 @@ export default {
     console.log(e, this);
   },
   mounted() {
-    console.log(this.$route);
+    let date = moment('2019-06-01')
+    console.log(this.$route, typeof date, date instanceof moment, '111');
     let { name, params } = this.$route;
     if (name === "bx_order_detail") {
       this.editable = false;
@@ -1707,6 +1711,7 @@ export default {
         .then(data => {
           const { content } = data;
           this.provinceOptions = content;
+
         });
     },
     getCityByProvinceId(provinceCode) {
@@ -1857,7 +1862,7 @@ export default {
           // }
           if (this.planRecord.key !== undefined) {
             // 正在编辑
-            this.planData[this.planRecord.key] = values;
+            this.planData[this.planRecord.key] = {...this.planRecord, ...values};
             this.planData = [...this.planData];
             this.planRecord = {};
           } else {
@@ -1883,18 +1888,22 @@ export default {
         if (!err) {
           console.log("form values -> ", values);
           this.postData(values);
+        } else {
+          window.message.info('请填写相关必填项')
         }
       });
     },
     postData(values) {
       let planList = [
-        ...this.planData,
-        {
-          planName: "意外伤害",
-          planValue: values.customSpecialAmount,
-          insurceType: 1
-        }
+        ...this.planData
       ];
+      if (!this.update_order) {
+        planList.push(        {
+          planName: "意外伤害",
+          coverage: values.customSpecialAmount,
+          insurceType: 1
+        })
+      }
       let params = {
         startDate: values.rangeDate[0].format("YYYY-MM-DD"),
         endDate: values.rangeDate[1].format("YYYY-MM-DD"),
@@ -1908,8 +1917,12 @@ export default {
           let arr = key.split("_");
           let pre = arr[0];
           let objKey = arr[1];
+          let val = copyValues[key];
           params[objKey] = params[objKey] || {};
-          params[objKey][pre] = copyValues[key];
+          if (val instanceof moment) {
+            val = val.format('YYYY-MM-DD')
+          }
+          params[objKey][pre] = val;
         } else if (copyValues[key] && typeof copyValues[key] !== "object") {
           params[key] = copyValues[key];
         }

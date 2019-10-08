@@ -17,8 +17,12 @@ export const transformMenuData = function transformMenuData(arr) {
       key: item.id,
       title: item.name,
       name: item.name,
-      url: item.url
+      url: item.url,
+      value: item.id.toString()
     };
+    if (item.type === '2') {
+      obj.disabled = true;
+    }
     if (item.childEbResourceVos && item.childEbResourceVos.length > 0) {
       obj.children = transformMenuData(item.childEbResourceVos);
     }

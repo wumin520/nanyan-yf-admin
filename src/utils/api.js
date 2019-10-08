@@ -142,7 +142,7 @@ api.allPolicyList = function(data) {
 };
 // 保单详情
 api.policyDetailById = function(data) {
-  return instance.post("/backstage/policy/policyDetailById", data);
+  return instance.post(`/backstage/policy/policyDetailById`, data);
 };
 // 保险公司列表
 api.companyList = function() {
@@ -156,7 +156,7 @@ api.exitLogin = function(data) {
 
 // 查询系统资源列表
 api.getResourceList = function(data) {
-  return instance.post("/backstage/resource/getResourceList", data);
+  return instance.post(`/backstage/resource/getResourceList?${qs.stringify(data)}`);
 };
 // 查询资源详情
 api.getResourceById = function(data) {

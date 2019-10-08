@@ -9,6 +9,7 @@
           placeholder="请选择"
           treeDefaultExpandAll
           v-model="formInfo.id"
+          @change="onChange"
         >
           <span
             style="color: #08c"
@@ -55,7 +56,7 @@
       <a-form-item label="菜单类型" v-bind="formItemLayout">
         <a-select
           v-decorator="[
-            'menuType',
+            'type',
             {
               initialValue: formInfo.type,
               rules: [
@@ -67,8 +68,8 @@
             }
           ]"
         >
-          <a-select-option key="0" value="0">菜单</a-select-option>
-          <a-select-option key="1" value="1">按钮</a-select-option>
+          <a-select-option key="1" value="1">菜单</a-select-option>
+          <a-select-option key="2" value="2">按钮</a-select-option>
         </a-select>
       </a-form-item>
       <a-form-item label="同级排序权重" v-bind="formItemLayout">
@@ -107,40 +108,7 @@
 import api from "@/utils/api";
 import { transformMenuData } from "@/utils/authorized";
 
-const treeData = [
-  {
-    title: "Node1",
-    value: "0-0",
-    key: "0-0",
-    children: [
-      {
-        value: "0-0-1",
-        key: "0-0-1",
-        children: [
-          {
-            value: "0-0-0-1",
-            key: "0-0-0-1",
-            title: "编辑"
-          }
-        ],
-        scopedSlots: {
-          // custom title
-          title: "title"
-        }
-      },
-      {
-        title: "Child Node2",
-        value: "0-0-2",
-        key: "0-0-2"
-      }
-    ]
-  },
-  {
-    title: "Node2",
-    value: "0-1",
-    key: "0-1"
-  }
-];
+const treeData = [];
 export default {
   data() {
     return {
@@ -150,26 +118,9 @@ export default {
       },
       treeExpandedKeys: [],
       form: this.$form.createForm(this),
-      treeList: [
-        {
-          id: 1,
-          name: "用户管理",
-          children: [
-            {
-              id: "1.1",
-              name: "增加"
-            }
-          ]
-        }
-      ],
       treeData,
       value: undefined,
       formInfo: {
-        id: "0-0",
-        name: "用户管理",
-        url: "http://",
-        priority: 0,
-        type: "1"
       }
     };
   },
@@ -184,6 +135,7 @@ export default {
     // })
     const { name, params } = this.$route;
     if (name === "menu_edit") {
+      console.log(name)
     }
     const id = params.id;
     if (id) {
@@ -191,51 +143,16 @@ export default {
       this.fetchDetail(id);
     }
     this.fetchResourceList();
-    let testData = [
-      {
-        id: 1,
-        name: "首页",
-        url: "#",
-        parentId: 0,
-        type: "1",
-        priority: 1,
-        remark: null,
-        status: 1,
-        creator: 1,
-        createDate: "2019-09-27T02:16:27.000+0000",
-        modifier: 1,
-        modifyDate: "2019-09-29T09:13:43.000+0000",
-        modifierName: null,
-        childEbResourceVos: [
-          {
-            id: 1,
-            name: "用户管理",
-            url: "#",
-            parentId: 0,
-            type: "1",
-            priority: 1,
-            remark: null,
-            status: 1,
-            creator: 1,
-            createDate: "2019-09-27T02:16:27.000+0000",
-            modifier: 1,
-            modifyDate: "2019-09-29T09:13:43.000+0000",
-            modifierName: null
-          }
-        ]
-      }
-    ];
-    let arr = transformMenuData(testData);
-    console.log("arr -> ", arr);
   },
   methods: {
     postData(params) {
+      params.parentId = this.formInfo.id
       api
         .saveResource({
           ...params
         })
         .then(res => res.data)
-        .then(data => {
+        .then(() => {
           this.promptMsg("添加成功！正在跳转...");
         });
     },
@@ -258,6 +175,7 @@ export default {
     },
     updateResource(params) {
       params.id = this.edit_id;
+      params.parentId = this.formInfo.id
       api
         .updateResource(params)
         .then(res => res.data)
@@ -271,7 +189,7 @@ export default {
         .then(res => res.data)
         .then(data => {
           console.log(data);
-          const { list } = data.content;
+          this.treeData = transformMenuData(data.content)
         });
     },
     handleSubmit(e) {
@@ -290,6 +208,7 @@ export default {
     onChange(value) {
       console.log(value);
       this.value = value;
+      console.log(this.formInfo, '1')
     }
   }
 };
