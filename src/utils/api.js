@@ -111,7 +111,7 @@ instance.interceptors.response.use(
 
 let api = {};
 api.userLogin = function(data) {
-  return instance.post("backstage/user/login", data);
+  return instance.post("backstage/user/login/authority", data);
 };
 api.getRole = function(data) {
   return instance.post("/backstage/user/getRole", data);
@@ -150,9 +150,10 @@ api.companyList = function() {
 };
 // 退出登录
 api.exitLogin = function(data) {
-  return instance.post("/backstage/user/exit", data);
+  return instance.post("/backstage/user/exit/authority", data);
 };
 // 获取验证码 /backstage/user/getVerificationCode
+
 
 // 查询系统资源列表
 api.getResourceList = function(data) {
@@ -160,15 +161,15 @@ api.getResourceList = function(data) {
 };
 // 查询资源详情
 api.getResourceById = function(data) {
-  return instance.post("/backstage/resource/getResourceById", data);
+  return instance.post("/backstage/resource/getResourceById", qs.stringify(data));
 };
 // 修改、删除资源详情
 api.updateResource = function(data) {
-  return instance.post("/backstage/resource/updateResource", data);
+  return instance.post("/backstage/resource/updateResource", qs.stringify(data));
 };
 // 新增资源详情
 api.saveResource = function(data) {
-  return instance.post("/backstage/resource/saveResource", data);
+  return instance.post("/backstage/resource/saveResource", qs.stringify(data));
 };
 // 查询用户资源菜单
 api.getResourceByUserId = function(data) {
@@ -221,14 +222,41 @@ api.queryUser = function(data) {
   return instance.post("/backstage/user/getUserList", data);
 };
 
+
 //查询用户
 api.getUser = function(data) {
-  return instance.post("backstage/user/getUserById", data);
-};
+  return instance.post("backstage/user/getUserById", qs.stringify(data))
+}
 
 //查询角色列表
 api.getRoleList = function(data) {
-  return instance.post("backstage/roles/getRolesList", data);
-};
+  return instance.post("backstage/roles/getRolesList", qs.stringify(data))
+}
 
+
+//删除或更新角色
+api.updateRole = function(data) {
+  return instance.post("backstage/roles/updateRoles", qs.stringify(data))
+}
+
+//查询角色
+api.getRole = function(data) {
+  return instance.post("backstage/roles/getRolesById", qs.stringify(data))
+}
+
+//查询所有角色
+api.getAllRole = function(data) {
+  return instance.post("/backstage/user/getRole", qs.stringify(data))
+}
+
+
+//增加角色
+api.addRole = function(data) {
+  return instance.post("backstage/roles/saveRoles", qs.stringify(data))
+}
+
+//查询查询所有系统资源
+api.getResource = function(data) {
+  return instance.post("backstage/roles/getResource", qs.stringify(data))
+}
 export default api;

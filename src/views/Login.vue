@@ -51,13 +51,12 @@
                 rules: [{ required: true, message: '请输入验证码' }]
               }
             ]"
-            type="password"
             placeholder="请输入验证码"
             size="large"
           >
             <!-- <a-icon slot="suffix" type="lock" style="color: rgba(0,0,0,.25)" /> -->
           </a-input>
-          <img class="veri_code_" src="/api/backstage/user/getVerificationCode" />
+          <img class="veri_code_" src="/api/backstage/user/getVerificationCode/authority" />
         </a-form-item>
         <a-form-item>
           <!-- <a-checkbox

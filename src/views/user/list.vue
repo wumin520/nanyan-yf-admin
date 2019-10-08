@@ -114,31 +114,17 @@ const columns = [
   }
 ];
 const data = [];
-for (var i = 0; i < 3; i++) {
-  data.push({
-    name: "小站",
-    userName: "101",
-    userType: "ssh",
-    role: "admin",
-    instruct: "百里",
-    createDate: "2019-09-23",
-    lastUpdate: "2019-10-01",
-    status: 1,
-    id: i
-  });
-}
 export default {
   data() {
-    let self = this;
     return {
       pagination: {
         pageNo: 1,
         pageSize: 20, // 默认每页显示数量
         showSizeChanger: true, // 显示可改变每页数量
-        pageSizeOptions: ["1", "20", "50", "100"], // 每页数量选项
+        pageSizeOptions: ["5", "20", "50", "100"], // 每页数量选项
         showTotal: total => `总共 ${total} 条`, // 显示总数
         onShowSizeChange: (current, pageSize) => (this.pageSize = pageSize), // 改变每页数量时更新显示
-        onChange: (page, pageSize) => self.changePage(page, pageSize), //点击页码事件
+        onChange: (page, pageSize) => this.changePage(page, pageSize), //点击页码事件
         total: 0 //总条数
       },
       data,
@@ -201,7 +187,7 @@ export default {
       //  console.log("page ->>",this.pagination.pageNo,this.pagination.pageSize)
       this.getList();
     },
-    getList() {
+    getList() {   //获取用户列表
       this.form.validateFields((err, values) => {
         let data = {
           name: values.name, //	用户名称
@@ -213,39 +199,31 @@ export default {
         };
         if (!err) {
           // console.log("form values -> ", values);
-          api
-            .queryUser(data)
-            .then(res => {
-              this.data = []; //重置data
-              res.data.content.list.forEach(item => {
-                if (item.userType == 1) {
-                  item.userType = "南燕";
-                } else if (item.userType == 2) {
-                  item.userType = "保司";
-                } else {
-                  item.userType == "客户";
-                }
-                this.data.push({
-                  name: item.name,
-                  userName: item.userName,
-                  userType: item.userType,
-                  role: item.roleNameList,
-                  createDate: item.createDate.substr(0, 10),
-                  lastUpdate: item.modifyDate.substr(0, 10),
-                  status: item.status,
-                  id: item.id
-                });
-              });
-            })
-            .catch(err => {
-              console.log(err);
-            })
-            .then(res => {
-              console.log(res);
-            })
-            .catch(err => {
-              console.log(err);
+          api.queryUser(qs.stringify(data)).then((res) => {
+            this.data = []  //重置data
+            this.pagination.total = res.data.content.total  //获得总数据
+            res.data.content.list.forEach(item => {
+            if(item.userType == 1){
+              item.userType = "南燕"
+            } else if(item.userType == 2){
+              item.userType = "保司"
+            } else {
+              item.userType == "客户"
+            }
+              this.data.push({
+                name: item.name,
+                userName: item.userName,
+                userType: item.userType,
+                role: item.roleNameList,
+                createDate: item.createDate.substr(0,10),
+                lastUpdate: item.modifyDate.substr(0,10),
+                status: item.status,
+                id: item.id
+              })
             });
+          }).catch((err) => {
+            this.$message.info("网络异常")
+          })
         }
       });
     },
@@ -258,6 +236,9 @@ export default {
       // console.log(record, record.id)
       this.$router.push("/user/edit/" + record.id);
     }
+  },
+  mounted() {
+    this.getList()
   }
 };
 </script>

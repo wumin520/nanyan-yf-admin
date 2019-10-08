@@ -6,8 +6,9 @@
           <a-form-item label="角色名称" v-bind="formItemLayout">
             <a-input
               v-decorator="[
-                'name',
+                'roleName',
                 {
+                  initialValue: initialList.roleName,
                   rules: [
                     {
                       required: true,
@@ -21,8 +22,9 @@
           <a-form-item label="角色编码" v-bind="formItemLayout">
             <a-input
               v-decorator="[
-                'code',
+                'roleCode',
                 {
+                  initialValue: initialList.roleCode,
                   rules: [
                     {
                       required: true,
@@ -47,7 +49,7 @@
           </a-form-item>
           <a-row>
             <a-col :push="3" :span="24">
-              <a-button type="primary"
+              <a-button type="primary" html-type="submit"
                 ><a-icon type="save"></a-icon>保存</a-button
               >
               <router-link style="margin-left: 16px;" to="/role/list">
@@ -67,102 +69,111 @@
 }
 </style>
 <script>
+import api from '@/utils/api';
 const treeData = [
-  {
-    title: "用户管理",
-    key: "0-0",
-    children: [
-      {
-        title: "新增",
-        key: "0-0-0"
-      },
-      {
-        title: "查询",
-        key: "0-0-1"
-      },
-      {
-        title: "修改",
-        key: "0-0-2"
-      },
-      {
-        title: "删除",
-        key: "0-0-3"
-      }
-    ]
-  },
-  {
-    title: "角色管理",
-    key: "0-1",
-    children: [
-      {
-        title: "新增",
-        key: "0-1-0"
-      },
-      {
-        title: "查询",
-        key: "0-1-1"
-      },
-      {
-        title: "修改",
-        key: "0-1-2"
-      },
-      {
-        title: "删除",
-        key: "0-1-3"
-      }
-    ]
-  },
-  {
-    title: "菜单管理",
-    key: "0-2",
-    children: [
-      {
-        title: "新增",
-        key: "0-2-0"
-      },
-      {
-        title: "查询",
-        key: "0-2-1"
-      },
-      {
-        title: "修改",
-        key: "0-2-2"
-      },
-      {
-        title: "删除",
-        key: "0-2-3"
-      }
-    ]
-  },
-  {
-    title: "保单管理",
-    key: "0-3",
-    children: [
-      {
-        title: "新增",
-        key: "0-3-0"
-      },
-      {
-        title: "查询",
-        key: "0-3-1"
-      },
-      {
-        title: "修改",
-        key: "0-3-2"
-      },
-      {
-        title: "删除",
-        key: "0-3-4"
-      }
-    ]
-  }
+  // {
+  //   title: "用户管理",
+  //   key: "5",
+  //   children: [
+  //     {
+  //       title: "查询",
+  //       key: "8"
+  //     },
+  //     {
+  //       title: "新增",
+  //       key: "9"
+  //     },
+      
+  //     {
+  //       title: "修改",
+  //       key: "10"
+  //     },
+  //     {
+  //       title: "删除",
+  //       key: "0-0-3"
+  //     }
+  //   ]
+  // },
+  // {
+  //   title: "角色管理",
+  //   key: "6",
+  //   children: [
+  //     {
+  //       title: "查询",
+  //       key: "11"
+  //     },
+  //     {
+  //       title: "新增",
+  //       key: "12"
+  //     },
+      
+  //     {
+  //       title: "修改",
+  //       key: "13"
+  //     },
+  //     {
+  //       title: "删除",
+  //       key: "0-1-3"
+  //     }
+  //   ]
+  // },
+  // {
+  //   title: "菜单管理",
+  //   key: "7",
+  //   children: [
+  //     {
+  //       title: "查询",
+  //       key: "14"
+  //     },
+  //     {
+  //       title: "新增",
+  //       key: "15"
+  //     },
+  //     {
+  //       title: "删除",
+  //       key: "16"
+  //     },
+  //     {
+  //       title: "修改",
+  //       key: "17"
+  //     }
+  //   ]
+  // },
+  // {
+  //   title: "保单管理",
+  //   key: "0-3",
+  //   children: [
+  //     {
+  //       title: "新增",
+  //       key: "0-3-0"
+  //     },
+  //     {
+  //       title: "查询",
+  //       key: "0-3-1"
+  //     },
+  //     {
+  //       title: "修改",
+  //       key: "0-3-2"
+  //     },
+  //     {
+  //       title: "删除",
+  //       key: "0-3-4"
+  //     }
+  //   ]
+  // }
 ];
 export default {
   data() {
     return {
-      expandedKeys: ["0-0-0", "0-0-1"],
+      initialList:{
+        roleName:'',
+        roleCode:''
+      },
+      children:[],
+      roleId: '', //编辑用的id
+      expandedKeys: [],
       autoExpandParent: true,
-      checkedKeys: ["0-0-0"],
+      checkedKeys: [],
       selectedKeys: [],
       treeData,
       form: this.$form.createForm(this),
@@ -180,11 +191,11 @@ export default {
   methods: {
     handleSubmit(e) {
       e.preventDefault();
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log("form values -> ", values);
-        }
-      });
+      if(this.roleId === undefined){
+        this.addRoles()  //新增角色
+      } else {
+        this.updateRoles()  //更新角色
+      }
     },
     onExpand(expandedKeys) {
       console.log("onExpand", expandedKeys);
@@ -200,7 +211,133 @@ export default {
     onSelect(selectedKeys, info) {
       console.log("onSelect", info);
       this.selectedKeys = selectedKeys;
+    },
+    //新增角色
+    addRoles() {    
+       this.form.validateFields((err, values) => {
+          if (!err) {
+            // console.log("form values -> ", values);
+            let data ={
+              roleCode:	values.roleCode, //	用户名称
+              roleName:	values.roleName, //	用户账号
+              status:	1,//	1,有效，2,无效
+              resourceIdList:	this.checkedKeys.join()//	资源id集合
+            }
+            api.addRole(data).then((res) => {
+              if(res.data.returnCode !== "0000"){
+              this.$message.info(res.data.returnMsg);
+            } else{
+              this.$message.info("保存成功");
+              this.$router.push({name:'role'})
+            }
+            }).catch((err) => {
+              this.$message.info("网络异常")
+            })
+          }
+        });
+    },
+    //更新角色
+    updateRoles() {    
+       this.form.validateFields((err, values) => {
+          if (!err) {
+            // console.log("form values -> ", values);
+            let data ={
+              id: this.roleId,
+              roleCode:	values.roleCode, //	用户名称
+              roleName:	values.roleName, //	用户账号
+              status:	1,//	1,有效，2,无效
+              resourceIdList:	this.checkedKeys.join()//	资源id集合
+            }
+            api.updateRole(data).then((res) => {
+              if(res.data.returnCode !== "0000"){
+              this.$message.info(res.data.returnMsg);
+            } else{
+              this.$message.info("保存成功");
+              this.$router.push({name:'role'})
+            }
+            }).catch((err) => {
+              this.$message.info("网络异常")
+            })
+          }
+        });
+    },
+    //获取权限树
+    getResourceTree() {  
+      this.treeData = []     
+      api.getResource().then((res) => {
+        res.data.content.forEach((ele) => {
+          if(ele.childEbResourceVos[0] !== undefined){
+              this.treeData.push({
+              title: ele.childEbResourceVos[0].name,
+              key: ele.childEbResourceVos[0].id.toString(),
+              children: []
+             })
+             this.children.push(ele.childEbResourceVos[0].childEbResourceVos)  //this.children作为中间接收值
+          }         
+        })
+        for(let i=0;i<this.children.length;i++){
+          this.children[i].forEach((item) => {
+            this.treeData[i].children.push({
+              title: item.name,
+              key: item.id.toString()
+            })
+          })
+        }
+        // console.log("权限树",this.treeData)
+      })
+    },
+    //通过id查询用户角色
+    getRoleById() {
+       api.getRole({id:this.$route.params.id}).then((res) => {
+           if(res.data.returnCode !== "0000"){
+              this.$message.info(res.data.returnMsg);
+            } else{
+              // this.expandedKeys = res.data.content.resourceIdList.split(",")
+              this.checkedKeys = res.data.content.resourceIdList.split(",")
+              // console.log("查询角色的权限",this.checkedKeys)
+              this.initialList.roleName = res.data.content.roleName
+              this.initialList.roleCode = res.data.content.roleCode
+            }
+       })
     }
+  },
+  created() {
+    this.roleId = this.$route.params.id
+    // console.log(this.roleId !==  undefined)
+    if(this.roleId !== undefined){
+       var PromiseTwo = new Promise((result, reject) => {
+          this.treeData = []     
+          api.getResource().then((res) => {
+            res.data.content.forEach((ele) => {
+              if(ele.childEbResourceVos[0] !== undefined){
+                  this.treeData.push({
+                  title: ele.childEbResourceVos[0].name,
+                  key: ele.childEbResourceVos[0].id.toString(),
+                  children: []
+                })
+                this.children.push(ele.childEbResourceVos[0].childEbResourceVos)  //this.children作为中间接收值
+              }         
+            })
+            for(let i=0;i<this.children.length;i++){
+              this.children[i].forEach((item) => {
+                this.treeData[i].children.push({
+                  title: item.name,
+                  key: item.id.toString()
+                })
+              })
+            }
+            result()
+          })
+        })
+
+        PromiseTwo.then(() => {
+          this.getRoleById()
+        })
+    } else {
+        this.getResourceTree()
+    }
+   
+
   }
 };
 </script>
