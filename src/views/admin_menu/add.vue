@@ -8,7 +8,7 @@
           :treeData="treeData"
           placeholder="请选择"
           treeDefaultExpandAll
-          v-model="formInfo.id"
+          v-model="formInfo.parentId"
           @change="onChange"
         >
           <span
@@ -146,7 +146,8 @@ export default {
   },
   methods: {
     postData(params) {
-      params.parentId = this.formInfo.id
+      params.parentId = this.formInfo.parentId
+      params.status = 1
       api
         .saveResource({
           ...params
@@ -170,12 +171,14 @@ export default {
         })
         .then(res => res.data)
         .then(data => {
+          data.content.parentId = data.content.parentId.toString()
           this.formInfo = data.content;
+          // console.log("formInfo---->>>",this.formInfo)
         });
     },
     updateResource(params) {
       params.id = this.edit_id;
-      params.parentId = this.formInfo.id
+      params.parentId = this.formInfo.parentId
       api
         .updateResource(params)
         .then(res => res.data)
@@ -188,8 +191,8 @@ export default {
         .getAllResource()
         .then(res => res.data)
         .then(data => {
-          console.log(data);
           this.treeData = transformMenuData(data.content)
+          console.log("treeData--->>>",data.content);
         });
     },
     handleSubmit(e) {
@@ -206,7 +209,7 @@ export default {
       });
     },
     onChange(value) {
-      console.log(value);
+      // console.log(value);
       this.value = value;
       console.log(this.formInfo, '1')
     }

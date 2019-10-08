@@ -103,7 +103,7 @@ export default {
         pageNo: 1,
         pageSize: 20, // 默认每页显示数量
         showSizeChanger: true, // 显示可改变每页数量
-        pageSizeOptions: ["1", "20", "50", "100"], // 每页数量选项
+        pageSizeOptions: ["5", "20", "50", "100"], // 每页数量选项
         showTotal: total => `总共 ${total} 条`, // 显示总数
         onShowSizeChange: (current, pageSize) => this.pageSize = pageSize, // 改变每页数量时更新显示
         onChange:(page,pageSize)=>this.changePage(page,pageSize),//点击页码事件
@@ -130,7 +130,6 @@ export default {
     changePage(page, pageSize) {
       this.pagination.pageNo = page;
       this.pagination.pageSize = pageSize;
-      //  console.log("page ->>",this.pagination.pageNo,this.pagination.pageSize)
       this.getRoleList();
     },
     editRecord (record) {
@@ -139,7 +138,7 @@ export default {
     },
     deleteRecord (record, index) { //删除角色
       this.data.splice(index, 1)
-      console.log("-->deleteRecord",record,index)
+      // console.log("-->deleteRecord",record,index)
       let data ={
           id:record.id,//	id
           status: 2,  //	1,有效，2,无效
@@ -167,12 +166,12 @@ export default {
           pageSize:	this.pagination.pageSize //	当前页面显示的数据条目
         }
         if (!err) {
-         
           api.getRoleList(data).then((res) => {
             if(res.data.returnCode !== "0000"){
               this.$message.info(res.data.returnMsg);
             } else{
               this.data = []  //重置data
+              this.pagination.total = res.data.content.total  //获得总数据
               res.data.content.list.forEach(item => {
                 this.data.push({
                   roleName: item.roleName,

@@ -116,16 +116,15 @@ const columns = [
 const data = [];
 export default {
   data() {
-    let self = this;
     return {
       pagination: {
         pageNo: 1,
         pageSize: 20, // 默认每页显示数量
         showSizeChanger: true, // 显示可改变每页数量
-        pageSizeOptions: ["1", "20", "50", "100"], // 每页数量选项
+        pageSizeOptions: ["5", "20", "50", "100"], // 每页数量选项
         showTotal: total => `总共 ${total} 条`, // 显示总数
         onShowSizeChange: (current, pageSize) => (this.pageSize = pageSize), // 改变每页数量时更新显示
-        onChange: (page, pageSize) => self.changePage(page, pageSize), //点击页码事件
+        onChange: (page, pageSize) => this.changePage(page, pageSize), //点击页码事件
         total: 0 //总条数
       },
       data,
@@ -202,6 +201,7 @@ export default {
           // console.log("form values -> ", values);
           api.queryUser(qs.stringify(data)).then((res) => {
             this.data = []  //重置data
+            this.pagination.total = res.data.content.total  //获得总数据
             res.data.content.list.forEach(item => {
             if(item.userType == 1){
               item.userType = "南燕"

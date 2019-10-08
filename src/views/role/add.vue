@@ -216,7 +216,7 @@ export default {
     addRoles() {    
        this.form.validateFields((err, values) => {
           if (!err) {
-            console.log("form values -> ", values);
+            // console.log("form values -> ", values);
             let data ={
               roleCode:	values.roleCode, //	用户名称
               roleName:	values.roleName, //	用户账号
@@ -240,7 +240,7 @@ export default {
     updateRoles() {    
        this.form.validateFields((err, values) => {
           if (!err) {
-            console.log("form values -> ", values);
+            // console.log("form values -> ", values);
             let data ={
               id: this.roleId,
               roleCode:	values.roleCode, //	用户名称
@@ -283,7 +283,7 @@ export default {
             })
           })
         }
-        console.log("权限树",this.treeData)
+        // console.log("权限树",this.treeData)
       })
     },
     //通过id查询用户角色
@@ -292,22 +292,52 @@ export default {
            if(res.data.returnCode !== "0000"){
               this.$message.info(res.data.returnMsg);
             } else{
-              // console.log(res.data)
-              this.expandedKeys = res.data.content.resourceIdList.split(",")
+              // this.expandedKeys = res.data.content.resourceIdList.split(",")
               this.checkedKeys = res.data.content.resourceIdList.split(",")
-              console.log("查询角色的权限",this.checkedKeys)
+              // console.log("查询角色的权限",this.checkedKeys)
               this.initialList.roleName = res.data.content.roleName
               this.initialList.roleCode = res.data.content.roleCode
             }
-        }).catch((err) => {
-          // this.$message.info("网络异常")
-        })
+       })
     }
   },
   created() {
     this.roleId = this.$route.params.id
-    this.getRoleById()
-    this.getResourceTree()
+    // console.log(this.roleId !==  undefined)
+    if(this.roleId !== undefined){
+       var PromiseTwo = new Promise((result, reject) => {
+          this.treeData = []     
+          api.getResource().then((res) => {
+            res.data.content.forEach((ele) => {
+              if(ele.childEbResourceVos[0] !== undefined){
+                  this.treeData.push({
+                  title: ele.childEbResourceVos[0].name,
+                  key: ele.childEbResourceVos[0].id.toString(),
+                  children: []
+                })
+                this.children.push(ele.childEbResourceVos[0].childEbResourceVos)  //this.children作为中间接收值
+              }         
+            })
+            for(let i=0;i<this.children.length;i++){
+              this.children[i].forEach((item) => {
+                this.treeData[i].children.push({
+                  title: item.name,
+                  key: item.id.toString()
+                })
+              })
+            }
+            result()
+          })
+        })
+
+        PromiseTwo.then(() => {
+          this.getRoleById()
+        })
+    } else {
+        this.getResourceTree()
+    }
+   
+
   }
 };
 </script>

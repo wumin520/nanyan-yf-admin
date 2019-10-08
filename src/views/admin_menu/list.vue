@@ -34,12 +34,12 @@
         </a-col>
       </a-row>
     </a-form>
-    <a-table style="margin-top: 50px;" :dataSource="data" :columns="columns">
+    <a-table style="margin-top: 50px;" :dataSource="data" :columns="columns" :pagination="pagination">
       <template slot="type" slot-scope="text">
         {{ text == 1 ? "菜单" : "按钮" }}
       </template>
       <template slot="operation" slot-scope="text, record">
-        <a-button @click="delRecord(record)" type="primary"
+        <a-button @click="delRecord(record,index)" type="primary"
           ><a-icon type="delete"></a-icon>删除</a-button
         >
         <router-link :to="'/adminMenu/edit/' + record.id">
@@ -130,8 +130,15 @@ export default {
         }
       ],
       pagination: {
-        total: 1,
-        pageSize: 20
+        total: 0,
+        pageNo: 1,
+        pageSize: 20,
+        pageSizeOptions: ["5", "20", "50", "100"],
+        showSizeChanger: true, // 显示可改变每页数量
+        pageSizeOptions: ["5", "20", "50", "100"], // 每页数量选项
+        showTotal: total => `总共 ${total} 条`, // 显示总数
+        onShowSizeChange: (current, pageSize) => (this.pageSize = pageSize), // 改变每页数量时更新显示
+        onChange: (page, pageSize) => this.changePage(page, pageSize), //点击页码事件
       }
     };
   },
@@ -139,7 +146,13 @@ export default {
     this.fetchList();
   },
   methods: {
-    delRecord(record) {
+    changePage(page, pageSize) {
+      this.pagination.pageNo = page;
+      this.pagination.pageSize = pageSize;
+      this.fetchList()
+    },
+    delRecord(record, index) {
+      this.data.splice(index, 1)
       api
         .updateResource({
           id: record.id,
@@ -149,9 +162,9 @@ export default {
           this.fetchList();
         });
     },
-    fetchList(pageNum = 1, options) {
+    fetchList(options) {
       const params = {
-        pageNum,
+        pageNum: this.pagination.pageNo,
         pageSize: this.pagination.pageSize
       };
       for (let key in options) {
@@ -164,6 +177,7 @@ export default {
         .getResourceList(params)
         .then(res => res.data)
         .then(data => {
+          this.pagination.total = data.content.total  //获得总数据
           const { list } = data.content;
           this.data = list;
         });
@@ -171,7 +185,7 @@ export default {
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
-        this.fetchList(1, values);
+        this.fetchList(values);
       });
     }
   }
