@@ -3,7 +3,7 @@ import qs from "qs";
 
 var instance = axios.create({
   baseURL: "/api/",
-  timeout: 3000,
+  timeout: 13000,
   headers: { "X-Custom-Header": "foobar" }
 });
 // Add a request interceptor
@@ -258,5 +258,13 @@ api.addRole = function(data) {
 //查询查询所有系统资源
 api.getResource = function(data) {
   return instance.post("backstage/roles/getResource", qs.stringify(data))
-}
+};
+// 批量上传联系人
+// /backstage/policy/getInsurceListFromFile
+
+//查询所有省市区
+api.getAllProvinceCityArea = function() {
+  return instance.get("common/getProvinceCityArea");
+};
+
 export default api;

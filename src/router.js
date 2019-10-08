@@ -209,14 +209,6 @@ export default new Router({
               meta: {
                 breadcrumbName: "列表"
               }
-            },
-            {
-              path: "detail",
-              name: "bx_order_detail",
-              component: BxOrderDetail,
-              meta: {
-                breadcrumbName: "保单详情"
-              }
             }
           ]
         }

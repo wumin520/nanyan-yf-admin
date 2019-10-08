@@ -121,16 +121,16 @@ const columns = [
   }
 ];
 const data = [];
-for (var i = 0; i < 3; i++) {
-  data.push({
-    id: "小站",
-    productName: "101",
-    premium: "ssh",
-    applicantName: "admin",
-    startDate: "2019-09-23",
-    endDate: "2029-09-23"
-  });
-}
+// for (var i = 0; i < 3; i++) {
+//   data.push({
+//     id: "小站",
+//     productName: "101",
+//     premium: "ssh",
+//     applicantName: "admin",
+//     startDate: "2019-09-23",
+//     endDate: "2029-09-23"
+//   });
+// }
 export default {
   data() {
     return {
