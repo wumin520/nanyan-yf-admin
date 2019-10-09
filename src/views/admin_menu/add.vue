@@ -146,7 +146,7 @@ export default {
   },
   methods: {
     postData(params) {
-      params.parentId = this.formInfo.parentId
+      params.parentId = this.formInfo.parentId || 0
       params.status = 1
       api
         .saveResource({
@@ -171,14 +171,14 @@ export default {
         })
         .then(res => res.data)
         .then(data => {
-          data.content.parentId = data.content.parentId.toString()
+          data.content.parentId = data.content.parentId && data.content.parentId.toString()
           this.formInfo = data.content;
           // console.log("formInfo---->>>",this.formInfo)
         });
     },
     updateResource(params) {
       params.id = this.edit_id;
-      params.parentId = this.formInfo.parentId
+      params.parentId = this.formInfo.parentId || 0
       api
         .updateResource(params)
         .then(res => res.data)

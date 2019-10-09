@@ -89,7 +89,11 @@ instance.interceptors.response.use(
     console.log("response -> ", response);
     const { returnCode, returnMsg } = response.data;
     if (returnCode !== "0000") {
-      window.message.error(returnMsg);
+      if (returnCode === '1012') {
+        window.router.push('/login')
+      } else {
+        window.message.error(returnMsg);
+      }
       return Promise.reject(response);
     }
     return response;
