@@ -72,6 +72,8 @@
 </template>
 <script>
 import SubMenu from "./SubMenu";
+import api from '@/utils/api';
+import { transformMenuData } from '@/utils/authorized';
 
 export default {
   data() {
@@ -151,6 +153,10 @@ export default {
   },
   mounted() {
     console.log(this.$router, this.$route, this);
+    api.getResourceByUserId().then(res => res.data).then(data => {
+      console.log('getResourceByUserId -> ', data)
+      // this.list = transformMenuData(data.content, true)
+    })
   }
 };
 </script>

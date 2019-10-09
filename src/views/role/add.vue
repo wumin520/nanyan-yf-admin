@@ -39,8 +39,6 @@
             <a-tree
               checkable
               @expand="onExpand"
-              :expandedKeys="expandedKeys"
-              :autoExpandParent="autoExpandParent"
               v-model="checkedKeys"
               @select="onSelect"
               :selectedKeys="selectedKeys"
@@ -70,6 +68,7 @@
 </style>
 <script>
 import api from '@/utils/api';
+import { transformMenuData } from '@/utils/authorized'
 const treeData = [
   // {
   //   title: "用户管理",
@@ -202,7 +201,7 @@ export default {
       // if not set autoExpandParent to false, if children expanded, parent can not collapse.
       // or, you can remove all expanded children keys.
       this.expandedKeys = expandedKeys;
-      this.autoExpandParent = false;
+      // this.autoExpandParent = false;
     },
     onCheck(checkedKeys) {
       console.log("onCheck", checkedKeys);
@@ -264,40 +263,18 @@ export default {
     //获取权限树
     getResourceTree() {  
       this.treeData = []     
-      api.getResource().then((res) => {
-        res.data.content.forEach((ele) => {
-          if(ele.childEbResourceVos[0] !== undefined){
-              this.treeData.push({
-              title: ele.childEbResourceVos[0].name,
-              key: ele.childEbResourceVos[0].id.toString(),
-              children: []
-             })
-             this.children.push(ele.childEbResourceVos[0].childEbResourceVos)  //this.children作为中间接收值
-          }         
-        })
-        for(let i=0;i<this.children.length;i++){
-          this.children[i].forEach((item) => {
-            this.treeData[i].children.push({
-              title: item.name,
-              key: item.id.toString()
-            })
-          })
-        }
-        // console.log("权限树",this.treeData)
+      return api.getResource().then((res) => {
+        this.treeData = transformMenuData(res.data.content)
       })
     },
     //通过id查询用户角色
     getRoleById() {
        api.getRole({id:this.$route.params.id}).then((res) => {
-           if(res.data.returnCode !== "0000"){
-              this.$message.info(res.data.returnMsg);
-            } else{
-              // this.expandedKeys = res.data.content.resourceIdList.split(",")
-              this.checkedKeys = res.data.content.resourceIdList.split(",")
-              // console.log("查询角色的权限",this.checkedKeys)
-              this.initialList.roleName = res.data.content.roleName
-              this.initialList.roleCode = res.data.content.roleCode
-            }
+          // this.expandedKeys = res.data.content.resourceIdList.split(",")
+          this.checkedKeys = res.data.content.resourceIdList.split(",")
+          // console.log("查询角色的权限",this.checkedKeys)
+          this.initialList.roleName = res.data.content.roleName
+          this.initialList.roleCode = res.data.content.roleCode
        })
     }
   },
@@ -305,39 +282,12 @@ export default {
     this.roleId = this.$route.params.id
     // console.log(this.roleId !==  undefined)
     if(this.roleId !== undefined){
-       var PromiseTwo = new Promise((result, reject) => {
-          this.treeData = []     
-          api.getResource().then((res) => {
-            res.data.content.forEach((ele) => {
-              if(ele.childEbResourceVos[0] !== undefined){
-                  this.treeData.push({
-                  title: ele.childEbResourceVos[0].name,
-                  key: ele.childEbResourceVos[0].id.toString(),
-                  children: []
-                })
-                this.children.push(ele.childEbResourceVos[0].childEbResourceVos)  //this.children作为中间接收值
-              }         
-            })
-            for(let i=0;i<this.children.length;i++){
-              this.children[i].forEach((item) => {
-                this.treeData[i].children.push({
-                  title: item.name,
-                  key: item.id.toString()
-                })
-              })
-            }
-            result()
-          })
-        })
-
-        PromiseTwo.then(() => {
+        this.getResourceTree().then(() => {
           this.getRoleById()
         })
     } else {
         this.getResourceTree()
     }
-   
-
   }
 };
 </script>

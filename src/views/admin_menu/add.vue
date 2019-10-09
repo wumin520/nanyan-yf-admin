@@ -191,7 +191,7 @@ export default {
         .getAllResource()
         .then(res => res.data)
         .then(data => {
-          this.treeData = transformMenuData(data.content)
+          this.treeData = transformMenuData(data.content, null, true)
           console.log("treeData--->>>",data.content);
         });
     },
