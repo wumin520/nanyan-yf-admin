@@ -2,12 +2,12 @@ module.exports = {
   devServer: {
     proxy: {
       "^/api": {
-        target: "http://192.168.3.80:8030/",
+        target: "http://back.run4wd.com/",
         ws: true,
         changeOrigin: true,
-        pathRewrite: {
-          '^/api': '/', // rewrite path
-        },
+        // pathRewrite: {
+        //   '^/api': '/', // rewrite path
+        // },
       },
       "^/foo": {
         target: "<other_url>"

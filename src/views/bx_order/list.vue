@@ -35,10 +35,10 @@
           </a-form-item>
         </a-col>
         <a-col :span="6">
-          <a-button html-type="submit" type="primary"
+          <a-button v-if="authorizedButtonStr.indexOf('查询') > -1" html-type="submit" type="primary"
             ><a-icon type="search"></a-icon>查询</a-button
           >
-          <router-link to="/bxOrder/companyList">
+          <router-link v-if="authorizedButtonStr.indexOf('新建') > -1" to="/bxOrder/companyList">
             <a-button class="marg_l8_" type="primary" ghost
               ><a-icon type="plus"></a-icon>新建</a-button
             >
@@ -82,6 +82,7 @@
 <script>
 import api from "@/utils/api";
 import moment from "moment";
+import { filterMenuButtons } from '@/utils/authorized';
 
 const columns = [
   {
@@ -180,11 +181,13 @@ export default {
         pageNum: 1,
         pageSize: 20,
         total: 0
-      }
+      },
+      authorizedButtonStr: '查询、新建'
     };
   },
   mounted() {
     this.fetchPolicyList(1);
+    // this.authorizedButtonStr = filterMenuButtons()
   },
   methods: {
     handleTableChange(pagination) {

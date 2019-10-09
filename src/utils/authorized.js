@@ -10,7 +10,7 @@ export const setLogined = function(val) {
 
 export const transformMenuData = function transformMenuData(arr, excludeButton, disabledButton) {
   let result = [];
-  let allButtons = [];
+  window._authoriedButtons = window._authoriedButtons || [];
   for (var i = 0; i < arr.length; i++) {
     let item = arr[i];
     let obj = {
@@ -19,7 +19,8 @@ export const transformMenuData = function transformMenuData(arr, excludeButton, 
       title: item.name,
       name: item.name,
       url: item.url,
-      value: item.id.toString()
+      value: item.id.toString(),
+      parentId: item.parentId
     };
     if (disabledButton && item.type == '2') {
       obj.disabled = true;
@@ -28,12 +29,26 @@ export const transformMenuData = function transformMenuData(arr, excludeButton, 
       obj.children = transformMenuData(item.childEbResourceVos, excludeButton, disabledButton);
     }
     if (excludeButton && item.type === '2') {
-      allButtons.push(obj);
-      window._authoriedButtons = allButtons;
+      window._authoriedButtons.push(obj);
       result = null;
     } else {
       result.push(obj);
     }
   }
   return result;
+};
+
+export const filterMenuButtons = function(id = window.currentSelectedMenuId) {
+  window._authoriedButtons = window._authoriedButtons || [];
+  let result = [];
+  result = window._authoriedButtons.filter(val => {
+    return val.parentId == id;
+  });
+  result = result.map(val => {
+    return {
+      buttonName: val.name
+    };
+  });
+  console.log('filterMenuButtons -> ', result);
+  return result.join(',');
 };

@@ -24,6 +24,7 @@
         mode="inline"
         theme="light"
         :inlineCollapsed="collapsed"
+        @click="handleMenuSelect"
       >
         <template v-for="item in list">
           <a-menu-item v-if="!item.children" :key="item.key">
@@ -43,6 +44,15 @@
           :type="collapsed ? 'menu-unfold' : 'menu-fold'"
           @click="() => (collapsed = !collapsed)"
         />
+        <a-popover placement="bottom">
+          <template slot="content">
+            <a href="javascript:;"  @click="exit">退出登录</a>
+          </template>
+          <template slot="title">
+            <div style="text-align: center;">me</div>
+          </template>
+          <a-avatar style="backgroundColor:#297FFF; margin-left: auto;position: absolute; right: 72px;top: 13px;" icon="user" />
+        </a-popover>
       </a-layout-header>
       <a-breadcrumb style="margin: 16px;" :routes="routes">
         <template
@@ -113,11 +123,27 @@ export default {
         }
       ],
       routes: [],
-      selectedKeys: ["2.1"]
+      selectedKeys: []
     };
   },
   watch: {
     $route: function() {
+      this.toActiveMenuItem()
+    }
+  },
+  components: {
+    "sub-menu": SubMenu
+  },
+  mounted() {
+    console.log(this.$router, this.$route, this);
+    api.getResourceByUserId().then(res => res.data).then(data => {
+      console.log('getResourceByUserId -> ', data)
+      this.list = transformMenuData(data.content, true)
+    });
+    this.toActiveMenuItem()
+  },
+  methods: {
+    toActiveMenuItem () {
       console.log("route change -> ", this.$route);
       const arr = this.$route.matched.map((item, index) => {
         return {
@@ -146,21 +172,29 @@ export default {
         this.selectedKeys = [findItem[0].key];
       }
       console.log("findItem ->   ", findItem, hashArr);
+    },
+    handleMenuSelect(item) {
+      console.log(item, 'handleMenuSelect -> 1')
+      window.currentSelectedMenuId = item.key
+    },
+    exit () {
+      api.exitLogin().then(res => res.data).then((data) => {
+        this.$router.push({name:"login"});
+      })
     }
-  },
-  components: {
-    "sub-menu": SubMenu
-  },
-  mounted() {
-    console.log(this.$router, this.$route, this);
-    api.getResourceByUserId().then(res => res.data).then(data => {
-      console.log('getResourceByUserId -> ', data)
-      // this.list = transformMenuData(data.content, true)
-    })
   }
 };
 </script>
 <style lang="scss">
+.ant-popover-placement-bottom {
+  .ant-popover-title {
+    min-width: 150px;
+  }
+  .ant-popover-inner-content {
+    padding: 8px 0;
+    text-align: center;
+  }
+}
 #components-layout-demo-custom-trigger {
   min-height: 100%;
   .ant-layout-sider {
