@@ -416,7 +416,7 @@
                 >{{ item.name }}</a-select-option
               >
             </a-select>
-            <div v-else>{{ allFormData.legal.idType }}</div>
+            <div v-else>{{ allFormData.legal.idType | filterIdType(idTypeOptions) }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -556,7 +556,7 @@
                 >{{ item.name }}</a-select-option
               >
             </a-select>
-            <div v-else>{{ allFormData.likeman.idType }}</div>
+            <div v-else>{{ allFormData.likeman.idType | filterIdType(idTypeOptions) }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -1029,6 +1029,8 @@
             :fileList="fileList"
             @preview="handleImagePreview"
             @change="handleImagePreviewChange"
+            :remove="handleFileRemove"
+            :showUploadList="showUploadList"
           >
             <div v-if="fileList.length < 3 && editable">
               <a-icon type="plus" />
@@ -1059,7 +1061,7 @@
       :footer="null"
       @cancel="handleCancel"
       :visible="planVisible"
-      title="新建责任类型"
+      :title="planRecord.key !== undefined ? '编辑责任类型' : '新建责任类型'"
     >
       <a-form :form="planForm" @submit="handlePlanSubmit">
         <a-form-item label="责任名称">
@@ -1105,7 +1107,7 @@
             v-decorator="[
               'deductibleExcess',
               {
-                initialValue: planRecord.planAmountValue,
+                initialValue: planRecord.deductibleExcess,
                 rules: [
                   {
                     required: true,
@@ -1123,7 +1125,7 @@
             v-decorator="[
               'lossRation',
               {
-                initialValue: planRecord.planRateValue,
+                initialValue: planRecord.lossRation,
                 rules: [
                   {
                     required: true,
@@ -1154,7 +1156,7 @@
       :footer="null"
       @cancel="handleBModalCancel"
       :visible="bModalVisible"
-      title="新建被保人"
+      :title="insuredRecord.key !== undefined ? '编辑被保人' : '新增被保人'"
     >
       <a-form :form="bForm" @submit="handleBSubmit">
         <a-row :gutter="8">
@@ -1293,10 +1295,10 @@
             <a-form-item label="承保职业">
               <a-input
                 v-decorator="[
-                  'underwirde_occupational',
+                  'underwirdeOccupational',
                   {
                     ...inputRequired,
-                    initialValue: insuredRecord.underwirde_occupational
+                    initialValue: insuredRecord.underwirdeOccupational
                   }
                 ]"
                 placeholder="请输入"
@@ -1519,6 +1521,7 @@ const insuredData = [];
 export default {
   data() {
     return {
+      showUploadList: {showPreviewIcon: true, showRemoveIcon: true},
       editable: true,
       update_order: false, // 是否是修改
       allFormData: {
@@ -1680,6 +1683,7 @@ export default {
     let { name, params } = this.$route;
     if (name === "bx_order_detail") {
       this.editable = false;
+      this.showUploadList = {showPreviewIcon: true, showRemoveIcon: false};
     } else if (name === "bx_order_edit") {
       this.update_order = true;
     } else {
@@ -1695,6 +1699,16 @@ export default {
   },
   methods: {
     moment,
+    handleFileRemove (file) {
+      console.log(file, 'handleFileRemove -> ')
+      if (file.id) {
+        this.removedFiles = this.removedFiles || []
+        this.removedFiles.push({
+          ...file,
+          status: '0'
+        })
+      }
+    },
     resolveProvinceCityArea () {
       let {provinceList, cityList, areaList} = this._allProvinceCityArea
       console.log('provinceList -> ', provinceList.findItem, provinceList.find, this.allFormData.application)
@@ -1729,6 +1743,7 @@ export default {
       this.cityBAOptions = cityList.filter(val => {
         return val.provinceCode == this.allFormData.bankInfo.province
       })
+      this._allProvinceCityArea = null;
     },
     getAllProvinceCityArea () {
       return api.getAllProvinceCityArea().then(res => res.data).then(data => {
@@ -1866,6 +1881,7 @@ export default {
         key: index,
         birthDate: moment(record.birthDate)
       };
+      this.isMain = record.isMain
       // this.planForm.setFieldsValue(record)
       this.bModalVisible = true;
       console.log("editBbr -> ", record, index, this.insuredRecord);
@@ -1881,18 +1897,20 @@ export default {
     },
     deleteBbr(record, index) {
       console.log("deleteBbr -> ", record);
+      let item = this.insuredData[index];
+      this.insuredData.splice(index, 1);
       if (record.id) {
-        this.insuredData[index].status = '0'
-      } else {
-        this.insuredData.splice(index, 1);
+        item.status = '0'
+        this.insuredData.push(item)
       }
     },
     deletePlan(record, index) {
       console.log("deletePlan -> ", record);
+      let item = this.planData[index];
+      this.planData.splice(index, 1);
       if (record.id) {
-        this.planData[index].status = '0'
-      } else {
-        this.planData.splice(index, 1);
+        item.status = '0'
+        this.planData.push(item)
       }
     },
     handleBSubmit(e) {
@@ -1925,6 +1943,7 @@ export default {
       this.bForm.resetFields();
     },
     showBModal() {
+      this.isMain = '1';
       this.bModalVisible = true;
     },
     handleBModalCancel() {
@@ -1945,6 +1964,7 @@ export default {
       this.planVisible = false;
     },
     handleCancel() {
+      this.planRecord = {};
       this.planVisible = false;
     },
     handlePlanSubmit(e) {
@@ -2010,6 +2030,9 @@ export default {
         }
         return value
       })
+      if (this.removedFiles && this.removedFiles.length > 0) {
+        fileList.push(...this.removedFiles)
+      }
       let params = {
         startDate: values.rangeDate[0].format("YYYY-MM-DD"),
         endDate: values.rangeDate[1].format("YYYY-MM-DD"),

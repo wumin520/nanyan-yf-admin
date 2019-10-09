@@ -188,7 +188,7 @@ export default {
   },
   methods: {
     handleTableChange(pagination) {
-      console.log(pagination);
+      this.fetchPolicyList(pagination.current)
     },
     fetchPolicyList(pageNum = 1, formOptions = {}) {
       let params = {
