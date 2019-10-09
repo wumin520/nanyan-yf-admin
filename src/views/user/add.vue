@@ -213,7 +213,7 @@ export default {
           dataIndex: "companyIdType",
           input_type: "inputCompany",
           isShow: true,
-          initialValue: ""
+          initialValue: "1"
         },
         {
           label: "公司证件号码",
@@ -221,7 +221,7 @@ export default {
           dataIndex: "companyIdNo",
           input_type: "inputCompany",
           isShow: true,
-          initialValue: ""
+          initialValue: "1"
         },
         {
           label: "姓名",
@@ -320,7 +320,7 @@ export default {
     },
     addUserList() {  //新增
       this.form.validateFields((err, values) => {
-        // console.log("-->values.roleIdList",values.roleIdList)
+        console.log("111-->values",values)
         let data = {
           userName: values.userName, //	用户账号
           userPassword: values.userPassword, //用户密码，MD5后base64加密
