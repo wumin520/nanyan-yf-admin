@@ -278,7 +278,7 @@ export default {
     //通过id查询用户角色
     getRoleById() {
        api.getRole({id:this.$route.params.id}).then((res) => {
-          this.checkedKeys = res.data.content.resourceIdList.split(",")
+          let roleList = res.data.content.resourceIdList.split(",")
           this.initialList.roleName = res.data.content.roleName
           this.initialList.roleCode = res.data.content.roleCode
           // api.getResourceByUserId({id:this.$route.params.id}).then((res) => {
