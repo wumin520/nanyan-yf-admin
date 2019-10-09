@@ -73,6 +73,7 @@ export default new Router({
                 breadcrumbName: "新增"
               }
             },
+            ,
             {
               path: "edit/:id",
               name: "user_edit",
