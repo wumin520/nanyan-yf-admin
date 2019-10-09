@@ -2,7 +2,7 @@ module.exports = {
   devServer: {
     proxy: {
       "^/api": {
-        target: "http://192.168.3.80:8030/",
+        target: "http://idr3hd.natappfree.cc/",
         ws: true,
         changeOrigin: true,
         pathRewrite: {
