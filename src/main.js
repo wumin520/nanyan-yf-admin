@@ -9,6 +9,10 @@ import Antd from "ant-design-vue";
 import { notification, message } from "ant-design-vue";
 import "ant-design-vue/dist/antd.css";
 
+import moment from 'moment';
+import 'moment/locale/zh-cn';
+moment.locale('zh-cn');
+
 Vue.config.productionTip = false;
 
 Vue.use(Antd);

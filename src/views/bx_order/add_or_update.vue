@@ -112,7 +112,7 @@
                 >{{ item.name }}</a-select-option
               >
             </a-select>
-            <div v-else>{{ allFormData.application.idType }}</div>
+            <div v-else>{{ allFormData.application.idType | filterIdTypeCompany(idTypeCompanyOptions) }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -123,11 +123,11 @@
                 'idNo_application',
                 {
                   ...inputRequired,
-                  initialValue: allFormData.application.idno
+                  initialValue: allFormData.application.idNo
                 }
               ]"
             ></a-input>
-            <div v-else>{{ allFormData.application.idno }}</div>
+            <div v-else>{{ allFormData.application.idNo }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -139,11 +139,11 @@
                 'idEndDate_application',
                 {
                   ...selectRequired,
-                  initialValue: moment(allFormData.application.endDate)
+                  initialValue: allFormData.application.idEndDate
                 }
               ]"
             ></a-date-picker>
-            <div v-else>{{ allFormData.application.endDate }}</div>
+            <div v-else>{{ allFormData.application.idEndDate }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -166,14 +166,14 @@
             <a-input
               v-if="editable"
               v-decorator="[
-                'bussionessScope_application',
+                'bussinessScope_application',
                 {
                   ...inputRequired,
-                  initialValue: allFormData.application.bussionessScope
+                  initialValue: allFormData.application.bussinessScope
                 }
               ]"
             ></a-input>
-            <div v-else>{{ allFormData.application.bussionessScope }}</div>
+            <div v-else>{{ allFormData.application.bussinessScope }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -184,7 +184,7 @@
                 'establishmentDate_application',
                 {
                   ...inputRequired,
-                  initialValue: moment(allFormData.application.establishmentDate)
+                  initialValue: allFormData.application.establishmentDate
                 }
               ]"
               placeholder="请选择"
@@ -229,7 +229,7 @@
                     >{{ item.name }}</a-select-option
                   >
                 </a-select>
-                <div v-else>{{ allFormData.application.bigType }}</div>
+                <div v-else>{{ allFormData.application.bigType | filterIndustry(industryOptions) }}</div>
               </a-form-item>
             </a-col>
           </a-row>
@@ -284,7 +284,7 @@
                 >{{ item.name }}</a-select-option
               >
             </a-select>
-            <div v-else>{{ allFormData.application.ratepayerType }}</div>
+            <div v-else>{{ allFormData.application.ratepayerType | filterTaxType(taxpayerTypeOptions) }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -308,7 +308,7 @@
                 >{{ item.provinceName }}</a-select-option
               >
             </a-select>
-            <div v-else>{{ allFormData.application.province }}</div>
+            <div v-else>{{ allFormData.application.provinceName }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -332,7 +332,7 @@
                 >{{ item.cityName }}</a-select-option
               >
             </a-select>
-            <div v-else>{{ allFormData.application.city }}</div>
+            <div v-else>{{ allFormData.application.cityName }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -355,7 +355,7 @@
                 >{{ item.districtName }}</a-select-option
               >
             </a-select>
-            <div v-else>{{ allFormData.application.area }}</div>
+            <div v-else>{{ allFormData.application.areaName }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -416,7 +416,7 @@
                 >{{ item.name }}</a-select-option
               >
             </a-select>
-            <div v-else>{{ allFormData.legal.idType }}</div>
+            <div v-else>{{ allFormData.legal.idType | filterIdType(idTypeOptions) }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -494,7 +494,7 @@
             <a-input
               v-if="editable"
               v-decorator="[
-                'name_linkman',
+                'name_likeman',
                 {
                   initialValue: allFormData.likeman.name
                 }
@@ -510,7 +510,7 @@
             <a-input
               v-if="editable"
               v-decorator="[
-                'phone_linkman',
+                'phone_likeman',
                 {
                   initialValue: allFormData.likeman.phone
                 }
@@ -526,7 +526,7 @@
             <a-input
               v-if="editable"
               v-decorator="[
-                'email_linkman',
+                'email_likeman',
                 {
                   initialValue: allFormData.likeman.email
                 }
@@ -542,7 +542,7 @@
             <a-select
               v-if="editable"
               v-decorator="[
-                'idType_linkman',
+                'idType_likeman',
                 {
                   initialValue: allFormData.likeman.idType
                 }
@@ -556,7 +556,7 @@
                 >{{ item.name }}</a-select-option
               >
             </a-select>
-            <div v-else>{{ allFormData.likeman.idType }}</div>
+            <div v-else>{{ allFormData.likeman.idType | filterIdType(idTypeOptions) }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -564,7 +564,7 @@
             <a-input
               v-if="editable"
               v-decorator="[
-                'idNo_linkman',
+                'idNo_likeman',
                 {
                   initialValue: allFormData.likeman.idNo
                 }
@@ -580,7 +580,7 @@
             <a-date-picker
               v-if="editable"
               v-decorator="[
-                'idStartDate_linkman',
+                'idStartDate_likeman',
                 {
                   initialValue: allFormData.likeman.idStartDate
                 }
@@ -596,7 +596,7 @@
             <a-date-picker
               v-if="editable"
               v-decorator="[
-                'idEndDate_linkman',
+                'idEndDate_likeman',
                 {
                   initialValue: allFormData.likeman.idEndDate
                 }
@@ -612,7 +612,7 @@
             <a-input
               v-if="editable"
               v-decorator="[
-                'address_linkman',
+                'address_likeman',
                 {
                   initialValue: allFormData.likeman.address
                 }
@@ -672,7 +672,7 @@
                 >{{ item.provinceName }}</a-select-option
               >
             </a-select>
-            <div v-else>{{ allFormData.bankInfo.province }}</div>
+            <div v-else>{{ allFormData.bankInfo.provinceName }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -700,7 +700,7 @@
                 >{{ item.cityName }}</a-select-option
               >
             </a-select>
-            <div v-else>{{ allFormData.bankInfo.city }}</div>
+            <div v-else>{{ allFormData.bankInfo.cityName }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -772,7 +772,7 @@
                 >{{ item.name }}</a-select-option
               >
             </a-select>
-            <div v-else>{{ allFormData.bankInfo.payMent }}</div>
+            <div v-else>{{ allFormData.bankInfo.payMent | filterPayType(payTypeOptions) }}</div>
           </a-form-item>
         </a-col>
       </a-row>
@@ -816,7 +816,7 @@
                 >{{ item.name }}</a-select-option
               >
             </a-select>
-            <div v-else>{{ allFormData.receiptor.idType }}</div>
+            <div v-else>{{ allFormData.receiptor.idType | filterIdType(idTypeOptions) }}</div>
           </a-form-item>
         </a-col>
         <a-col :span="12">
@@ -930,7 +930,7 @@
           <a-table
             style="margin-bottom: 32px;"
             :pagination="false"
-            :dataSource="planData"
+            :dataSource="planDataValid"
             :columns="planColumns"
           >
             <template slot="type" slot-scope="text">
@@ -969,9 +969,15 @@
             ghost
             >新增被保人</a-button
           >
+          <a-button v-if="editable" style="margin-left: 16px;" type="primary" ghost><a target="_blank" href="/api/file/temp.xlsx">下载模版</a></a-button>
+          <a-upload v-if="editable" style="margin-left: 16px;" accept=".xlsl,.xlsx" name="file" :multiple="false" action="/api/backstage/policy/getInsurceListFromFile" @change="handleExcelUploadChange">
+            <a-button>
+              <a-icon type="upload" /> 模版批量上传
+            </a-button>
+          </a-upload>
           <a-table
             :pagination="false"
-            :dataSource="insuredData"
+            :dataSource="insuredDataValid"
             :columns="insuredColumns"
           >
             <template slot="idType" slot-scope="text">
@@ -992,16 +998,21 @@
               slot="operation"
               slot-scope="text, record, index"
             >
-              <a-button @click="editBbr(record, index)" type="primary"
-                >编辑</a-button
-              >
-              <a-button
-                style="margin-left: 8px;"
-                @click="deleteBbr(record, index)"
-                type="primary"
-                ghost
-                ><a-icon type="delete"></a-icon>删除</a-button
-              >
+            <a-row :gutter="8">
+              <a-col :xxl="12" :span="24">
+                <a-button style="margin-bottom: 8px;" @click="editBbr(record, index)" type="primary"
+                  ><a-icon type="edit"></a-icon>编辑</a-button
+                >
+              </a-col>
+              <a-col :xxl="12" :span="24">
+                <a-button
+                  @click="deleteBbr(record, index)"
+                  type="primary"
+                  ghost
+                  ><a-icon type="delete"></a-icon>删除</a-button
+                >
+              </a-col>
+            </a-row>
             </template>
           </a-table>
         </a-col>
@@ -1018,6 +1029,8 @@
             :fileList="fileList"
             @preview="handleImagePreview"
             @change="handleImagePreviewChange"
+            :remove="handleFileRemove"
+            :showUploadList="showUploadList"
           >
             <div v-if="fileList.length < 3 && editable">
               <a-icon type="plus" />
@@ -1048,7 +1061,7 @@
       :footer="null"
       @cancel="handleCancel"
       :visible="planVisible"
-      title="新建责任类型"
+      :title="planRecord.key !== undefined ? '编辑责任类型' : '新建责任类型'"
     >
       <a-form :form="planForm" @submit="handlePlanSubmit">
         <a-form-item label="责任名称">
@@ -1075,7 +1088,7 @@
             v-decorator="[
               'coverage',
               {
-                initialValue: planRecord.planValue,
+                initialValue: planRecord.coverage,
                 rules: [
                   {
                     required: true,
@@ -1094,7 +1107,7 @@
             v-decorator="[
               'deductibleExcess',
               {
-                initialValue: planRecord.planAmountValue,
+                initialValue: planRecord.deductibleExcess,
                 rules: [
                   {
                     required: true,
@@ -1112,7 +1125,7 @@
             v-decorator="[
               'lossRation',
               {
-                initialValue: planRecord.planRateValue,
+                initialValue: planRecord.lossRation,
                 rules: [
                   {
                     required: true,
@@ -1143,7 +1156,7 @@
       :footer="null"
       @cancel="handleBModalCancel"
       :visible="bModalVisible"
-      title="新建被保人"
+      :title="insuredRecord.key !== undefined ? '编辑被保人' : '新增被保人'"
     >
       <a-form :form="bForm" @submit="handleBSubmit">
         <a-row :gutter="8">
@@ -1282,10 +1295,10 @@
             <a-form-item label="承保职业">
               <a-input
                 v-decorator="[
-                  'underwirde_occupational',
+                  'underwirdeOccupational',
                   {
                     ...inputRequired,
-                    initialValue: insuredRecord.underwirde_occupational
+                    initialValue: insuredRecord.underwirdeOccupational
                   }
                 ]"
                 placeholder="请输入"
@@ -1325,7 +1338,7 @@
               </a-radio-group>
             </a-form-item>
           </a-col>
-          <template v-if="isMain == '否'">
+          <template v-if="isMain == 'N'">
             <a-col :span="12">
               <a-form-item label="主被保人姓名">
                 <a-input
@@ -1508,6 +1521,7 @@ const insuredData = [];
 export default {
   data() {
     return {
+      showUploadList: {showPreviewIcon: true, showRemoveIcon: true},
       editable: true,
       update_order: false, // 是否是修改
       allFormData: {
@@ -1531,15 +1545,7 @@ export default {
       taxpayerTypeOptions: dictOptions.taxpayerTypeOptions,
       previewVisible: false, // 图像上传
       previewImage: "",
-      fileList: [
-        {
-          uid: "1",
-          name: "xxx.png",
-          // status: 'done',
-          url:
-            "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-        }
-      ],
+      fileList: [],
       planRecord: {
         // 编辑责任信息
         planName: "",
@@ -1620,15 +1626,53 @@ export default {
       return val === "Y" ? "是" : "否";
     },
     filterIdType: (val, idTypeOptions) => {
-      // let item = idTypeOptions.filter((val) =>{
-      //   console.log(val, '121212')
-      //   return val.value == val
-      // })
-      // console.log('filterIdType -> idTypeOptions -> ', item, val)
+      if (!val) {
+        return ''
+      }
       return idTypeOptions[val].name;
     },
-    filterIdTypeCompany: (val, idTypeOptions) => {
+    filterIdTypeCompany: (val, idTypeCompanyOptions) => {
+      if (val === undefined) {
+        return ''
+      }
       return idTypeCompanyOptions[val].name;
+    },
+    filterIndustry: (val, industryOptions) => {
+      console.log(industryOptions, ' -> ', val)
+      if (val === undefined) {
+        return ''
+      }
+      return industryOptions[val].name
+    },
+    filterTaxType: (val, taxpayerTypeOptions) => {
+      if (val === undefined) {
+        return ''
+      }
+      return taxpayerTypeOptions[val].name
+    },
+    filterPayType: (val, payTypeOptions) => {
+      if (val === undefined) {
+        return ''
+      }
+      return payTypeOptions[val].name
+    }
+  },
+  computed: {
+    planDataValid () {
+      return this.planData.filter((value) => {
+        if (value.id) {
+          return value.status == '1'
+        }
+        return true
+      })
+    },
+    insuredDataValid () {
+      return this.insuredData.filter((value) => {
+        if (value.id) {
+          return value.status == '1'
+        }
+        return true
+      })
     }
   },
   beforeCreate(e) {
@@ -1636,30 +1680,93 @@ export default {
   },
   mounted() {
     let date = moment('2019-06-01')
-    console.log(this.$route, typeof date, date instanceof moment, '111');
     let { name, params } = this.$route;
     if (name === "bx_order_detail") {
       this.editable = false;
+      this.showUploadList = {showPreviewIcon: true, showRemoveIcon: false};
     } else if (name === "bx_order_edit") {
       this.update_order = true;
     } else {
       this.add_order = true;
     }
     if (params.id) {
-      this.fetchPolicyDetailById(params.id);
+      Promise.all([this.getAllProvinceCityArea(), this.fetchPolicyDetailById(params.id)]).then(() => {
+        this.resolveProvinceCityArea()
+      })
+    } else {
+      this.fetchProvince();
     }
-    this.fetchProvince();
-
-    let item = this.idTypeOptions.filter(val => {
-      console.log(val, "121212");
-      return val.value == "0";
-    });
-    console.log("filterIdType -> idTypeOptions -> ", item);
   },
   methods: {
     moment,
+    handleFileRemove (file) {
+      console.log(file, 'handleFileRemove -> ')
+      if (file.id) {
+        this.removedFiles = this.removedFiles || []
+        this.removedFiles.push({
+          ...file,
+          status: '0'
+        })
+      }
+    },
+    resolveProvinceCityArea () {
+      let {provinceList, cityList, areaList} = this._allProvinceCityArea
+      console.log('provinceList -> ', provinceList.findItem, provinceList.find, this.allFormData.application)
+      // 详情展示用
+      this.allFormData.application.provinceName = provinceList.find(val => {
+        return val.provinceCode == this.allFormData.application.province
+      }).provinceName
+
+      this.allFormData.application.cityName = cityList.find(val => {
+        return val.cityCode == this.allFormData.application.city
+      }).cityName
+
+      this.allFormData.application.areaName = areaList.find(val => {
+        return val.districtCode == this.allFormData.application.area
+      }).districtName
+
+      this.allFormData.bankInfo.provinceName = provinceList.find(val => {
+        return val.provinceCode == this.allFormData.bankInfo.province
+      }).provinceName
+
+      this.allFormData.bankInfo.cityName = cityList.find(val => {
+        return val.cityCode == this.allFormData.bankInfo.city
+      }).cityName
+      // 列表数据 编辑时用
+      this.cityOptions = cityList.filter(val => {
+        return val.provinceCode == this.allFormData.application.province
+      })
+      this.areaOptions = areaList.filter(val => {
+        return val.cityCode == this.allFormData.application.city
+      })
+      // 银行信息
+      this.cityBAOptions = cityList.filter(val => {
+        return val.provinceCode == this.allFormData.bankInfo.province
+      })
+      this._allProvinceCityArea = null;
+    },
+    getAllProvinceCityArea () {
+      return api.getAllProvinceCityArea().then(res => res.data).then(data => {
+        console.log('getAllProvinceCityArea -> ', data)
+        this._allProvinceCityArea = data.content
+        this.provinceOptions = data.content.provinceList
+      })
+    },
+    handleExcelUploadChange (info) {
+      if (info.file.response) {
+        this.insuredData.push(...info.file.response)
+      }
+      if (info.file.status !== 'uploading') {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === 'done') {
+        this.$message.success(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === 'error') {
+        this.$message.error(`${info.file.name} file upload failed.`);
+      }
+    },
     fetchPolicyDetailById(id) {
-      api
+      return api
         .policyDetailById({
           id: parseInt(id)
         })
@@ -1683,14 +1790,21 @@ export default {
             let key = arr[i];
             if (!content[key]) {
               content[key] = {};
+            } else if (content[key] && this.update_order) {
+              for (var ckey in content[key]) {
+                let val = content[key][ckey]
+                // 日期
+                if (typeof val == 'string' && val.split('-').length > 2) {
+                  content[key][ckey] = moment(val)
+                }
+              }
             }
           }
-          console.log("fetchPolicyDetailById -> ", data.content);
           this.planData = content.planList;
           this.insuredData = content.insureList;
           this.fileList = content.fileList.map((item, index) => {
-            console.log(item, index, "1111");
             return {
+              id: item.id,
               uid: index,
               name: item.name,
               url: item.url
@@ -1700,8 +1814,6 @@ export default {
             ...content,
             rangeDate: [moment(content.startDate), moment(content.endDate)]
           };
-
-          console.log(this.fileList, "fileList -> 11111111");
         });
     },
     fetchProvince() {
@@ -1728,39 +1840,26 @@ export default {
         })
         .then(res => res.data);
     },
-    handleBAProvinceChange(code) {
-      console.log("银行市级选择");
+    handleBAProvinceChange(code, option) {
+      this.allFormData.application.city = null
       this.getCityByProvinceId(code).then(data => {
         this.cityBAOptions = data.content;
       });
     },
-    changeYiWai(e) {
-      console.log(e, "changeYiWai -> ");
-      if (this._custom_yiwaist) {
-        return;
-      }
-      this._custom_yiwaist = setTimeout(() => {
-        this.planData.push({
-          planName: "意外伤害",
-          planValue: e.target.value,
-          planAmountValue: "",
-          planAmountValue: ""
-        });
-        clearTimeout(this._custom_yiwaist);
-        this._custom_yiwaist = null;
-      }, 1000);
-    },
     insurceTypeChange(e) {
       console.log("insurceTypeChange -> ", e);
     },
-    handleProvinceChange(code) {
+    handleProvinceChange(code, option) {
       console.log("handleProvinceChange -> ", code);
+      this.allFormData.application.city = null
+      this.allFormData.application.area = null
       this.getCityByProvinceId(code).then(data => {
         this.cityOptions = data.content;
       });
     },
-    handleCityChange(code) {
+    handleCityChange(code, option) {
       console.log("handleCityChange -> ", code);
+      this.allFormData.application.area = null
       this.getAreaByCityCode(code).then(data => {
         this.areaOptions = data.content;
       });
@@ -1782,6 +1881,7 @@ export default {
         key: index,
         birthDate: moment(record.birthDate)
       };
+      this.isMain = record.isMain
       // this.planForm.setFieldsValue(record)
       this.bModalVisible = true;
       console.log("editBbr -> ", record, index, this.insuredRecord);
@@ -1796,12 +1896,22 @@ export default {
       console.log("editPlan -> ", record, index, this.planRecord);
     },
     deleteBbr(record, index) {
-      this.insuredData.splice(index, 1);
       console.log("deleteBbr -> ", record);
+      let item = this.insuredData[index];
+      this.insuredData.splice(index, 1);
+      if (record.id) {
+        item.status = '0'
+        this.insuredData.push(item)
+      }
     },
     deletePlan(record, index) {
       console.log("deletePlan -> ", record);
+      let item = this.planData[index];
       this.planData.splice(index, 1);
+      if (record.id) {
+        item.status = '0'
+        this.planData.push(item)
+      }
     },
     handleBSubmit(e) {
       e.preventDefault();
@@ -1816,23 +1926,28 @@ export default {
               birthDate: values.birthDate.format("YYYY-MM-DD")
             };
             this.insuredData = arr;
-            this.insuredRecord = {};
-            this.bForm.resetFields();
           } else {
             this.insuredData.push({
               ...values,
               birthDate: values.birthDate.format("YYYY-MM-DD")
             });
           }
+          this.resetBForm()
           this.bModalVisible = false;
           console.log(this.insuredRecord, "12 -> ");
         }
       });
     },
+    resetBForm () {
+      this.insuredRecord = {};
+      this.bForm.resetFields();
+    },
     showBModal() {
+      this.isMain = '1';
       this.bModalVisible = true;
     },
     handleBModalCancel() {
+      this.resetBForm();
       this.bModalVisible = false;
     },
     changeDutyOption(value, option) {
@@ -1849,6 +1964,7 @@ export default {
       this.planVisible = false;
     },
     handleCancel() {
+      this.planRecord = {};
       this.planVisible = false;
     },
     handlePlanSubmit(e) {
@@ -1904,11 +2020,24 @@ export default {
           insurceType: 1
         })
       }
+      let fileList = [...this.fileList]
+      fileList = fileList.map(value => {
+        if (value.response) {
+          return {
+            name: value.name,
+            url: value.response.url
+          }
+        }
+        return value
+      })
+      if (this.removedFiles && this.removedFiles.length > 0) {
+        fileList.push(...this.removedFiles)
+      }
       let params = {
         startDate: values.rangeDate[0].format("YYYY-MM-DD"),
         endDate: values.rangeDate[1].format("YYYY-MM-DD"),
         insureList: this.insuredData,
-        fileList: this.fileList,
+        fileList,
         planList
       };
       const copyValues = { ...values };
@@ -1923,13 +2052,27 @@ export default {
             val = val.format('YYYY-MM-DD')
           }
           params[objKey][pre] = val;
+          if (this.allFormData[objKey] && this.allFormData[objKey]['id'] !== undefined) {
+            params[objKey]['id'] = this.allFormData[objKey]['id'];
+          }
         } else if (copyValues[key] && typeof copyValues[key] !== "object") {
           params[key] = copyValues[key];
         }
       }
+      // for (var key in ['application', 'bankInfo']) {
+      //     provinceOptions
+      //     params[key]['provinceName'] = provinceOptions.filter(val => params[key]['province']
+      //   if (key === 'application') {
+      //     params[key]['cityName'] = params[key]['city']
+      //     params[key]['areaName'] = params[key]['area']
+      //   } else {
+      //     params[key]['cityName'] = params[key]['city']
+      //   }
+      // }
       console.log("postData -> ", params);
       if (this.update_order) {
         params.id = this.$route.params.id;
+
         api
           .updatePolicy(params)
           .then(res => res.data)
