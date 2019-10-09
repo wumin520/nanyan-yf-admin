@@ -279,7 +279,6 @@ export default {
     getRoleById() {
        api.getRole({id:this.$route.params.id}).then((res) => {
           let roleList = res.data.content.resourceIdList.split(",")
-          // console.log("查询角色的权限",this.checkedKeys)
           this.initialList.roleName = res.data.content.roleName
           this.initialList.roleCode = res.data.content.roleCode
           api.getResourceByUserId({id:this.$route.params.id}).then((res) => {
