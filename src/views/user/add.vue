@@ -160,7 +160,7 @@ export default {
           placeholder: "请输入联系电话",
           dataIndex: "userTel",
           input_type: "input",
-          initialValue: ""
+          initialValue: "",
         },
         {
           label: "邮箱",

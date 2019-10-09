@@ -38,8 +38,8 @@
       <template slot="type" slot-scope="text">
         {{ text == 1 ? "菜单" : "按钮" }}
       </template>
-      <template slot="operation" slot-scope="text, record">
-        <a-button @click="delRecord(record,index)" type="primary"
+      <template slot="operation" slot-scope="text, record, index">
+        <a-button @click="delRecord(record,index,text)" type="primary"
           ><a-icon type="delete"></a-icon>删除</a-button
         >
         <router-link :to="'/adminMenu/edit/' + record.id">
@@ -152,6 +152,7 @@ export default {
       this.fetchList()
     },
     delRecord(record, index) {
+      // console.log('delRecord -> ', record, index, text)
       this.data.splice(index, 1)
       api
         .updateResource({
