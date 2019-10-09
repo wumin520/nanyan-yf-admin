@@ -7,7 +7,7 @@
     >
       <a-row :gutter="8">
         <a-col v-for="(item, index) in formInputs" :key="index" :span="24">
-          <a-form-item v-bind="formItemLayout" :label="item.label">
+          <a-form-item v-bind="formItemLayout" :label="item.label" v-show="item.isShow">
             <a-select
               style="width: 150px;"
               v-if="item.input_type === 'statusSelect'"
@@ -62,13 +62,22 @@
             </a-checkbox-group>
 
             <a-input
-              v-else-if="item.input_type === 'input'  && item.dataIndex !== 'userEmail'"
+              v-else-if="item.input_type === 'input'  && item.dataIndex !== 'userEmail'  && item.dataIndex !== 'userPassword'"
               v-decorator="[item.dataIndex,
                 {
                   ...inputRequired,
                   initialValue: item.initialValue
                 }
               ]"
+              :placeholder="item.placeholder"
+            ></a-input>
+            <a-input
+              v-else-if="item.input_type === 'input'  && item.dataIndex === 'userPassword'"
+              v-decorator="[item.dataIndex,
+                {
+                  ...inputPasswordRequired,
+                  initialValue: item.initialValue
+                }]"
               :placeholder="item.placeholder"
             ></a-input>
             <a-input
@@ -88,7 +97,7 @@
                 }
                 ]"
                 :placeholder="item.placeholder"
-                :disabled="item.isShow"
+                
               ></a-input>
           </a-form-item>
         </a-col>
@@ -146,6 +155,7 @@ export default {
           placeholder: "请输入用户账号",
           dataIndex: "userName",
           input_type: "input",
+          isShow: true,
           initialValue: ""
         },
         {
@@ -153,6 +163,7 @@ export default {
           placeholder: "请输入用户密码",
           dataIndex: "userPassword",
           input_type: "input",
+          isShow: true,
           initialValue: ""
         },
         {
@@ -160,13 +171,15 @@ export default {
           placeholder: "请输入联系电话",
           dataIndex: "userTel",
           input_type: "input",
-          initialValue: "",
+          isShow: true,
+          initialValue: ""
         },
         {
           label: "邮箱",
           placeholder: "请输入邮箱",
           dataIndex: "userEmail",
           input_type: "input",
+          isShow: true,
           initialValue: ""
         },
         {
@@ -174,6 +187,7 @@ export default {
           placeholder: "请选择",
           dataIndex: "roleIdList",
           input_type: "check_group",
+          isShow: true,
           initialValue: "",
           options: [
             {
@@ -191,6 +205,7 @@ export default {
           placeholder: "请选择用户来源",
           dataIndex: "userType",
           input_type: "userTypeSelect",
+          isShow: true,
           initialValue: "1",
           options: [
             {
@@ -213,7 +228,7 @@ export default {
           dataIndex: "companyIdType",
           input_type: "inputCompany",
           isShow: true,
-          initialValue: "1"
+          initialValue: ""
         },
         {
           label: "公司证件号码",
@@ -221,13 +236,14 @@ export default {
           dataIndex: "companyIdNo",
           input_type: "inputCompany",
           isShow: true,
-          initialValue: "1"
+          initialValue: ""
         },
         {
           label: "姓名",
           placeholder: "请输入用户姓名",
           dataIndex: "name",
           input_type: "input",
+          isShow: true,
           initialValue: ""
         },
         {
@@ -235,6 +251,7 @@ export default {
           placeholder: "请输入地址",
           dataIndex: "userAddr",
           input_type: "input",
+          isShow: true,
           initialValue: ""
         },
         {
@@ -242,6 +259,7 @@ export default {
           placeholder: "请选择状态",
           dataIndex: "status",
           input_type: "statusSelect",
+          isShow: true,
           initialValue: "",
           options: [
             {
@@ -264,6 +282,14 @@ export default {
         ]
       },
       inputRequired: {
+        rules: [
+          {
+            required: true,
+            message: "请输入"
+          }
+        ]
+      },
+      inputPasswordRequired: {
         rules: [
           {
             required: true,
@@ -301,7 +327,7 @@ export default {
     },
     handleSearchChange(value) {
       // console.log("----->",value)
-      if (value !== "1") {
+      if (value === "1") {
         this.formInputs[6].isShow = false;
         this.formInputs[7].isShow = false;
       } else {
@@ -352,21 +378,21 @@ export default {
     },
     editUserList() {   //编辑
       this.form.validateFields((err, values) => {
-        // console.log("-->values.roleIdList",values.roleIdList)
-        let data = {
-          id: this.userId.id,
-          userName: values.userName, //	用户账号
-          userPassword: values.userPassword, //用户密码，MD5后base64加密
-          userType: values.userType, //1:南燕用户，2:保司，2:客户
-          name: values.name, //姓名
-          userTel: values.userTel, //联系电话
-          userEmail: values.userEmail, //邮箱
-          userAddr: values.userAddr, //地址
-          companyIdType: values.companyIdType, //暂无 公司证件类型
-          companyIdNo: values.companyIdNo, //暂无	公司证件号码
-          status: values.status, //状态 1,有效，2,无效
-          roleIdList: values.roleIdList.join() //用户角色id集合
-        };
+          let data = {
+            id: this.userId.id,
+            userName: values.userName, //	用户账号
+            // userPassword: values.userPassword, //用户密码，MD5后base64加密
+            userType: values.userType, //1:南燕用户，2:保司，2:客户
+            name: values.name, //姓名
+            userTel: values.userTel, //联系电话
+            userEmail: values.userEmail, //邮箱
+            userAddr: values.userAddr, //地址
+            companyIdType: values.companyIdType, //暂无 公司证件类型
+            companyIdNo: values.companyIdNo, //暂无	公司证件号码
+            status: values.status, //状态 1,有效，2,无效
+            roleIdList: values.roleIdList.join() //用户角色id集合
+          };
+        
         if (!err) {
           // console.log("form values -> ", values);
           api.updateUser(qs.stringify(data)).then((res) => {
@@ -404,7 +430,7 @@ export default {
         promiseOne.then(() => {
           api.getUser({id:this.userId.id}).then((res) => {
           this.formInputs[0].initialValue = res.data.content.userName
-          this.formInputs[1].initialValue = res.data.content.userPassword
+          // this.formInputs[1].initialValue = res.data.content.userPassword
           this.formInputs[2].initialValue = res.data.content.userTel
           this.formInputs[3].initialValue = res.data.content.userEmail
           this.formInputs[5].initialValue = res.data.content.userType
@@ -415,7 +441,7 @@ export default {
           this.formInputs[10].initialValue = res.data.content.status
           this.checkedList = res.data.content.roleIdList?res.data.content.roleIdList.split(","):[]
           // console.log("状态",this.formInputs[5].initialValue)
-          if (this.formInputs[5].initialValue !== "1") {
+          if (this.formInputs[5].initialValue === "1") {
             this.formInputs[6].isShow = false;
             this.formInputs[7].isShow = false;
           } else {
@@ -429,6 +455,8 @@ export default {
   created() {
     this.userId = this.$route.params
     if(this.userId.id !== undefined || null || ""){
+      this.inputPasswordRequired.rules[0].required = false
+      this.formInputs[1].isShow = false
       this.initEditData()  
     } else {
       this.getAllRoles()
