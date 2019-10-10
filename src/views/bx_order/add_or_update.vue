@@ -1917,13 +1917,13 @@ export default {
       e.preventDefault();
       this.bForm.validateFields((err, values) => {
         if (!err) {
-          console.log("handleBSubmit -> ", values);
           if (this.insuredRecord.key !== undefined) {
             // 编辑
             let arr = [...this.insuredData];
             arr[this.insuredRecord.key] = {
+              ...this.insuredRecord,
               ...values,
-              birthDate: values.birthDate.format("YYYY-MM-DD")
+              birthDate: values.birthDate.format("YYYY-MM-DD"),
             };
             this.insuredData = arr;
           } else {
@@ -1932,9 +1932,9 @@ export default {
               birthDate: values.birthDate.format("YYYY-MM-DD")
             });
           }
+          console.log("handleBSubmit -> ", values, this.insuredData, this.insuredRecord);
           this.resetBForm()
           this.bModalVisible = false;
-          console.log(this.insuredRecord, "12 -> ");
         }
       });
     },
