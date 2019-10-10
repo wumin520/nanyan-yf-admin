@@ -34,6 +34,13 @@
             ></a-input>
           </a-form-item>
         </a-col>
+        <a-col :span="12">
+          <a-form-item label="出单用户">
+            <a-input v-decorator="['createName']" style="width: 150px;" placeholder="请选择">
+              <!-- <a-select-option key="0" value="0">0</a-select-option> -->
+            </a-input>
+          </a-form-item>
+        </a-col>
         <a-col :span="6">
           <a-button v-if="authorizedButtonStr.indexOf('查询') > -1" html-type="submit" type="primary"
             ><a-icon type="search"></a-icon>查询</a-button
