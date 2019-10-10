@@ -283,7 +283,6 @@ export default {
           this.checkedKeys = res.data.content.resourceIdList.split(",")
           this.initialList.roleName = res.data.content.roleName
           this.initialList.roleCode = res.data.content.roleCode
-          
           // api.getResourceByUserId({id:this.$route.params.id}).then((res) => {
           //   res.data.content.forEach(item => {
           //     this.del(roleList,item.id.toString())
