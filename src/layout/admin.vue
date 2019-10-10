@@ -49,7 +49,7 @@
             <a href="javascript:;"  @click="exit">退出登录</a>
           </template>
           <template slot="title">
-            <div style="text-align: center;">me</div>
+            <div class="username_" style="text-align: center;">{{userName}}</div>
           </template>
           <a-avatar style="backgroundColor:#297FFF; margin-left: auto;position: absolute; right: 72px;top: 13px;" icon="user" />
         </a-popover>
@@ -83,7 +83,7 @@
 <script>
 import SubMenu from "./SubMenu";
 import api from '@/utils/api';
-import { transformMenuData } from '@/utils/authorized';
+import { transformMenuData, getUserInfo } from '@/utils/authorized';
 
 export default {
   data() {
@@ -123,7 +123,8 @@ export default {
         }
       ],
       routes: [],
-      selectedKeys: []
+      selectedKeys: [],
+      userName: ''
     };
   },
   watch: {
@@ -141,6 +142,8 @@ export default {
       this.list = transformMenuData(data.content, true)
     });
     this.toActiveMenuItem()
+    const userInfo = getUserInfo() || {}
+    this.userName = userInfo.userName || 'Me'
   },
   methods: {
     toActiveMenuItem () {
@@ -193,6 +196,12 @@ export default {
   .ant-popover-inner-content {
     padding: 8px 0;
     text-align: center;
+  }
+  .username_ {
+    width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 }
 #components-layout-demo-custom-trigger {

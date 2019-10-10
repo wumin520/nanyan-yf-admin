@@ -1,4 +1,4 @@
-import { LOGIN_STATE } from "./constants";
+import { LOGIN_STATE, USER_INFO } from "./constants";
 
 export const isLogined = function() {
   return localStorage.getItem(LOGIN_STATE) || 1;
@@ -6,6 +6,14 @@ export const isLogined = function() {
 
 export const setLogined = function(val) {
   return localStorage.setItem(LOGIN_STATE, val);
+};
+
+export const cacheUserInfo = function(val = null) {
+  return localStorage.setItem(USER_INFO, JSON.stringify(val));
+};
+
+export const getUserInfo = function() {
+  return JSON.parse(localStorage.getItem(USER_INFO) || null);
 };
 
 export const transformMenuData = function transformMenuData(arr, excludeButton, disabledButton) {

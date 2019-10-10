@@ -94,7 +94,7 @@
 
 <script>
 import api from "@/utils/api";
-import { setLogined } from "@/utils/authorized";
+import { setLogined, cacheUserInfo } from "@/utils/authorized";
 
 export default {
   data () {
@@ -118,6 +118,7 @@ export default {
         })
         .then(res => res.data)
         .then(data => {
+          cacheUserInfo(data.content);
           setLogined(1);
           let path = "/bxOrder";
           if (this.$route.query.redirect) {
