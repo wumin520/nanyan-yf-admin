@@ -125,10 +125,10 @@ export default {
           }
           this.$router.push(path);
         }).catch((err) => {
-          if(err.data.returnCode === '1004'){
+          if(err.data.returnCode  === '1004'){
             this.changeImgCode()
           }
-        });
+        })
     },
     handleSubmit(e) {
       e.preventDefault();
