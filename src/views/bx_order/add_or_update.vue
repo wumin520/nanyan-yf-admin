@@ -1365,8 +1365,8 @@
                   ]"
                   placeholder="请选择"
                 >
-                  <a-radio value="1">员工</a-radio>
-                  <a-radio value="2">子女及家属</a-radio>
+                  <a-radio value="1">配偶</a-radio>
+                  <a-radio value="2">子女</a-radio>
                 </a-radio-group>
               </a-form-item>
             </a-col>

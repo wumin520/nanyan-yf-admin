@@ -183,13 +183,13 @@ export default {
     font-size: 29px;
     font-family: Source Han Sans CN;
     font-weight: 400;
-    color: rgba(138, 165, 253, 1);
+    color: #1890ff;
     margin-bottom: 32px;
     .line_ {
       width: 29px !important;
       min-width: 29px;
       height: 9px;
-      background: rgba(138, 165, 253, 1);
+      background: #1890ff;
       margin: 0 auto;
     }
   }
@@ -216,8 +216,8 @@ export default {
   width: 100%;
   // width:240px;
   // height:60px;
-  background: rgba(138, 165, 253, 1);
-  border: 1px solid #8aa5fd;
+  background: #1890ff;
+  border: 1px solid #1890ff;
   // border-radius:6px;
   margin: 0 auto;
   // font-size:30px;
