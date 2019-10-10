@@ -38,6 +38,7 @@
           <a-form-item label="权限分配" v-bind="formItemLayout">
             <a-tree
               checkable
+              checkStrictly
               @expand="onExpand"
               v-model="checkedKeys"
               @select="onSelect"
@@ -184,7 +185,7 @@ export default {
   },
   watch: {
     checkedKeys(val) {
-      console.log("onCheck", val);
+      console.log("watch onCheck", val);
     }
   },
   methods: {
@@ -213,10 +214,6 @@ export default {
       this.expandedKeys = expandedKeys;
       // this.autoExpandParent = false;
     },
-    onCheck(checkedKeys) {
-      console.log("onCheck", checkedKeys);
-      this.checkedKeys = checkedKeys;
-    },
     onSelect(selectedKeys, info) {
       console.log("onSelect", info);
       this.selectedKeys = selectedKeys;
@@ -226,11 +223,12 @@ export default {
        this.form.validateFields((err, values) => {
           if (!err) {
             // console.log("form values -> ", values);
+            console.log(this.checkedKeys, 'this.checkedKeys -> ')
             let data ={
               roleCode:	values.roleCode, //	用户名称
               roleName:	values.roleName, //	用户账号
               status:	1,//	1,有效，2,无效
-              resourceIdList:	this.checkedKeys.join()//	资源id集合
+              resourceIdList:	this.checkedKeys.checked.join()//	资源id集合
             }
             api.addRole(data).then((res) => {
               if(res.data.returnCode !== "0000"){
@@ -255,7 +253,7 @@ export default {
               roleCode:	values.roleCode, //	用户名称
               roleName:	values.roleName, //	用户账号
               status:	1,//	1,有效，2,无效
-              resourceIdList:	this.checkedKeys.join()//	资源id集合
+              resourceIdList:	this.checkedKeys.checked.join()//	资源id集合
             }
             api.updateRole(data).then((res) => {
               if(res.data.returnCode !== "0000"){
@@ -280,6 +278,78 @@ export default {
     //通过id查询用户角色
     getRoleById() {
        api.getRole({id:this.$route.params.id}).then((res) => {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+          this.checkedKeys = res.data.content.resourceIdList.split(",")
+          this.initialList.roleName = res.data.content.roleName
+          this.initialList.roleCode = res.data.content.roleCode
+          // api.getResourceByUserId({id:this.$route.params.id}).then((res) => {
+          //   res.data.content.forEach(item => {
+          //     this.del(roleList,item.id.toString())
+          //   })
+          //   // console.log("hhh",this.checkedKeys)
+          // this.checkedKeys = roleList
+          // })
+=======
+          let roleList = res.data.content.resourceIdList.split(",")
+          this.initialList.roleName = res.data.content.roleName
+          this.initialList.roleCode = res.data.content.roleCode
+=======
+          let roleList = res.data.content.resourceIdList.split(",")
+          this.initialList.roleName = res.data.content.roleName
+          this.initialList.roleCode = res.data.content.roleCode
+<<<<<<< HEAD
+>>>>>>> 57b7e99... update
+=======
+>>>>>>> 558ba5e... update
+          api.getResourceByUserId({id:this.$route.params.id}).then((res) => {
+            res.data.content.forEach(item => {
+              this.del(roleList,item.id.toString())
+            })
+            // console.log("hhh",this.checkedKeys)
+          this.checkedKeys = roleList
+          })
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> c956ecb... update
+=======
+          this.checkedKeys = res.data.content.resourceIdList.split(",")
+          this.initialList.roleName = res.data.content.roleName
+          this.initialList.roleCode = res.data.content.roleCode
+=======
+          this.checkedKeys = res.data.content.resourceIdList.split(",")
+          this.initialList.roleName = res.data.content.roleName
+          this.initialList.roleCode = res.data.content.roleCode
+>>>>>>> 13a7a4d... update
+=======
+          this.checkedKeys = res.data.content.resourceIdList.split(",")
+          this.initialList.roleName = res.data.content.roleName
+          this.initialList.roleCode = res.data.content.roleCode
+>>>>>>> e644641... update
+          // api.getResourceByUserId({id:this.$route.params.id}).then((res) => {
+          //   res.data.content.forEach(item => {
+          //     this.del(roleList,item.id.toString())
+          //   })
+          //   // console.log("hhh",this.checkedKeys)
+          // this.checkedKeys = roleList
+          // })
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 09e8107... update
+=======
+>>>>>>> 57b7e99... update
+=======
+>>>>>>> 13a7a4d... update
+=======
+>>>>>>> 558ba5e... update
+=======
+>>>>>>> e644641... update
+=======
           let roleList = res.data.content.resourceIdList.split(",")
           this.initialList.roleName = res.data.content.roleName
           this.initialList.roleCode = res.data.content.roleCode
@@ -290,6 +360,19 @@ export default {
             // console.log("hhh",this.checkedKeys)
           this.checkedKeys = roleList
           })
+>>>>>>> 8b94911... update
+=======
+          this.checkedKeys = res.data.content.resourceIdList.split(",")
+          this.initialList.roleName = res.data.content.roleName
+          this.initialList.roleCode = res.data.content.roleCode
+          // api.getResourceByUserId({id:this.$route.params.id}).then((res) => {
+          //   res.data.content.forEach(item => {
+          //     this.del(roleList,item.id.toString())
+          //   })
+          //   // console.log("hhh",this.checkedKeys)
+          // this.checkedKeys = roleList
+          // })
+>>>>>>> 82b4d71... update
        })
     }
   },

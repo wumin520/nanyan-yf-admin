@@ -34,12 +34,24 @@
         </a-col>
       </a-row>
     </a-form>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     <a-table
       style="margin-top: 50px;"
       :dataSource="data"
       :columns="columns"
       :pagination="pagination"
     >
+=======
+    <a-table style="margin-top: 50px;" :dataSource="data" :columns="columns" :pagination="pagination">
+>>>>>>> e771bb1... liu
+=======
+    <a-table style="margin-top: 50px;" :dataSource="data" :columns="columns" :pagination="pagination">
+>>>>>>> liu
+=======
+    <a-table style="margin-top: 50px;" :dataSource="data" :columns="columns" :pagination="pagination">
+>>>>>>> e771bb1... liu
       <template slot="operation" slot-scope="text, record, index">
         <a-button @click="deleteRecord(record, index)" type="primary"
           ><a-icon type="delete"></a-icon>删除</a-button
@@ -71,7 +83,19 @@
 }
 </style>
 <script>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 import api from "@/utils/api";
+=======
+import api from '@/utils/api';
+>>>>>>> e771bb1... liu
+=======
+import api from '@/utils/api';
+>>>>>>> liu
+=======
+import api from '@/utils/api';
+>>>>>>> e771bb1... liu
 
 const columns = [
   {
@@ -103,10 +127,29 @@ export default {
         pageNo: 1,
         pageSize: 20, // 默认每页显示数量
         showSizeChanger: true, // 显示可改变每页数量
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         pageSizeOptions: ["5", "20", "50", "100"], // 每页数量选项
         showTotal: total => `总共 ${total} 条`, // 显示总数
         onShowSizeChange: (current, pageSize) => this.pageSize = pageSize, // 改变每页数量时更新显示
         onChange:(page,pageSize)=>this.changePage(page,pageSize),//点击页码事件
+=======
+=======
+>>>>>>> liu
+=======
+>>>>>>> e771bb1... liu
+        pageSizeOptions: ['1', '20', '50', '100'], // 每页数量选项
+        showTotal: total => `总共 ${total} 条`, // 显示总数
+        onShowSizeChange: (current, pageSize) => this.pageSize = pageSize, // 改变每页数量时更新显示
+        onChange:(page,pageSize)=>self.changePage(page,pageSize),//点击页码事件
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> e771bb1... liu
+=======
+>>>>>>> liu
+=======
+>>>>>>> e771bb1... liu
         total:0 //总条数
        },
       data,
@@ -127,10 +170,30 @@ export default {
     };
   },
   methods: {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     changePage(page, pageSize) {
       this.pagination.pageNo = page;
       this.pagination.pageSize = pageSize;
       this.getRoleList();
+=======
+=======
+>>>>>>> liu
+=======
+>>>>>>> e771bb1... liu
+    changePage(page,pageSize) {
+       this.pagination.pageNo = page
+       this.pagination.pageSize = pageSize
+      //  console.log("page ->>",this.pagination.pageNo,this.pagination.pageSize)
+       this.getRoleList()
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> e771bb1... liu
+=======
+>>>>>>> liu
+=======
+>>>>>>> e771bb1... liu
     },
     editRecord (record) {
       // console.log(record, '1')
@@ -155,6 +218,9 @@ export default {
     },
     handleSubmit(e) {
       e.preventDefault();
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
       this.getRoleList()   //查询角色
     },
     getRoleList() {     //获取角色列表
@@ -162,28 +228,89 @@ export default {
         let data ={
           roleCode:	values.roleCode, //	用户名称
           roleName:	values.roleName, //	用户账号
+=======
+=======
+>>>>>>> liu
+=======
+>>>>>>> e771bb1... liu
+      this.getRoleList()
+    },
+    getRoleList() {
+      this.form.validateFields((err, values) => {
+        let data ={
+          roleCode:	values.name, //	用户名称
+          roleName:	values.userName, //	用户账号
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> e771bb1... liu
+=======
+>>>>>>> liu
+=======
+>>>>>>> e771bb1... liu
           pageNum:	this.pagination.pageNo, //	当前页码
           pageSize:	this.pagination.pageSize //	当前页面显示的数据条目
         }
         if (!err) {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+         
+>>>>>>> e771bb1... liu
+=======
+         
+>>>>>>> liu
+=======
+         
+>>>>>>> e771bb1... liu
           api.getRoleList(data).then((res) => {
             if(res.data.returnCode !== "0000"){
               this.$message.info(res.data.returnMsg);
             } else{
               this.data = []  //重置data
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
               this.pagination.total = res.data.content.total  //获得总数据
+=======
+>>>>>>> e771bb1... liu
+=======
+>>>>>>> liu
+=======
+>>>>>>> e771bb1... liu
               res.data.content.list.forEach(item => {
                 this.data.push({
                   roleName: item.roleName,
                   roleCode: item.roleCode,
                   modifier: item.modifier,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
                   status: item.status,
+=======
+>>>>>>> e771bb1... liu
+=======
+>>>>>>> liu
+=======
+>>>>>>> e771bb1... liu
                   id: item.id
                 })
               });
             }
           }).catch((err) => {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
             this.$message.info("网络异常")
+=======
+            console.log(err)
+>>>>>>> e771bb1... liu
+=======
+            console.log(err)
+>>>>>>> liu
+=======
+            console.log(err)
+>>>>>>> e771bb1... liu
           })
         }
       });
