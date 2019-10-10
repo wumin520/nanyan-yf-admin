@@ -2,7 +2,7 @@
   <a-layout id="components-layout-demo-custom-trigger">
     <a-layout-sider :trigger="null" collapsible v-model="collapsed">
       <div class="logo">
-        <img src="../assets/logo@2x.png" />
+        <img src="../assets/logo1.png" />
       </div>
       <!-- <a-menu theme="light" mode="inline" :defaultSelectedKeys="['1']">
         <a-menu-item key="1">
@@ -225,7 +225,7 @@ export default {
   margin: 16px;
   overflow: hidden;
   img {
-    width: 128px;
+    width: 132px;
     height: auto;
     display: block;
   }

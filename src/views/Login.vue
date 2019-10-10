@@ -1,7 +1,7 @@
 <template>
   <div class="login_bg_">
     <div class="top_header_">
-      <img class="logo_" src="../assets/logo.png" />
+      <img class="logo_" src="../assets/logo1.png" />
     </div>
     <div class="login_container_">
       <div class="login_title_">
@@ -161,7 +161,7 @@ export default {
     // margin-bottom: 60px;
 
     .logo_ {
-      width: 102px;
+      width: 121px;
       height: auto;
     }
   }
