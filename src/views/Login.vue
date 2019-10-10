@@ -105,6 +105,9 @@ export default {
   beforeCreate() {
     this.form = this.$form.createForm(this);
   },
+  mounted () {
+    this.url = "/api/backstage/user/getVerificationCode/authority?" + this.$route.params.num || 80;
+  },
   methods: {
     changeImgCode () {
       var num=Math.ceil(Math.random()*10);

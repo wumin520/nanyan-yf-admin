@@ -179,7 +179,8 @@ export default {
     },
     exit () {
       api.exitLogin().then(res => res.data).then((data) => {
-        this.$router.push({name:"login"});
+        var num=Math.ceil(Math.random()*10);
+        this.$router.push({name:"login",params:{num}});
       })
     }
   }
