@@ -98,6 +98,11 @@ const columns = [
     key: "productName"
   },
   {
+    title: "保司名称",
+    dataIndex: "companyName",
+    key: "companyName"
+  },
+  {
     title: "保费",
     dataIndex: "premium",
     key: "premium"

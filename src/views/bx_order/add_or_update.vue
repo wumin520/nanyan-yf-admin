@@ -10,6 +10,7 @@
           <a-form-item v-bind="formItemLayout" label="保险起止日期">
             <a-range-picker
               v-if="editable"
+              :ranges="rangesDate"
               v-decorator="[
                 'rangeDate',
                 {
@@ -1509,6 +1510,7 @@ export default {
       editable: true,
       update_order: false, // 是否是修改
       allFormData: {
+        rangeDate: [moment(), moment().add(1, 'years')],
         application: {}, // 投保人信息
         bankInfo: {}, // 银行
         legal: {}, // 法人信息
@@ -1597,6 +1599,9 @@ export default {
       formItemLayout2: {
         labelCol: { span: 0 },
         wrapperCol: { span: 24 }
+      },
+      rangesDate: {
+        '一年': [moment(), moment().add(1, 'years')]
       }
     };
   },
@@ -1673,7 +1678,7 @@ export default {
     } else {
       this.add_order = true;
     }
-    if (params.id) {
+    if (!this.add_order) {
       Promise.all([this.getAllProvinceCityArea(), this.fetchPolicyDetailById(params.id)]).then(() => {
         this.resolveProvinceCityArea()
       })
@@ -2056,7 +2061,6 @@ export default {
       console.log("postData -> ", params);
       if (this.update_order) {
         params.id = this.$route.params.id;
-
         api
           .updatePolicy(params)
           .then(res => res.data)
@@ -2069,6 +2073,7 @@ export default {
           });
         return;
       }
+      params.companyId = this.$route.params.id;
       api
         .addPolicy(params)
         .then(res => res.data)

@@ -15,7 +15,7 @@
             v-html="item.companyPresentation"
           ></div>
           <template class="ant-card-actions" slot="actions">
-            <router-link to="/bxOrder/add">
+            <router-link :to="'/bxOrder/add/' + item.id">
               <a-icon type="plus" />新建保单
             </router-link>
             <!-- <router-link to="/bxOrder/list">
