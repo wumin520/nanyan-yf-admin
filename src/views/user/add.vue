@@ -62,7 +62,7 @@
               </a-row>
             </a-checkbox-group>
 
-            <a-input
+            <!-- <a-input
               v-else-if="item.input_type === 'input'  && item.dataIndex !== 'userEmail'  && item.dataIndex !== 'userPassword'"
               v-decorator="[item.dataIndex,
                 {
@@ -89,11 +89,12 @@
                   initialValue: item.initialValue
                 }]"
               :placeholder="item.placeholder"
-            ></a-input>
+            ></a-input> -->
               <a-input 
                 v-else
                 v-decorator="[item.dataIndex,
                 {
+                  ...item.inputRequired,
                   initialValue: item.initialValue
                 }
                 ]"
@@ -155,7 +156,15 @@ export default {
           dataIndex: "userName",
           input_type: "input",
           isShow: true,
-          initialValue: ""
+          initialValue: "",
+          inputRequired: {
+            rules: [
+              {
+                required: true,
+                message: "请输入"
+              }
+            ]
+          }
         },
         {
           label: "用户密码",
@@ -163,7 +172,15 @@ export default {
           dataIndex: "userPassword",
           input_type: "input",
           isShow: true,
-          initialValue: ""
+          initialValue: "",
+          inputRequired: {
+            rules: [
+              {
+                required: true,
+                message: "请输入"
+              }
+            ]
+          }
         },
         {
           label: "联系电话",
@@ -171,7 +188,15 @@ export default {
           dataIndex: "userTel",
           input_type: "input",
           isShow: true,
-          initialValue: ""
+          initialValue: "",
+          inputRequired: {
+            rules: [
+              {
+                required: true,
+                message: "请输入"
+              }
+            ]
+          }
         },
         {
           label: "邮箱",
@@ -179,7 +204,19 @@ export default {
           dataIndex: "userEmail",
           input_type: "input",
           isShow: true,
-          initialValue: ""
+          initialValue: "",
+          inputRequired: {
+            rules: [
+              {
+                  type: 'email', 
+                  message: '邮箱格式不合法!',
+              },
+              {
+                required: true,
+                message: "请输入"
+              }
+            ]
+          }
         },
         {
           label: "分配角色",
@@ -205,7 +242,7 @@ export default {
           dataIndex: "userType",
           input_type: "userTypeSelect",
           isShow: true,
-          initialValue: "1",
+          initialValue: "",
           options: [
             {
               name: "南燕",
@@ -227,7 +264,13 @@ export default {
           dataIndex: "companyIdType",
           input_type: "inputCompany",
           isShow: true,
-          initialValue: ""
+          initialValue: "",
+          rules: [
+              {
+                required: false,
+                message: "请输入"
+              }
+            ]
         },
         {
           label: "公司证件号码",
@@ -235,7 +278,13 @@ export default {
           dataIndex: "companyIdNo",
           input_type: "inputCompany",
           isShow: true,
-          initialValue: ""
+          initialValue: "",
+          rules: [
+              {
+                required: false,
+                message: "请输入"
+              }
+            ]
         },
         {
           label: "姓名",
@@ -243,7 +292,15 @@ export default {
           dataIndex: "name",
           input_type: "input",
           isShow: true,
-          initialValue: ""
+          initialValue: "",
+          inputRequired: {
+            rules: [
+              {
+                required: true,
+                message: "请输入"
+              }
+            ]
+          }
         },
         {
           label: "地址",
@@ -251,7 +308,13 @@ export default {
           dataIndex: "userAddr",
           input_type: "input",
           isShow: true,
-          initialValue: ""
+          initialValue: "",
+          rules: [
+              {
+                required: false,
+                message: "请输入"
+              }
+            ]
         },
         {
           label: "状态",
@@ -279,38 +342,20 @@ export default {
             message: "请选择"
           }
         ]
-      },
-      inputRequired: {
-        rules: [
-          {
-            required: true,
-            message: "请输入"
-          }
-        ]
-      },
-      inputPasswordRequired: {
-        rules: [
-          {
-            required: true,
-            message: "请输入"
-          }
-        ]
-      },
-      emailRequired: {
-        rules: [
-          {
-              type: 'email', 
-              message: '邮箱格式不合法!',
-          },
-          {
-            required: true,
-            message: "请输入"
-          }
-        ]
       }
     };
   },
   methods: {
+    //判断公司证件类型及号码输入框是否显示
+    showInput(val) {
+          if (val === "1") {
+            this.formInputs[6].isShow = false;
+            this.formInputs[7].isShow = false;
+          } else {
+            this.formInputs[6].isShow = true;
+            this.formInputs[7].isShow = true;
+          }
+    },
     getAllRoles() {
       api.getAllRole().then((res) => {
         this.formInputs[4].options = []
@@ -326,13 +371,7 @@ export default {
     },
     handleSearchChange(value) {
       // console.log("----->",value)
-      if (value === "1") {
-        this.formInputs[6].isShow = false;
-        this.formInputs[7].isShow = false;
-      } else {
-        this.formInputs[6].isShow = true;
-        this.formInputs[7].isShow = true;
-      }
+      this.showInput(value)
     },
     handleSubmit(e) {
       e.preventDefault();
@@ -440,13 +479,8 @@ export default {
           this.formInputs[10].initialValue = res.data.content.status
           this.checkedList = res.data.content.roleIdList?res.data.content.roleIdList.split(","):[]
           // console.log("状态",this.formInputs[5].initialValue)
-          if (this.formInputs[5].initialValue === "1") {
-            this.formInputs[6].isShow = false;
-            this.formInputs[7].isShow = false;
-          } else {
-            this.formInputs[6].isShow = true;
-            this.formInputs[7].isShow = true;
-          }
+
+          this.showInput(this.formInputs[5].initialValue)  //点击编辑是否显示公司类型input
         })
       })
     }
@@ -454,7 +488,7 @@ export default {
   created() {
     this.userId = this.$route.params
     if(this.userId.id !== undefined || null || ""){
-      this.inputPasswordRequired.rules[0].required = false
+      this.formInputs[1].inputRequired.rules[0].required = false
       this.formInputs[1].isShow = false
       this.initEditData()  
     } else {
