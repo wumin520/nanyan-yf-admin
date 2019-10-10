@@ -73,6 +73,15 @@ export default new Router({
                 breadcrumbName: "新增"
               }
             },
+            ,
+            {
+              path: "edit/:id",
+              name: "user_edit",
+              component: UserAdd,
+              meta: {
+                breadcrumbName: "编辑"
+              }
+            },
             {
               path: "edit/:id",
               name: "user_edit",
