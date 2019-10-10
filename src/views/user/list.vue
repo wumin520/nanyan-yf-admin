@@ -28,9 +28,7 @@
           </a-form-item>
         </a-col>
         <a-col :span="6">
-          <a-button html-type="submit" type="primary"
-            ><a-icon type="search"></a-icon>查询</a-button
-          >
+          <a-button html-type="submit" type="primary"><a-icon type="search"></a-icon>查询</a-button>
           <router-link to="/user/add">
             <a-button class="marg_l8_" type="primary" ghost
               ><a-icon type="plus"></a-icon>新建</a-button
@@ -116,6 +114,7 @@ const columns = [
 const data = [];
 export default {
   data() {
+    let self = this
     return {
       pagination: {
         pageNo: 1,

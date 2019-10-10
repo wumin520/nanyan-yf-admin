@@ -105,6 +105,9 @@ export default {
   beforeCreate() {
     this.form = this.$form.createForm(this);
   },
+  mounted () {
+    this.url = "/api/backstage/user/getVerificationCode/authority?" + this.$route.params.num || 80;
+  },
   methods: {
     changeImgCode () {
       var num=Math.ceil(Math.random()*10);
@@ -126,10 +129,10 @@ export default {
           }
           this.$router.push(path);
         }).catch((err) => {
-          if(err.data.returnCode  === '1004'){
+          if(err.data.returnCode === '1004'){
             this.changeImgCode()
           }
-        })
+        });
     },
     handleSubmit(e) {
       e.preventDefault();
@@ -183,13 +186,13 @@ export default {
     font-size: 29px;
     font-family: Source Han Sans CN;
     font-weight: 400;
-    color: rgba(138, 165, 253, 1);
+    color: rgb(41, 127, 255);
     margin-bottom: 32px;
     .line_ {
       width: 29px !important;
       min-width: 29px;
       height: 9px;
-      background: rgba(138, 165, 253, 1);
+      background: rgb(41, 127, 255);
       margin: 0 auto;
     }
   }
@@ -216,8 +219,8 @@ export default {
   width: 100%;
   // width:240px;
   // height:60px;
-  background: rgba(138, 165, 253, 1);
-  border: 1px solid #8aa5fd;
+  background: rgb(41, 127, 255);
+  border: 1px solid rgb(41, 127, 255);
   // border-radius:6px;
   margin: 0 auto;
   // font-size:30px;
