@@ -280,16 +280,16 @@ export default {
     //通过id查询用户角色
     getRoleById() {
        api.getRole({id:this.$route.params.id}).then((res) => {
-          let roleList = res.data.content.resourceIdList.split(",")
+          this.checkedKeys = res.data.content.resourceIdList.split(",")
           this.initialList.roleName = res.data.content.roleName
           this.initialList.roleCode = res.data.content.roleCode
-          api.getResourceByUserId({id:this.$route.params.id}).then((res) => {
-            res.data.content.forEach(item => {
-              this.del(roleList,item.id.toString())
-            })
-            // console.log("hhh",this.checkedKeys)
-          this.checkedKeys = roleList
-          })
+          // api.getResourceByUserId({id:this.$route.params.id}).then((res) => {
+          //   res.data.content.forEach(item => {
+          //     this.del(roleList,item.id.toString())
+          //   })
+          //   // console.log("hhh",this.checkedKeys)
+          // this.checkedKeys = roleList
+          // })
        })
     }
   },
