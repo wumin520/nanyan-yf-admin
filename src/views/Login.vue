@@ -124,6 +124,10 @@ export default {
             path = this.$route.query.redirect;
           }
           this.$router.push(path);
+        }).catch((err) => {
+          if(err.data.returnCode === '1004'){
+            this.changeImgCode()
+          }
         });
     },
     handleSubmit(e) {
