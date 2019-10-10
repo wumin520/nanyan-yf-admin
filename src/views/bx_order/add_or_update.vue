@@ -138,7 +138,6 @@
               v-decorator="[
                 'idEndDate_application',
                 {
-                  ...selectRequired,
                   initialValue: allFormData.application.idEndDate
                 }
               ]"
@@ -183,7 +182,6 @@
               v-decorator="[
                 'establishmentDate_application',
                 {
-                  ...inputRequired,
                   initialValue: allFormData.application.establishmentDate
                 }
               ]"
@@ -241,7 +239,6 @@
               v-decorator="[
                 'socialInsuranceNo_application',
                 {
-                  ...inputRequired,
                   initialValue: allFormData.application.socialInsuranceNo
                 }
               ]"
@@ -271,7 +268,6 @@
               v-decorator="[
                 'ratepayerType_application',
                 {
-                  ...selectRequired,
                   initialValue: allFormData.application.ratepayerType
                 }
               ]"
@@ -1108,12 +1104,6 @@
               'deductibleExcess',
               {
                 initialValue: planRecord.deductibleExcess,
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入免赔额'
-                  }
-                ]
               }
             ]"
             placeholder="请输入免赔额"
@@ -1126,12 +1116,6 @@
               'lossRation',
               {
                 initialValue: planRecord.lossRation,
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入赔付比率'
-                  }
-                ]
               }
             ]"
             placeholder="请输入赔付比率"

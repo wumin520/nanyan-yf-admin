@@ -28,11 +28,11 @@
           </a-form-item>
         </a-col>
         <a-col :span="6">
-          <a-button html-type="submit" type="primary"
+          <a-button v-if="authorizedButtonStr.indexOf('查询') > -1" html-type="submit" type="primary"
             ><a-icon type="search"></a-icon>查询</a-button
           >
           <router-link to="/user/add">
-            <a-button class="marg_l8_" type="primary" ghost
+            <a-button v-if="authorizedButtonStr.indexOf('新建') > -1" class="marg_l8_" type="primary" ghost
               ><a-icon type="plus"></a-icon>新建</a-button
             >
           </router-link>
@@ -44,9 +44,10 @@
       :dataSource="data"
       :columns="columns"
       :pagination="pagination"
+      :rowKey="record => record.id"
     >
       <template slot="operation" slot-scope="record">
-        <a-button type="primary" ghost @click="editRecord(record)"
+        <a-button v-if="authorizedButtonStr.indexOf('编辑') > -1" type="primary" ghost @click="editRecord(record)"
           ><a-icon type="edit"></a-icon>编辑</a-button
         >
       </template>
@@ -71,6 +72,8 @@
 <script>
 import api from "@/utils/api";
 import qs from "qs";
+import authorizedMixin from '@/mixins/authorized';
+
 const columns = [
   {
     title: "用户名称",
@@ -180,6 +183,7 @@ export default {
       ]
     };
   },
+  mixins: [authorizedMixin],
   methods: {
     changePage(page, pageSize) {
       this.pagination.pageNo = page;
@@ -238,7 +242,7 @@ export default {
     }
   },
   mounted() {
-    this.getList()
+    this.getList();
   }
 };
 </script>

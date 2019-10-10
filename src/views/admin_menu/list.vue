@@ -23,10 +23,10 @@
           </a-form-item>
         </a-col>
         <a-col :span="6">
-          <a-button html-type="submit" type="primary"
+          <a-button v-if="authorizedButtonStr.indexOf('查询') > -1" html-type="submit" type="primary"
             ><a-icon type="search"></a-icon>查询</a-button
           >
-          <router-link to="/adminMenu/add">
+          <router-link v-if="authorizedButtonStr.indexOf('新建') > -1" to="/adminMenu/add">
             <a-button class="marg_l8_" type="primary" ghost
               ><a-icon type="plus"></a-icon>新建</a-button
             >
@@ -34,15 +34,15 @@
         </a-col>
       </a-row>
     </a-form>
-    <a-table style="margin-top: 50px;" :dataSource="data" :columns="columns" :pagination="pagination">
+    <a-table :rowKey="record => record.id" style="margin-top: 50px;" :dataSource="data" :columns="columns" :pagination="pagination">
       <template slot="type" slot-scope="text">
         {{ text == 1 ? "菜单" : "按钮" }}
       </template>
       <template slot="operation" slot-scope="text, record, index">
-        <a-button @click="delRecord(record,index,text)" type="primary"
+        <a-button v-if="authorizedButtonStr.indexOf('删除') > -1" @click="delRecord(record,index,text)" type="primary"
           ><a-icon type="delete"></a-icon>删除</a-button
         >
-        <router-link :to="'/adminMenu/edit/' + record.id">
+        <router-link v-if="authorizedButtonStr.indexOf('编辑') > -1" :to="'/adminMenu/edit/' + record.id">
           <a-button class="marg_l8_" type="primary" ghost
             ><a-icon type="edit"></a-icon>编辑</a-button
           >
@@ -68,6 +68,7 @@
 </style>
 <script>
 import api from "@/utils/api";
+import authorizedMixin from '@/mixins/authorized';
 
 const columns = [
   {
@@ -145,6 +146,7 @@ export default {
   mounted() {
     this.fetchList();
   },
+  mixins: [authorizedMixin],
   methods: {
     changePage(page, pageSize) {
       this.pagination.pageNo = page;

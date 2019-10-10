@@ -23,11 +23,11 @@
           </a-form-item>
         </a-col>
         <a-col :span="6">
-          <a-button html-type="submit" type="primary"
+          <a-button v-if="authorizedButtonStr.indexOf('查询') > -1" html-type="submit" type="primary"
             ><a-icon type="search"></a-icon>查询</a-button
           >
           <router-link to="/role/add">
-            <a-button class="marg_l8_" type="primary" ghost
+            <a-button v-if="authorizedButtonStr.indexOf('新建') > -1" class="marg_l8_" type="primary" ghost
               ><a-icon type="plus"></a-icon>新建</a-button
             >
           </router-link>
@@ -35,16 +35,18 @@
       </a-row>
     </a-form>
     <a-table
+      :rowKey="record => record.id"
       style="margin-top: 50px;"
       :dataSource="data"
       :columns="columns"
       :pagination="pagination"
     >
       <template slot="operation" slot-scope="text, record, index">
-        <a-button @click="deleteRecord(record, index)" type="primary"
+        <a-button v-if="authorizedButtonStr.indexOf('删除') > -1" @click="deleteRecord(record, index)" type="primary"
           ><a-icon type="delete"></a-icon>删除</a-button
         >
         <a-button
+          v-if="authorizedButtonStr.indexOf('编辑') > -1"
           @click="editRecord(record)"
           class="marg_l8_"
           type="primary"
@@ -72,6 +74,7 @@
 </style>
 <script>
 import api from "@/utils/api";
+import authorizedMixin from '@/mixins/authorized';
 
 const columns = [
   {
@@ -126,6 +129,7 @@ export default {
       ]
     };
   },
+  mixins: [authorizedMixin],
   methods: {
     changePage(page, pageSize) {
       this.pagination.pageNo = page;
@@ -190,7 +194,7 @@ export default {
     }
   },
   mounted() {
-    this.getRoleList() 
+    this.getRoleList();
   }
 };
 </script>

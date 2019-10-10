@@ -24,7 +24,6 @@
         mode="inline"
         theme="light"
         :inlineCollapsed="collapsed"
-        @click="handleMenuSelect"
       >
         <template v-for="item in list">
           <a-menu-item v-if="!item.children" :key="item.key">
@@ -84,6 +83,7 @@
 import SubMenu from "./SubMenu";
 import api from '@/utils/api';
 import { transformMenuData, getUserInfo } from '@/utils/authorized';
+import Bus from '@/utils/Bus';
 
 export default {
   data() {
@@ -140,8 +140,9 @@ export default {
     api.getResourceByUserId().then(res => res.data).then(data => {
       console.log('getResourceByUserId -> ', data)
       this.list = transformMenuData(data.content, true)
+      this.toActiveMenuItem()
+      Bus.$emit('findAuthorizedButtons')
     });
-    this.toActiveMenuItem()
     const userInfo = getUserInfo() || {}
     this.userName = userInfo.userName || 'Me'
   },
@@ -175,10 +176,6 @@ export default {
         this.selectedKeys = [findItem[0].key];
       }
       console.log("findItem ->   ", findItem, hashArr);
-    },
-    handleMenuSelect(item) {
-      console.log(item, 'handleMenuSelect -> 1')
-      window.currentSelectedMenuId = item.key
     },
     exit () {
       api.exitLogin().then(res => res.data).then((data) => {
