@@ -47,6 +47,7 @@
       </a-row>
     </a-form>
     <a-table
+      :rowKey="record => record.id"
       :pagination="pagination"
       @change="handleTableChange"
       style="margin-top: 50px;"
@@ -54,8 +55,9 @@
       :columns="columns"
     >
       <template slot="operation" slot-scope="text, record">
-        <router-link :to="'/bxOrder/detail/' + record.id">查看详情</router-link>
+        <router-link v-if="authorizedButtonStr.indexOf('查看详情') > -1" :to="'/bxOrder/detail/' + record.id">查看详情</router-link>
         <router-link
+          v-if="authorizedButtonStr.indexOf('编辑') > -1"
           style="margin-left: 16px;"
           :to="'/bxOrder/edit/' + record.id"
           >编辑</router-link
@@ -82,7 +84,7 @@
 <script>
 import api from "@/utils/api";
 import moment from "moment";
-import { filterMenuButtons } from '@/utils/authorized';
+import authorizedMixin from '@/mixins/authorized';
 
 const columns = [
   {
@@ -94,6 +96,11 @@ const columns = [
     title: "产品名称",
     dataIndex: "productName",
     key: "productName"
+  },
+  {
+    title: "保司名称",
+    dataIndex: "companyName",
+    key: "companyName"
   },
   {
     title: "保费",
@@ -182,12 +189,11 @@ export default {
         pageSize: 20,
         total: 0
       },
-      authorizedButtonStr: '查询、新建'
     };
   },
+  mixins: [authorizedMixin],
   mounted() {
     this.fetchPolicyList(1);
-    // this.authorizedButtonStr = filterMenuButtons()
   },
   methods: {
     handleTableChange(pagination) {

@@ -1,4 +1,5 @@
 import { LOGIN_STATE, USER_INFO } from "./constants";
+import Bus from './Bus';
 
 export const isLogined = function() {
   return localStorage.getItem(LOGIN_STATE) || 1;
@@ -36,8 +37,11 @@ export const transformMenuData = function transformMenuData(arr, excludeButton, 
     if (item.childEbResourceVos && item.childEbResourceVos.length > 0) {
       obj.children = transformMenuData(item.childEbResourceVos, excludeButton, disabledButton);
     }
-    if (excludeButton && item.type === '2') {
+    // 菜单栏初始化才选择
+    if (excludeButton) {
       window._authoriedButtons.push(obj);
+    }
+    if (excludeButton && item.type === '2') {
       result = null;
     } else {
       result.push(obj);
@@ -46,17 +50,40 @@ export const transformMenuData = function transformMenuData(arr, excludeButton, 
   return result;
 };
 
-export const filterMenuButtons = function(id = window.currentSelectedMenuId) {
+export const filterMenuButtons = function(url = null) {
   window._authoriedButtons = window._authoriedButtons || [];
+  if (window._authoriedButtons.length < 1) {
+    return;
+  }
   let result = [];
+  const matchMenu = window._authoriedButtons.find(val => {
+    return val.url == url;
+  });
   result = window._authoriedButtons.filter(val => {
-    return val.parentId == id;
+    return val.parentId == matchMenu.id;
   });
   result = result.map(val => {
-    return {
-      buttonName: val.name
-    };
+    return val.name;
   });
-  console.log('filterMenuButtons -> ', result);
+  console.log('filterMenuButtons -> ', url, result, matchMenu, window._authoriedButtons);
   return result.join(',');
+};
+const events = {
+  EVENTS_FIND_AUTHORIZED_BUTTONS: 'findAuthorizedButtons'
+};
+export const findAuthorizedButtons = function() {
+  Bus.$on(events.EVENTS_FIND_AUTHORIZED_BUTTONS, () => {
+    const str = filterMenuButtons(this.$route.path);
+    if (str) {
+      this.authorizedButtonStr = str;
+      console.log('findAuthorizedButtons -> ', str)
+    }
+  });
+};
+
+export const offFindAuthorizedButtons = function() {
+  Bus.$off(events.EVENTS_FIND_AUTHORIZED_BUTTONS);
+};
+export const emitFindAuthorizedButtons = function() {
+  Bus.$emit(events.EVENTS_FIND_AUTHORIZED_BUTTONS);
 };

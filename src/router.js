@@ -171,7 +171,7 @@ export default new Router({
           },
           children: [
             {
-              path: "add",
+              path: "add/:id",
               name: "bx_order_add",
               component: BxOrderAdd,
               meta: {
