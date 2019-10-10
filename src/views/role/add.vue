@@ -188,6 +188,16 @@ export default {
     }
   },
   methods: {
+        del(arr,num) {
+            var l=arr.length;
+            for (var i = 0; i < l; i++) {
+                if (arr[0]!==num) { 
+                    arr.push(arr[0]);
+                }
+                arr.shift(arr[0]);
+            }
+            return arr;
+        },
     handleSubmit(e) {
       e.preventDefault();
       if(this.roleId === undefined){
@@ -270,11 +280,16 @@ export default {
     //通过id查询用户角色
     getRoleById() {
        api.getRole({id:this.$route.params.id}).then((res) => {
-          // this.expandedKeys = res.data.content.resourceIdList.split(",")
-          this.checkedKeys = res.data.content.resourceIdList.split(",")
-          // console.log("查询角色的权限",this.checkedKeys)
+          let roleList = res.data.content.resourceIdList.split(",")
           this.initialList.roleName = res.data.content.roleName
           this.initialList.roleCode = res.data.content.roleCode
+          api.getResourceByUserId({id:this.$route.params.id}).then((res) => {
+            res.data.content.forEach(item => {
+              this.del(roleList,item.id.toString())
+            })
+            // console.log("hhh",this.checkedKeys)
+          this.checkedKeys = roleList
+          })
        })
     }
   },
