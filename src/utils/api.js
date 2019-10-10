@@ -91,7 +91,7 @@ instance.interceptors.response.use(
     if (returnCode !== "0000") {
       if (returnCode === '1012') {
         window.router.push('/login')
-      } else {
+      }else {
         window.message.error(returnMsg);
       }
       return Promise.reject(response);
