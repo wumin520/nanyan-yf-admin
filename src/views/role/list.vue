@@ -89,8 +89,8 @@ const columns = [
   },
   {
     title: "最近操作人",
-    dataIndex: "modifier",
-    key: "modifier"
+    dataIndex: "modifierName",
+    key: "modifierName"
   },
   {
     title: "操作",
@@ -148,14 +148,8 @@ export default {
           status: 2,  //	1,有效，2,无效
         }
       api.updateRole(data).then((res) => {
-              if(res.data.returnCode !== "0000"){
-              this.$message.info(res.data.returnMsg);
-            } else{
-              this.$message.info("保存成功");
-            }
-            }).catch((err) => {
-              this.$message.info("网络异常")
-            })
+        this.$message.info("保存成功");
+      })
     },
     handleSubmit(e) {
       e.preventDefault();
@@ -163,31 +157,17 @@ export default {
     },
     getRoleList() {     //获取角色列表
       this.form.validateFields((err, values) => {
-        let data ={
-          roleCode:	values.roleCode, //	用户名称
-          roleName:	values.roleName, //	用户账号
-          pageNum:	this.pagination.pageNo, //	当前页码
-          pageSize:	this.pagination.pageSize //	当前页面显示的数据条目
-        }
         if (!err) {
+          let data ={
+            roleCode:	values.roleCode, //	用户名称
+            roleName:	values.roleName, //	用户账号
+            pageNum:	this.pagination.pageNo, //	当前页码
+            pageSize:	this.pagination.pageSize //	当前页面显示的数据条目
+          }
           api.getRoleList(data).then((res) => {
-            if(res.data.returnCode !== "0000"){
-              this.$message.info(res.data.returnMsg);
-            } else{
-              this.data = []  //重置data
-              this.pagination.total = res.data.content.total  //获得总数据
-              res.data.content.list.forEach(item => {
-                this.data.push({
-                  roleName: item.roleName,
-                  roleCode: item.roleCode,
-                  modifier: item.modifier,
-                  status: item.status,
-                  id: item.id
-                })
-              });
-            }
-          }).catch((err) => {
-            this.$message.info("网络异常")
+            const {total, list} = res.data.content;
+            this.pagination.total = total  //获得总数据
+            this.data = list
           })
         }
       });
