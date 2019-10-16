@@ -3,7 +3,7 @@ import { filterMenuButtons, findAuthorizedButtons, offFindAuthorizedButtons, emi
 export default {
   data() {
     return {
-      authorizedButtonStr: '查询、新建、删除、编辑、查看详情',
+      authorizedButtonStr: '查询、新建、删除、编辑、查看详情、导出',
     };
   },
   created() {

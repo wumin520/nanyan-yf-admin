@@ -21,6 +21,10 @@ import BxOrderAdd from "./views/bx_order/add_or_update";
 import BxOrder from "./views/bx_order/index";
 import BxCompany from "./views/bx_order/companyList";
 import BxOrderDetail from "./views/bx_order/detail";
+import Approve from "./views/approve/index";
+import ApproveList from "./views/approve/list";
+import ApproveEdit from './views/approve/edit'
+import ApproveDetail from './views/approve/detail.vue'
 
 Vue.use(Router);
 
@@ -211,7 +215,42 @@ export default new Router({
               }
             }
           ]
-        }
+        },
+        {
+          path: "approve",
+          name: "approve",
+          component: Approve,
+          redirect: { name: "approve_list" },
+          meta: {
+            breadcrumbName: "批单管理"
+          },
+          children: [
+            {
+              path: "edit/:id",
+              name: "approve_edit",
+              component: ApproveEdit,
+              meta: {
+                breadcrumbName: "编辑"
+              }
+            },
+            {
+              path: "list",
+              name: "approve_list",
+              component: ApproveList,
+              meta: {
+                breadcrumbName: "列表"
+              }
+            },
+            {
+              path: "detail/:id",
+              name: "approve_detail",
+              component: ApproveDetail,
+              meta: {
+                breadcrumbName: "批单详情"
+              }
+            }
+          ]
+        },
       ]
     },
     {

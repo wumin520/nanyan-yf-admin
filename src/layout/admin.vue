@@ -56,7 +56,7 @@
       <a-breadcrumb style="margin: 16px;" :routes="routes">
         <template
           slot="itemRender"
-          slot-scope="{ route, params, routes, paths }"
+          slot-scope="{ route, params, routes }"
         >
           <span v-if="routes.indexOf(route) === routes.length - 1">
             {{ route.breadcrumbName }}
@@ -120,6 +120,12 @@ export default {
               url: "/bxOrder/list"
             }
           ]
+        },
+        {
+          key: "5",
+          title: "批单管理",
+          url: "/approve/list",
+          iconType: 'project'
         }
       ],
       routes: [],
