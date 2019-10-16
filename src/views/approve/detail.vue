@@ -15,7 +15,7 @@
           <h2 class="title_">批单详细列表</h2>
           <a-divider></a-divider>
     </a-col>
-      <a-table :columns="columns" :dataSource="data" bordered :pagination="pagination" :scroll="{ x: 2600 }">
+      <a-table :columns="columns" :dataSource="data" bordered :pagination="pagination" >
       <template slot="isMain" slot-scope="text">
         <a-dropdown>
             <a-menu slot="overlay">
@@ -83,8 +83,8 @@ import api from "@/utils/api";
       dataIndex: 'underwirdeOccupational',
     },
     {
-      fixed: 'right',
-      width: 120,
+      // fixed: 'right',
+      // width: 120,
       title: '是否主被保人',
       dataIndex: 'isMain',
       scopedSlots: { customRender: 'isMain' },
