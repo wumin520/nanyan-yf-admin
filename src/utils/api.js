@@ -272,4 +272,20 @@ api.getAllProvinceCityArea = function() {
   return instance.get("common/getProvinceCityArea");
 };
 
+//批单列表
+//查询批单列表
+api.getBatchListByType = function(data) {
+  return instance.post("/backstage/policy/getBatchListByType", data)
+}
+
+//根据保单id查询批单列表
+api.getBatchDetailById = function(data) {
+  return instance.post("backstage/batchupdate/getBatchDetailById", data)
+}
+
+//后台完善批单信息
+api.completeBatchupdate = function(data) {
+  return instance.post("/backstage/batchupdate/completeBatchupdate", data)
+}
+
 export default api;

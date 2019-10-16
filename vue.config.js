@@ -4,7 +4,7 @@ module.exports = {
       "^/api": {
         target: "http://back.run4wd.com/",
         ws: true,
-        changeOrigin: true,
+        changeOrigin: true
         // pathRewrite: {
         //   '^/api': '/', // rewrite path
         // },
