@@ -234,7 +234,7 @@ export default new Router({
               }
             },
             {
-              path: "list",
+              path: "list/:id",
               name: "approve_list",
               component: ApproveList,
               meta: {
