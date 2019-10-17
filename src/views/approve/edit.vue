@@ -7,7 +7,7 @@
           v-decorator="[
             'changePremium',
             {
-              initialValue: formInfo.changePremium,
+              initialValue: contentData.changePremium,
             }
           ]"
         ></a-input>
@@ -18,7 +18,7 @@
           v-decorator="[
             'status',
             {
-              initialValue: formInfo.status,
+              initialValue: contentData.status,
             }
           ]"
         >
@@ -32,23 +32,48 @@
           v-decorator="[
             'batchupdateNo',
             {
-              initialValue: formInfo.batchupdateNo,
+              initialValue: contentData.batchupdateNo,
             }
           ]"
         ></a-input>
       </a-form-item>
 
-      <a-form-item label="电子批单" v-bind="formItemLayout">
-        <a-input
-          v-decorator="[
-            'electronicBatch',
-            {
-              initialValue: formInfo.electronicBatch,
-            }
-          ]"
-        ></a-input>
+      <a-form-item label="生效日期" v-bind="formItemLayout">
+        <a-col :span="8">
+              <a-date-picker
+                placeholder="请选择"
+                v-decorator="[
+                  'effectiveDate'
+                ]"
+              ></a-date-picker>
+        </a-col>
       </a-form-item>
-     
+
+       <a-row>
+        <a-col :span="24">
+          <h2>上传文件</h2>
+          <a-divider></a-divider>
+        </a-col>
+        <a-col offset="4" :span="6">
+           <a-upload
+              action="/api/common/upload"
+              listType="picture-card"
+              :fileList="fileList"
+              @preview="handlePreview"
+              @change="handleChange"
+            >
+              <div v-if="fileList.length < 3">
+                <a-icon type="plus" />
+                <div class="ant-upload-text">Upload</div>
+              </div>
+            </a-upload>
+            <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
+              <img alt="example" style="width: 100%" :src="previewImage" />
+            </a-modal>
+
+        </a-col>
+      </a-row>
+
       <a-row>
         <a-col :push="3" :span="24">
           <a-button html-type="submit" type="primary">确定</a-button>
@@ -72,7 +97,12 @@ const treeData = [];
 export default {
   data() {
     return {
-      policyId: '',
+      previewVisible: false,
+      previewImage: '',
+      fileList: [ ],
+      fileUpload: [],
+      contentData:[],
+      pidanId: '',
       formItemLayout: {
         labelCol: { span: 3 },
         wrapperCol: { span: 8 }
@@ -91,32 +121,64 @@ export default {
     }
   },
   mounted() {
-    // this.form.setFieldsValue({
-    //   url: 'http://'
-    // })
     const { name, params } = this.$route;
-    // console.log("this.$route",this.$route)
-    // if (name === "approve_edit") {
-    //   console.log(name)
-    // }
     const id = params.id;
     if (id) {
-      this.policyId = id;
+      this.pidanId = id;
+      this.getBatchDetail({id:this.pidanId})
     }
 
   },
   methods: {
-    Batchupdate(params) { //编辑批单
-      api.completeBatchupdate(params).then((res) => {
-        console.log(res)
-      })
+    handleCancel() {
+        this.previewVisible = false;
+      },
+      handlePreview(file) {
+        this.previewImage = file.url || file.thumbUrl;
+        this.previewVisible = true;
+      },
+    handleChange({ fileList }) {
+        this.fileList = fileList;
+        // let file = [...this.fileList]  //多附件上传
+        // this.fileUpload = file.map(value => {
+        //   if (value.response) {
+        //     return {
+        //       name: value.name,
+        //       url: value.response.url
+        //     }
+        //   }
+        //   return value
+        // })
+
+          let file = [...this.fileList]  //此处需求是只能上传一个附件
+          this.fileUpload = file.map(value => {
+          if (value.response) {
+            return value.response.url
+          }
+          return value
+        }) 
     },
-    promptMsg(msg) {
-      window.message.success(msg);
-      let st = setTimeout(() => {
-        this.$router.push("/approve/list");
-        clearTimeout(st);
-      }, 2000);
+
+    Batchupdate(params) {   //编辑批单
+      params = {
+        ...params,
+        id: this.pidanId,
+        electronicBatch: this.fileUpload.join()
+      }
+      params.effectiveDate = params.effectiveDate.format("YYYY-MM-DD");
+      // console.log("参数2",params)
+
+      api.completeBatchupdate(params).then((res) => {
+        if( res.data.returnCode !== "0000"){
+          window.message.info(msg);
+        } else {
+          window.message.info("保存成功，准备跳转...");
+          let st = setTimeout(() => {
+            this.$router.go(-1)
+            clearTimeout(st);
+          }, 2000);
+        }
+      })
     },
     handleSubmit(e) {
       e.preventDefault();
@@ -129,6 +191,15 @@ export default {
           }
         }
       });
+    },
+    getBatchDetail(params) {  //进入编辑页时的初始化请求
+        api
+        .getBatchDetailById(params)
+        .then(res => res.data)
+        .then(data => {
+            this.contentData = data.content;
+            // console.log("---->",this.contentData)
+        });
     },
     onChange(value) {
       // console.log(value);

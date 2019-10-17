@@ -6,7 +6,8 @@
           <a-divider></a-divider>
         </a-col>
         <a-col  v-for="(item, index) in content" :key="index" :span="12">
-            <div class="display">{{item.title}}:   {{contentData[item.dataIndex]}}</div>
+            <div v-if="item.title!=='电子批单'" class="display">{{item.title}}:   {{contentData[item.dataIndex]}}</div>
+            <a-button v-else style="margin-left: 16px;" type="primary" ghost><a target="_blank" :href="contentData[item.dataIndex]">下载电子批单</a></a-button>
         </a-col>
         
     </a-row>
@@ -15,24 +16,24 @@
           <h2 class="title_">批单详细列表</h2>
           <a-divider></a-divider>
     </a-col>
-      <a-table :columns="columns" :dataSource="data" bordered :pagination="pagination" >
-      <template slot="isMain" slot-scope="text">
+      <a-table :columns="columns"  :rowKey="record => record.id" :scroll="{ x: 1500}" :dataSource="listFilter(data)" bordered :pagination="false" >
+      <!-- <template solt="isMain" slot-scope="text, record">
         <a-dropdown>
-            <a-menu slot="overlay">
+          <div v-if="record.isTrue">{{text}}{{record.id}}</div>
+           <a v-else href="javascript:;"> {{text}}{{record.id}} <a-icon type="down" /> </a>
+            <a-menu>
               <a-menu-item>
-                与主被保人关系：{{main.relationship}}
+                与主被保人关系：{{record.relationship}}
               </a-menu-item>
               <a-menu-item>
-                主被保人姓名：{{main.mainName}}
+                主被保人姓名：{{record.mainName}}
               </a-menu-item>
               <a-menu-item>
-                主被保人电话：{{main.mainIdNo}}
+                主被保人电话：{{record.mainIdNo}}
               </a-menu-item>
             </a-menu>
-            <a v-if="isTrue" href="javascript:;"> {{text}} <a-icon type="down" /> </a>
-            <div v-else>{{text}}</div>
           </a-dropdown>
-      </template>
+      </template> -->
     </a-table>
     </a-row>
    </a-col>
@@ -44,7 +45,9 @@ import api from "@/utils/api";
   const columns = [
     {
       title: '姓名',
-      dataIndex: 'name'
+      dataIndex: 'name',
+      width: 100,
+      fixed: 'left'
     },
     {
       title: '性别',
@@ -87,13 +90,25 @@ import api from "@/utils/api";
       // width: 120,
       title: '是否主被保人',
       dataIndex: 'isMain',
-      scopedSlots: { customRender: 'isMain' },
-    }
+      scopedSlots: { customRender: 'isMain' }
+    },
+    {
+      title: '与主被保人关联',
+      dataIndex: 'relationship',
+    },
+    {
+      title: '主被保人姓名',
+      dataIndex: 'mainName',
+    },
+    {
+      title: '主被保人证件号码',
+      dataIndex: 'mainIdNo',
+    },
   ];
 
-const data = [];
-for(var i=0;i<10;i++){
-  data.push({
+const data = [
+  { 
+      id:10000,
       name: 'John Brown',
       sex: '男',
       phone: '110',
@@ -106,16 +121,16 @@ for(var i=0;i<10;i++){
       underwirdeOccupational:'萨克',
       isMain: '否',
       isTrue: false
-    })
-}
+    }
+];
 
 const contentData = {
-  type: '加人',
-  changePremium: '122',
-  batchupdateNo: '212947',
-  payment: "线下",
-  electronicBatch: 'http://baidu.com',
-  status: '失效'
+  // type: '加人',
+  // changePremium: '122',
+  // batchupdateNo: '212947',
+  // payment: "线下",
+  // electronicBatch: 'http://baidu.com',
+  // status: '失效'
 }
 const content = [
   {
@@ -144,41 +159,89 @@ const content = [
   }
 ]
 
-const main = {
-      relationship: "与主被保人关联",
-		  mainName: "张三",
-		  mainIdNo: "12345678888"
-}
-
   export default {
     data() {
       return {
         content,
         contentData,
-        policyId: '',
-        isTrue: true,
-        main,
+        id: '',
         data,
         columns,
-        pagination: {}
+      //   pagination: {
+      //   pageNum: 1,
+      //   pageSize: 20,
+      //   total: 0
+      // }
       };
     },
     methods: {
+      dataFilter(list) {   //状态转换
+           if (list.status == "0") {
+              list.status = "失效"
+            } else if (list.status == "1") {
+              list.status = "待处理"
+            } else if (list.status == "2") {
+              list.status = "审批中"
+            } else if (list.status == "3") {
+              list.status = "已完成"
+            }
+
+            if(list.type == "1"){
+              list.type = "加人"
+            } else if (list.type == "2"){
+              list.type = "修改"
+            } else if (list.type == "3"){
+              list.type = "减人"
+            }
+            return list
+      },
+      listFilter(list) {
+        return list.filter(function(item){
+
+            //状态
+            if (item.sex == "F") {
+              item.sex = "女"
+            } else if (item.sex == "M") {
+              item.sex = "男"
+            }
+
+            if(item.socialsecurity == "Y"){
+              item.socialsecurity = "有"
+            } else if (item.socialsecurity == "N"){
+              item.socialsecurity = "无"
+            }
+
+            if(item.isMain == "Y"){
+              item.isMain = "是"
+              item.isTrue = false
+              item.relationship = "无"
+              item.mainName = "无"
+              item.mainIdNo = "无"
+            } else if (item.isMain == "N"){
+              item.isMain = "否"
+              item.isTrue = true
+            }
+            // console.log("===>>>",item)
+
+            return item
+        })
+      },
       getBatchDetail(params) {
         api
         .getBatchDetailById(params)
         .then(res => res.data)
         .then(data => {
-            const { list, total } = data.content;
-            this.data = list;
-            this.pagination.total = total;
+            this.contentData = this.dataFilter(data.content);
+            this.data = data.content.insurceList;
+            // this.data.push(data.content.insurceList[0]);
+            // console.log(">>>>>>>",this.data,data.content.insurceList)
         });
       }
     },
     mounted() {
-      this.policyId = this.$route.params.id
+      this.id = this.$route.params.id
       // console.log("this.policyId-->",this.policyId)
-      // this.getBatchDetail({policyId:this.policyId})
+      this.getBatchDetail({id:this.id})
     }
   };
 </script>

@@ -58,7 +58,7 @@
       :pagination="pagination"
       @change="handleTableChange"
       style="margin-top: 50px;"
-      :dataSource="data"
+      :dataSource="listFilter(data)"
       :columns="columns"
     >
       <template slot="operation" slot-scope="text, record">
@@ -67,6 +67,7 @@
           v-if="authorizedButtonStr.indexOf('编辑') > -1"
           style="margin-left: 16px;"
           :to="'/approve/edit/' + record.id"
+          :disabled="record.status != '审批中'"
           >编辑</router-link
         >
       </template>
@@ -105,11 +106,11 @@ const columns = [
     dataIndex: "payment",
     key: "payment"
   },
-  {
-    title: "电子批单",
-    dataIndex: "lectronicBatch",   
-    key: "lectronicBatch"
-  },
+  // {
+  //   title: "电子批单",
+  //   dataIndex: "electronicBatch",
+  //   key: "electronicBatch"
+  // },
   {
     title: "申请日期",
     dataIndex: "appDate",
@@ -161,41 +162,11 @@ const data = [
 export default {
   data() {
     return {
+      typeId: '',
       data,
       columns,
       form: this.$form.createForm(this),
       formInputs: [
-        {
-          label: "查询类型",
-          placeholder: "请选择",
-          dataIndex: "type",
-          input_type: "select",
-          inputRequired: {
-            rules: [
-              {
-                required: true,
-                message: "请输入"
-              }
-            ]
-          },
-          options: [
-            {
-              name: "南燕非销售",
-              key: 'one',
-              value: "1"
-            },
-            {
-              name: "南燕销售",
-              key: 'two',
-              value: "2"
-            },
-            {
-              name: "保司用户",
-              key: 'three',
-              value: "3"
-            }
-          ]
-        },
         {
           label: "保单号",
           placeholder: "请输入保单号",
@@ -221,31 +192,60 @@ export default {
   },
   mixins: [authorizedMixin],
   mounted() {
-    this.fetchPolicyList(1);
+    this.typeId = this.$route.params.id
+    this.getBatchList(1);
   },
   methods: {
-    handleTableChange(pagination) {
-      this.fetchPolicyList(pagination.current)
+    listFilter(list) {
+        return list.filter(function(item){
+            //状态
+            if (item.status == "0") {
+              item.status = "失效"
+            } else if (item.status == "1") {
+              item.status = "待处理"
+            } else if (item.status == "2") {
+              item.status = "审批中"
+            } else if (item.status == "3") {
+              item.status = "已完成"
+            }
+
+            if(item.type == "1"){
+              item.type = "加人"
+            } else if (item.type == "2"){
+              item.type = "修改"
+            } else if (item.type == "3"){
+              item.type = "减人"
+            }
+            return item
+            // console.log("===>>>",item)
+        })
     },
-    fetchPolicyList(pageNum = 1, formOptions = {}) {
+    handleTableChange(pagination) {
+      this.getBatchList(pagination.current)
+    },
+    getBatchList(pageNum = 1, formOptions = {}) {
       let params = {
         pageNum,
         pageSize: this.pagination.pageSize
       };
+      let ReqData = {}
       for (let key in formOptions) {
         const val = formOptions[key];
         if (val && typeof val !== "object") {
-          params[key] = val;
+          ReqData[key] = val;
         } else if (val instanceof Object){
-          params.appDate = val.format("YYYY-MM-DD");
+          ReqData.appDate = val.format("YYYY-MM-DD");
         }
       }
+      
+      ReqData.type = this.typeId
       // console.log("--params-->",params)
       api
-      .getBatchListByType(params)
+      .getBatchListByType(params,ReqData)
       .then(res => res.data)
       .then(data => {
           const { list, total } = data.content;
+          // console.log("list--->",list,this.listFilter(list))
           this.data = list;
           this.pagination.total = total;
       });
@@ -253,7 +253,7 @@ export default {
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
-        this.fetchPolicyList(1, values);
+        this.getBatchList(1, values);
       });
     }
   }

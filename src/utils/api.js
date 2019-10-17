@@ -274,8 +274,8 @@ api.getAllProvinceCityArea = function() {
 
 //批单列表
 //查询批单列表
-api.getBatchListByType = function(data) {
-  return instance.post("/backstage/policy/getBatchListByType", data)
+api.getBatchListByType = function(params,data) {
+  return instance.post(`/backstage/batchupdate/getBatchListByType?${qs.stringify(params)}`, data)
 }
 
 //根据保单id查询批单列表

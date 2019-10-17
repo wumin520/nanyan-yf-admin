@@ -26,7 +26,7 @@
             </a-select>
             <a-select
               style="width: 150px;"
-              v-else-if="item.input_type === 'userTypeSelect'"
+              v-else-if="item.input_type === 'select'"
               v-decorator="[
                 item.dataIndex,
                 { initialValue: item.initialValue }
@@ -240,7 +240,7 @@ export default {
           label: "用户来源",
           placeholder: "请选择用户来源",
           dataIndex: "userType",
-          input_type: "userTypeSelect",
+          input_type: "select",
           isShow: true,
           initialValue: "",
           options: [
@@ -258,6 +258,28 @@ export default {
             }
           ]
         },
+        //  {
+        //   label: "保险公司",
+        //   placeholder: "请选择保险公司",
+        //   dataIndex: "companyType",
+        //   input_type: "select",
+        //   isShow: true,
+        //   initialValue: "",
+        //   options: [
+        //     {
+        //       name: "复星联合健康保险股份有限公司",
+        //       value: "1"
+        //     },
+        //     {
+        //       name: "永安财产保险股份有限公司",
+        //       value: "2"
+        //     },
+        //     {
+        //       name: "同方全球人寿保险有限公司",
+        //       value: "3"
+        //     }
+        //   ]
+        // },
         {
           label: "公司证件类型",
           placeholder: "请输入公司证件类型",
@@ -467,8 +489,8 @@ export default {
 
         promiseOne.then(() => {
           api.getUser({id:this.userId.id}).then((res) => {
+          
           this.formInputs[0].initialValue = res.data.content.userName
-          // this.formInputs[1].initialValue = res.data.content.userPassword
           this.formInputs[2].initialValue = res.data.content.userTel
           this.formInputs[3].initialValue = res.data.content.userEmail
           this.formInputs[5].initialValue = res.data.content.userType
