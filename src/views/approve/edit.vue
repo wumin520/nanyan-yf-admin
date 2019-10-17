@@ -16,10 +16,7 @@
       <a-form-item label="状态" v-bind="formItemLayout">
         <a-select
           v-decorator="[
-            'status',
-            {
-              initialValue: contentData.status,
-            }
+            'status'
           ]"
         >
           <a-select-option key="0" value="0">失效</a-select-option>
@@ -51,7 +48,7 @@
 
        <a-row>
         <a-col :span="24">
-          <h2>上传文件</h2>
+          <h2>上传电子批单</h2>
           <a-divider></a-divider>
         </a-col>
         <a-col offset="4" :span="6">
@@ -130,6 +127,19 @@ export default {
 
   },
   methods: {
+    statusFilter(data) {
+            //状态
+            if (data == "0") {
+              data = "失效"
+            } else if (data == "1") {
+              data = "待处理"
+            } else if (data == "2") {
+              data = "审批中"
+            } else if (data == "3") {
+              data = "已完成"
+            }
+            return data
+    },
     handleCancel() {
         this.previewVisible = false;
       },
@@ -160,13 +170,25 @@ export default {
     },
 
     Batchupdate(params) {   //编辑批单
-      params = {
-        ...params,
-        id: this.pidanId,
-        electronicBatch: this.fileUpload.join()
+
+      if(this.fileUpload.join() == ""){
+          params = {
+          ...params,
+          id: this.pidanId,
+        }
+      } else{
+        params = {
+          ...params,
+          id: this.pidanId,
+          electronicBatch: this.fileUpload.join()
+        }
       }
-      params.effectiveDate = params.effectiveDate.format("YYYY-MM-DD");
-      // console.log("参数2",params)
+
+      console.log("参数2",params.effectiveDate)
+
+      if(params.effectiveDate !== undefined){
+        params.effectiveDate = params.effectiveDate.format("YYYY-MM-DD");
+      }
 
       api.completeBatchupdate(params).then((res) => {
         if( res.data.returnCode !== "0000"){

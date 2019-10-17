@@ -67,7 +67,6 @@
           v-if="authorizedButtonStr.indexOf('编辑') > -1"
           style="margin-left: 16px;"
           :to="'/approve/edit/' + record.id"
-          :disabled="record.status != '审批中'"
           >编辑</router-link
         >
       </template>

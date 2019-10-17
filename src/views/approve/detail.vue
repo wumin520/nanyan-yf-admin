@@ -7,7 +7,7 @@
         </a-col>
         <a-col  v-for="(item, index) in content" :key="index" :span="12">
             <div v-if="item.title!=='电子批单'" class="display">{{item.title}}:   {{contentData[item.dataIndex]}}</div>
-            <a-button v-else style="margin-left: 16px;" type="primary" ghost><a target="_blank" :href="contentData[item.dataIndex]">下载电子批单</a></a-button>
+            <a-button v-else style="margin:30px;" type="primary" ghost><a target="_blank" :href="contentData[item.dataIndex]">下载电子批单</a></a-button>
         </a-col>
         
     </a-row>
@@ -17,6 +17,10 @@
           <a-divider></a-divider>
     </a-col>
       <a-table :columns="columns"  :rowKey="record => record.id" :scroll="{ x: 1500}" :dataSource="listFilter(data)" bordered :pagination="false" >
+      <!-- <template slot="idType" slot-scope="text">
+            {{ text | filterIdType(idTypeOptions) }}
+      </template> -->
+
       <!-- <template solt="isMain" slot-scope="text, record">
         <a-dropdown>
           <div v-if="record.isTrue">{{text}}{{record.id}}</div>
@@ -41,6 +45,7 @@
 </template>
 <script>
 import api from "@/utils/api";
+import dictOptions from "../bx_order/dictOptions";
 
   const columns = [
     {
@@ -106,23 +111,7 @@ import api from "@/utils/api";
     },
   ];
 
-const data = [
-  { 
-      id:10000,
-      name: 'John Brown',
-      sex: '男',
-      phone: '110',
-      email: '1313@qq.com',
-      idType: '爱上打开' ,
-      birthDate: '2010 10-1',
-      idNo: '14142',
-      socialsecurity: 'akjfhckj',
-      occType: '卡萨就成了',
-      underwirdeOccupational:'萨克',
-      isMain: '否',
-      isTrue: false
-    }
-];
+const data = [];
 
 const contentData = {
   // type: '加人',
@@ -132,7 +121,7 @@ const contentData = {
   // electronicBatch: 'http://baidu.com',
   // status: '失效'
 }
-const content = [
+const content = [  //表格上方展示区
   {
     title: '批改类型',
     dataIndex: 'type'
@@ -164,6 +153,7 @@ const content = [
       return {
         content,
         contentData,
+        idTypeOptions: dictOptions.idTypeOptions,
         id: '',
         data,
         columns,
@@ -174,29 +164,28 @@ const content = [
       // }
       };
     },
-    methods: {
-      dataFilter(list) {   //状态转换
-           if (list.status == "0") {
-              list.status = "失效"
-            } else if (list.status == "1") {
-              list.status = "待处理"
-            } else if (list.status == "2") {
-              list.status = "审批中"
-            } else if (list.status == "3") {
-              list.status = "已完成"
-            }
+    filters:{
+        filterIdType: (val, idTypeOptions) => {
+        if (!val) {
+          return ''
+        }
+        return idTypeOptions[val].name;
+       },
+       filterType: {
 
-            if(list.type == "1"){
-              list.type = "加人"
-            } else if (list.type == "2"){
-              list.type = "修改"
-            } else if (list.type == "3"){
-              list.type = "减人"
-            }
-            return list
-      },
+       }
+    },
+    methods: {
       listFilter(list) {
         return list.filter(function(item){
+            //状态
+            if (item.idType == "0") {
+              item.idType = "省份证"
+            } else if (item.idType == "1") {
+              item.idType = "护照"
+            } else if (item.idType == "2") {
+              item.idType = "其他"
+            }
 
             //状态
             if (item.sex == "F") {
@@ -231,7 +220,7 @@ const content = [
         .getBatchDetailById(params)
         .then(res => res.data)
         .then(data => {
-            this.contentData = this.dataFilter(data.content);
+            this.contentData = data.content;
             this.data = data.content.insurceList;
             // this.data.push(data.content.insurceList[0]);
             // console.log(">>>>>>>",this.data,data.content.insurceList)
